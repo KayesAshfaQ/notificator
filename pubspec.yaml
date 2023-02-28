@@ -1,0 +1,69 @@
+name: notificator
+description: A new flutter project
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1 # app version
+environment:
+  sdk: '>=2.19.0 <=3.7.0' # dart sdk version
+
+# dependency's for third party packages
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # cupertino icons
+  cupertino_icons: ^1.0.5
+
+  # flutter svg
+  flutter_svg: ^2.0.1
+
+  # state management
+  provider: ^6.0.5
+
+  # otp text field
+  otp_text_field: ^1.1.3
+
+  # random avatar images
+  random_avatar: ^0.0.8
+
+  # Turns text URLs and emails into clickable inline links in text
+  flutter_linkify: ^5.0.2
+
+  # for launching a URL.
+  url_launcher: ^6.1.10
+
+  # for animated custom toasts
+  cherry_toast: ^1.1.0
+
+  # for persist data
+  shared_preferences: ^2.0.18
+
+  # for picking images from the image library
+  image_picker: ^0.8.6+3
+
+# dependency's for third party packages for dev environment
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.1
+
+# this section is for flutter plugins
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/img/
+    - assets/svg/
+
+  fonts:
+    - family: BaiJamjuree
+      fonts:
+        - asset: assets/fonts/BaiJamjuree-Regular.ttf
+        - asset: assets/fonts/BaiJamjuree-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/BaiJamjuree-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/BaiJamjuree-Italic.ttf
+          style: italic
+        - asset: assets/fonts/BaiJamjuree-BoldItalic.ttf
+          weight: 700
+          style: italic
