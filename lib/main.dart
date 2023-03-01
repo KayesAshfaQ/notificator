@@ -4,6 +4,7 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_provider.dart';
+import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/screens/SettingScreen.dart';
@@ -36,6 +37,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => SendToOptionProvider()),
         ChangeNotifierProvider(create: (_) => SettingOptionProvider()),
+        ChangeNotifierProvider(create: (_) => GroupChipProvider()),
       ],
       child: const MyApp(),
     ),
@@ -53,7 +55,6 @@ class MyApp extends StatelessWidget {
       title: kAppTitle,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-
         // textFiled customization app wide
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: AppColors.lightOrange,

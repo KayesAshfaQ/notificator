@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/widgets/select_group_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
+import '../widgets/multi_select_chip.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/send_option_radio_widget.dart';
@@ -17,8 +20,12 @@ class CreateNotificationScreen extends StatefulWidget {
 class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
   @override
   Widget build(BuildContext context) {
+    final groups = context.watch<GroupChipProvider>().groupList;
+
     return Scaffold(
-      appBar: const MyAppBarWidget(title: 'Create Notification',),
+      appBar: const MyAppBarWidget(
+        title: 'Create Notification',
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -156,28 +163,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
 
   void onTapSelectGroup() {
     // show bottom sheet to select group or individual
-
-    print('onTapSelectGroup');
-
-    /* showModalBottomSheet(
-     */ /* context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: const SelectGroupBottomSheet(),
-          ),
-        );
-      },*/ /*
-      context: context,
-      builder: (BuildContext context) {
-        return const SelectGroupBottomSheet();
-      },
-    );*/
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

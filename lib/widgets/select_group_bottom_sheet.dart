@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/widgets/multi_select_chip.dart';
 
 import '../constants/app_colors.dart';
 import 'separated_labeled_text_field.dart';
@@ -20,7 +21,7 @@ class SelectGroupBottomSheet extends StatelessWidget {
           child: DraggableScrollableSheet(
             initialChildSize: 0.4,
             minChildSize: 0.2,
-            maxChildSize: 0.75,
+            maxChildSize: 0.65,
             builder: (_, controller) {
               return Container(
                 decoration: const BoxDecoration(
@@ -39,8 +40,7 @@ class SelectGroupBottomSheet extends StatelessWidget {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                        padding: EdgeInsets.fromLTRB(16, 8, 16, 12),
                         child: Text(
                           'Choose Your Group *',
                           style: TextStyle(
@@ -52,23 +52,21 @@ class SelectGroupBottomSheet extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
+                    Flexible(
+                      child: ListView(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        shrinkWrap: true,
                         controller: controller,
-                        itemCount: 100,
-                        itemBuilder: (_, index) {
-                          return Row(
-                            children: [
-                              Checkbox(
-                                value: v,
-                                onChanged: (value) {
-                                  v = value!;
-                                },
-                              ),
-                              Text('Group $index'),
-                            ],
-                          );
-                        },
+                        children: [
+                          const SizedBox(height: 8),
+                          const MultiSelectChip(),
+                          CommonPurpleButtonWidget(
+                            title: 'Submit',
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            onPress: () {},
+                          ),
+                          const SizedBox(height: 12),
+                        ],
                       ),
                     ),
                   ],
@@ -76,6 +74,42 @@ class SelectGroupBottomSheet extends StatelessWidget {
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CommonPurpleButtonWidget extends StatelessWidget {
+  final String title;
+  final EdgeInsetsGeometry? padding;
+  final VoidCallback? onPress;
+
+  const CommonPurpleButtonWidget({
+    super.key,
+    required this.title,
+    required this.padding,
+    this.onPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPress,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.deepPurple,
+        padding: padding,
+        textStyle: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        minimumSize: const Size(double.infinity, 0),
+      ),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: AppColors.white,
+          fontFamily: 'BaiJamjuree',
         ),
       ),
     );
