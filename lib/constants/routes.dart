@@ -10,8 +10,9 @@ const kRouteChangePass = '/changePassword';
 const kRouteHome = '/home';
 
 //profile
-const kRouteProfile = '/profile';
-const kRouteUpdateProfile = '/profile/update';
+const kRouteEmployeeProfile = '/employee_profile';
+const kRouteUpdateEmployeeProfile = '/employee_profile/update';
+const kRouteAdminProfile = '/admin_profile';
 
 //group
 const kRouteGroups = '/GroupList';

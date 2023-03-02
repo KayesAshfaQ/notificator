@@ -19,7 +19,7 @@ import 'package:notificator/screens/login_screen.dart';
 import 'package:notificator/screens/notification_details_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
 import 'package:notificator/screens/otp_screen.dart';
-import 'package:notificator/screens/profile_screen.dart';
+import 'package:notificator/screens/employee_profile_screen.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
 import 'package:notificator/screens/update_profile_screen.dart';
@@ -70,8 +70,9 @@ class MyApp extends StatelessWidget {
         kRouteForgetPassword: (context) => const ForgetPasswordScreen(),
         kRouteChangePass: (context) => const ChangePasswordScreen(),
         kRouteHome: (context) => const HomeScreen(),
-        kRouteProfile: (context) => const ProfileScreen(),
-        kRouteUpdateProfile: (context) => const UpdateProfileScreen(),
+        kRouteEmployeeProfile: (context) => const EmployeeProfileScreen(),
+        kRouteUpdateEmployeeProfile: (context) => const UpdateProfileScreen(),
+        kRouteAdminProfile: (context) => const EmployeeProfileScreen(),
         kRouteGroups: (context) => const GroupScreen(),
         kRouteNotification: (context) => const NotificationScreen(),
         kRouteCreateNotification: (context) => const CreateNotificationScreen(),

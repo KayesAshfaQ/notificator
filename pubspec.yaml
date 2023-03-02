@@ -40,6 +40,9 @@ dependencies:
   # for picking images from the image library
   image_picker: ^0.8.6+3
 
+  # for http requests
+  http: ^0.13.5
+
 # dependency's for third party packages for dev environment
 dev_dependencies:
   flutter_test:

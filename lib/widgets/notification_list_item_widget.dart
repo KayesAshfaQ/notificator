@@ -6,11 +6,11 @@ import '../generated/assets.dart';
 import 'round_icon_button_widget.dart';
 
 class NotificationListItemWidget extends StatelessWidget {
-
   final VoidCallback? onPressed;
 
   const NotificationListItemWidget({
-    super.key, this.onPressed,
+    super.key,
+    this.onPressed,
   });
 
   @override

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/screens/SettingScreen.dart';
+import 'package:notificator/screens/admin_profile_screen.dart';
 import 'package:notificator/screens/create_employee_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
-import 'package:notificator/screens/profile_screen.dart';
+import 'package:notificator/screens/employee_profile_screen.dart';
 import 'package:notificator/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:random_avatar/random_avatar.dart';
@@ -26,7 +27,8 @@ class HomeScreen extends StatelessWidget {
 
   // bottom navigation bar screens list
   final List<Widget> _screens = const [
-    ProfileScreen(),
+    //EmployeeProfileScreen(),
+    AdminProfileScreen(),
     GroupScreen(),
     NotificationScreen(),
     EmployeeScreen(),
