@@ -13,9 +13,9 @@ class LoginResponseError {
 }
 
 class LoginResponseData {
-  String message;
+  String? message;
 
-  LoginResponseData({required this.message});
+  LoginResponseData({this.message});
 
   factory LoginResponseData.fromJson(Map<String, dynamic> json) {
     return LoginResponseData(message: json['message']);

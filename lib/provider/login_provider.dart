@@ -16,14 +16,20 @@ class LoginProvider with ChangeNotifier {
   final LoginRepository _loginRepository = LoginRepository();
 
   Future<void> login(String email, String password) async {
-    final response = await _loginRepository.login(email, password);
-    _success = response.success;
+    try {
+      final response = await _loginRepository.login(email, password);
+      _success = response.success;
 
-    if (success) {
-      _token = response.data.token;
-    } else {
-      _error = response.errors.message ?? 'Login failed!';
+      if (success) {
+        _token = response.data.token;
+      } else {
+        _error = response.errors.message ?? 'Login failed!';
+      }
+      notifyListeners();
+    } catch (e) {
+      _success = false;
+      _error = e.toString();
+      notifyListeners();
     }
-    notifyListeners();
   }
 }

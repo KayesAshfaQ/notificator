@@ -5,9 +5,15 @@ import '../constants/app_colors.dart';
 class SeparatedLabeledTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
+  final TextEditingController? controller;
+  final FormFieldValidator? validator;
 
   const SeparatedLabeledTextField(
-      {Key? key, required this.labelText, required this.hintText})
+      {Key? key,
+      required this.labelText,
+      required this.hintText,
+      this.controller,
+      this.validator})
       : super(key: key);
 
   @override
@@ -26,8 +32,9 @@ class SeparatedLabeledTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8.0),
-        TextField(
-          onChanged: (value) {},
+        TextFormField(
+          controller: controller,
+          validator: validator,
           style: const TextStyle(
             color: AppColors.deepPurple,
             fontFamily: 'BaiJamjuree',

@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notificator/constants/routes.dart';
+import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
@@ -18,10 +21,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  // this method will be called when the widget is loaded
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+
+    final provider = context.read<AuthKeyProvider>();
+    await provider.getUserToken();
+
+    var routeName = kRouteLogin;
+
+    if (kDebugMode) {
+      print('userToken::: ${provider.userToken}');
+    }
+
+    // if user token exists, then navigate to home screen
+    if (provider.userToken != null) {
+      routeName = kRouteHome;
+    } else {
+      routeName = kRouteLogin;
+    }
+
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(
         context,
-        kRouteLogin,
+        routeName,
       );
     });
   }

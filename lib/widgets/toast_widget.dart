@@ -32,6 +32,8 @@ class ToastWidget extends StatelessWidget {
           const SizedBox(width: 12.0),
           Text(
             message,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: color ?? Colors.white),
           ),
         ],

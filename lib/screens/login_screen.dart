@@ -26,7 +26,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -34,6 +34,13 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+  }
+
+  @override
+  void dispose() {
+    _mailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,11 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: TextFieldWidget(
                       hintText: 'Email',
-                      controller: _usernameController,
+                      controller: _mailController,
                       validator: (value) {
-                        final bool emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value);
+                        final bool emailValid =
+                            Utils.emailRegex.hasMatch(value);
 
                         if (value == null) {
                           return 'Please enter your email';
@@ -185,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() async {
-    String username = _usernameController.text.trim();
+    String email = _mailController.text.trim();
     String password = _passwordController.text.trim();
 
     bool isValid = _formKey.currentState?.validate() ?? false;
@@ -196,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // call the rest api through provider
       final provider = context.read<LoginProvider>();
-      await provider.login(username, password);
+      await provider.login(email, password);
 
       if (provider.success) {
         // Display a success toast

@@ -6,6 +6,8 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/create_group_provider.dart';
+import 'package:notificator/provider/forgot_pass_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
@@ -43,6 +45,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => GroupChipProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => AuthKeyProvider()),
+        ChangeNotifierProvider(create: (_) => ForgotPassProvider()),
+        ChangeNotifierProvider(create: (_) => CreateGroupProvider()),
       ],
       child: const MyApp(),
     ),
