@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 
@@ -65,4 +64,31 @@ class Utils {
     fontFamily: 'BaiJamjuree',
     fontWeight: FontWeight.w600,
   );
+
+  static void showProgressLoader(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          content: Center(
+            child: CircularProgressIndicator(
+              color: AppColors.lightOrange,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  static void hideProgressLoader(BuildContext context, {int delay = 2500}) {
+    Future.delayed(
+      Duration(milliseconds: delay),
+      () {
+        Navigator.of(context).pop();
+      },
+    );
+  }
 }

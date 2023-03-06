@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/widgets/notification_list_item_widget.dart';
 
-import '../constants/app_colors.dart';
 import '../constants/routes.dart';
-import '../generated/assets.dart';
 import '../widgets/elevated_create_button.dart';
+import '../widgets/outlined_button_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -22,38 +21,26 @@ class _NotificationScreenState extends State<NotificationScreen> {
       // shrinkWrap: true,
       // physics: const NeverScrollableScrollPhysics(),
       children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: ElevatedCreateButtonWidget(
-            title: 'Send Notification',
-            icon: Icons.circle_notifications_sharp,
-            onPressed: () {
-              Navigator.pushNamed(context, kRouteCreateNotification);
-            },
-          ),
-        ),
-        const SizedBox(height: 16.0),
-        const Text(
-          'Notifications You have sent',
-          style: TextStyle(
-            fontSize: 18,
-            color: AppColors.deepPurple,
-            fontFamily: 'BaiJamjuree',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 16.0),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: const [
-            OutlinedButtonWidget(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const OutlinedButtonWidget(
               label: 'Sort By',
               icon: Icons.sort,
             ),
-            SizedBox(width: 8),
-            OutlinedButtonWidget(
+            const SizedBox(width: 4),
+            const OutlinedButtonWidget(
               label: 'Filter',
               icon: Icons.filter_list,
+            ),
+            const Spacer(),
+            ElevatedCreateButtonWidget(
+              title: 'Send Notification',
+              icon: Icons.circle_notifications_sharp,
+              onPressed: () {
+                Navigator.pushNamed(context, kRouteCreateNotification);
+              },
             ),
           ],
         ),
@@ -83,46 +70,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
     print('Employee clicked');
 
     Navigator.pushNamed(context, kRouteNotificationDetails);
-  }
-}
-
-class OutlinedButtonWidget extends StatelessWidget {
-  final String label;
-  final IconData? icon;
-
-  const OutlinedButtonWidget({
-    super.key,
-    required this.label,
-    this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.orange,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: Colors.black87,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.deepPurple,
-              fontFamily: 'BaiJamjuree',
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

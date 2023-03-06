@@ -74,7 +74,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: _widthPadding),
                   child: Text(
-                    'Enter your email address associated with your account we will send you an OTP to reset gour password',
+                    'Enter your email address associated with your account we will send you an OTP to reset your password',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 10,

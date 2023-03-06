@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/routes.dart';
 
-import '../constants/app_colors.dart';
-import '../generated/assets.dart';
-import '../util/navigate_util.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/employee_list_item_widget.dart';
-import 'create_employee_screen.dart';
+import '../widgets/outlined_button_widget.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({Key? key}) : super(key: key);
@@ -24,29 +21,32 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       // shrinkWrap: true,
       // physics: const NeverScrollableScrollPhysics(),
       children: [
-        Align(
-          alignment: Alignment.topRight,
-          child: ElevatedCreateButtonWidget(
-            title: 'Create Employee',
-            icon: Icons.add_circle_outline,
-            onPressed: () {
-              //navigatePush(context, const CreateEmployeeScreen());
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const OutlinedButtonWidget(
+              label: 'Sort By',
+              icon: Icons.sort,
+            ),
+            const SizedBox(width: 4),
+            const OutlinedButtonWidget(
+              label: 'Filter',
+              icon: Icons.filter_list,
+            ),
+            const Spacer(),
+            ElevatedCreateButtonWidget(
+              title: 'Create Employee',
+              icon: Icons.add_circle_outline,
+              onPressed: () {
+                //navigatePush(context, const CreateEmployeeScreen());
 
-              Navigator.pushNamed(context, kRouteCreateEmployee);
-            },
-          ),
+                Navigator.pushNamed(context, kRouteCreateEmployee);
+              },
+            ),
+          ],
         ),
-        const SizedBox(height: 24.0),
-        const Text(
-          'Employees You have created',
-          style: TextStyle(
-            fontSize: 18,
-            color: AppColors.deepPurple,
-            fontFamily: 'BaiJamjuree',
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        const SizedBox(height: 24.0),
+        const SizedBox(height: 16.0),
         ListView(
           shrinkWrap: true,
           cacheExtent: 10,

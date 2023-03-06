@@ -3,10 +3,16 @@ import 'package:notificator/constants/app_colors.dart';
 
 class TextFieldPasswordWidget extends StatefulWidget {
   final String? hintText;
+  final TextEditingController? controller;
+  final Color? color;
+  final Color? backgroundColor;
 
   const TextFieldPasswordWidget({
     Key? key,
     required this.hintText,
+    this.controller,
+    this.color,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -19,15 +25,16 @@ class _TextFieldPasswordWidgetState extends State<TextFieldPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: widget.controller,
       obscureText: isObscurePassword,
       onChanged: (value) {},
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: widget.color ?? Colors.white),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: widget.color ?? Colors.white),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
+        fillColor: widget.backgroundColor ?? Colors.white.withOpacity(0.2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide.none,
@@ -46,6 +53,14 @@ class _TextFieldPasswordWidgetState extends State<TextFieldPasswordWidget> {
           },
         ),
       ),
+      validator: (value) {
+        if (value == null) {
+          return 'Please enter your password';
+        } else if (value.length < 8) {
+          return 'Password must be at least 8 characters';
+        }
+        return null;
+      },
     );
   }
 }

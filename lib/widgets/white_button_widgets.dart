@@ -4,18 +4,20 @@ import 'package:notificator/constants/app_colors.dart';
 class WhiteButtonWidget extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
+  final Color? color;
 
   const WhiteButtonWidget({
     super.key,
     required this.label,
     this.onPressed,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.orange,
+        backgroundColor: color ?? AppColors.orange,
         padding: const EdgeInsets.symmetric(vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),

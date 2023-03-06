@@ -47,7 +47,7 @@ class _GroupScreenState extends State<GroupScreen> {
             },
           ),
         ),
-        const SizedBox(height: 24.0),
+        /*const SizedBox(height: 24.0),
         const Text(
           'Groups You have created',
           style: TextStyle(
@@ -56,7 +56,7 @@ class _GroupScreenState extends State<GroupScreen> {
             fontFamily: 'BaiJamjuree',
             fontWeight: FontWeight.w600,
           ),
-        ),
+        ),*/
         const SizedBox(height: 24.0),
         ListView(
           shrinkWrap: true,

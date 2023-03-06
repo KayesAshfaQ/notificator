@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
-import 'package:notificator/provider/auth_provider.dart';
+import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
@@ -34,10 +37,12 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AppProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => SendToOptionProvider()),
         ChangeNotifierProvider(create: (_) => SettingOptionProvider()),
         ChangeNotifierProvider(create: (_) => GroupChipProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => AuthKeyProvider()),
       ],
       child: const MyApp(),
     ),
@@ -50,39 +55,51 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: kAppTitle,
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-        // textFiled customization app wide
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: AppColors.lightOrange,
-          selectionColor: Color(0x40FE9027),
-          selectionHandleColor: AppColors.lightOrange,
+    return GlobalLoaderOverlay(
+      overlayColor: Colors.black.withOpacity(0.7),
+      useDefaultLoading: false,
+      closeOnBackButton: true,
+      overlayWidget: const Center(
+        child: SpinKitDoubleBounce(
+          color: AppColors.lightOrange,
+          size: 50.0,
         ),
       ),
-      routes: {
-        kRouteSplash: (context) => const SplashScreen(),
-        kRouteLogin: (context) => const LoginScreen(),
-        kRouteRegister: (context) => const RegisterScreen(),
-        kRouteOtp: (context) => const OtpScreen(),
-        kRouteForgetPassword: (context) => const ForgetPasswordScreen(),
-        kRouteChangePass: (context) => const ChangePasswordScreen(),
-        kRouteHome: (context) => const HomeScreen(),
-        kRouteEmployeeProfile: (context) => const EmployeeProfileScreen(),
-        kRouteUpdateEmployeeProfile: (context) => const UpdateProfileScreen(),
-        kRouteAdminProfile: (context) => const EmployeeProfileScreen(),
-        kRouteGroups: (context) => const GroupScreen(),
-        kRouteNotification: (context) => const NotificationScreen(),
-        kRouteCreateNotification: (context) => const CreateNotificationScreen(),
-        kRouteNotificationDetails: (context) =>
-            const NotificationDetailsScreen(),
-        kRouteEmployees: (context) => const EmployeeScreen(),
-        kRouteCreateEmployee: (context) => const CreateEmployeeScreen(),
-        kRouteSetting: (context) => const SettingScreen(),
-      },
-      initialRoute: kRouteSplash,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: kAppTitle,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+          // textFiled customization app wide
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: AppColors.lightOrange,
+            selectionColor: Color(0x40FE9027),
+            selectionHandleColor: AppColors.lightOrange,
+          ),
+        ),
+        routes: {
+          kRouteSplash: (context) => const SplashScreen(),
+          kRouteLogin: (context) => const LoginScreen(),
+          kRouteRegister: (context) => const RegisterScreen(),
+          kRouteOtp: (context) => const OtpScreen(),
+          kRouteForgetPassword: (context) => const ForgetPasswordScreen(),
+          kRouteChangePass: (context) => const ChangePasswordScreen(),
+          kRouteHome: (context) => const HomeScreen(),
+          kRouteEmployeeProfile: (context) => const EmployeeProfileScreen(),
+          kRouteUpdateEmployeeProfile: (context) => const UpdateProfileScreen(),
+          kRouteAdminProfile: (context) => const EmployeeProfileScreen(),
+          kRouteGroups: (context) => const GroupScreen(),
+          kRouteNotification: (context) => const NotificationScreen(),
+          kRouteCreateNotification: (context) =>
+              const CreateNotificationScreen(),
+          kRouteNotificationDetails: (context) =>
+              const NotificationDetailsScreen(),
+          kRouteEmployees: (context) => const EmployeeScreen(),
+          kRouteCreateEmployee: (context) => const CreateEmployeeScreen(),
+          kRouteSetting: (context) => const SettingScreen(),
+        },
+        initialRoute: kRouteSplash,
+      ),
     );
   }
 }

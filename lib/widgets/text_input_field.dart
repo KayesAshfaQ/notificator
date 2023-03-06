@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatefulWidget {
   final String? hintText;
+  final TextEditingController? controller;
+  final FormFieldValidator? validator;
 
   const TextFieldWidget({
     Key? key,
     required this.hintText,
+    this.controller,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -15,7 +19,8 @@ class TextFieldWidget extends StatefulWidget {
 class _TextFieldWidgetState extends State<TextFieldWidget> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      controller: widget.controller,
       onChanged: (value) {},
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
@@ -28,6 +33,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           borderSide: BorderSide.none,
         ),
       ),
+      validator: (value) => widget.validator!(value),
     );
   }
 }

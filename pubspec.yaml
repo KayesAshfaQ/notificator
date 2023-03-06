@@ -31,14 +31,18 @@ dependencies:
   # for launching a URL.
   url_launcher: ^6.1.10
 
-  # for animated custom toasts
-  cherry_toast: ^1.1.0
+  # for toasts messages
+  fluttertoast: ^8.2.1
+
+  # for loading indicators
+  flutter_spinkit: ^5.1.0
+  loader_overlay: ^2.1.0
 
   # for persist data
   shared_preferences: ^2.0.18
 
   # for picking images from the image library
-  image_picker: ^0.8.6+3
+  image_picker: ^0.8.6+4
 
   # for http requests
   http: ^0.13.5

@@ -6,11 +6,17 @@ import '../generated/assets.dart';
 import '../util/utils.dart';
 
 class ProfileUpdateButtonWidget extends StatelessWidget {
-
   final VoidCallback? onPress;
+  final IconData? icon;
+  final String? iconPath;
+  final String title;
 
   const ProfileUpdateButtonWidget({
-    super.key, this.onPress,
+    super.key,
+    this.onPress,
+    this.icon,
+    required this.title,
+    this.iconPath,
   });
 
   @override
@@ -25,14 +31,20 @@ class ProfileUpdateButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SvgPicture.asset(
-            Assets.svgIcSvgproEdit,
-            height: 24,
-            width: 24,
-          ),
+          icon == null
+              ? SvgPicture.asset(
+                  iconPath ?? Assets.svgIcEdit, // as place holder
+                  height: 24,
+                  width: 24,
+                )
+              : Icon(
+                  icon,
+                  color: AppColors.orange,
+                  size: 24,
+                ),
           const SizedBox(width: 8),
-          const Text(
-            'Update',
+          Text(
+            title,
             style: Utils.myTxtStyleBodySmall,
           ),
         ],

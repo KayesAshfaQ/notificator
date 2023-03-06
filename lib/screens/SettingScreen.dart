@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:notificator/util/utils.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/routes.dart';
 import '../generated/assets.dart';
 import '../widgets/deactivate_account_dialog.dart';
 
@@ -21,6 +22,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SettingItemWidget(
             title: 'Receive notification to mail',
@@ -31,6 +33,27 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           const SettingItemWidget(
             title: 'Receive push notifications',
+          ),
+          Divider(
+            color: Colors.grey.shade400,
+            height: 4,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, kRouteChangePass);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 12.0,
+              ),
+              child: const Text(
+                'Change Password',
+                textAlign: TextAlign.left,
+                style: Utils.myTxtStyleBodySmall,
+              ),
+            ),
           ),
           Divider(
             color: Colors.grey.shade400,

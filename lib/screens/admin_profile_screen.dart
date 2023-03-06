@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 
 import '../constants/routes.dart';
+import '../generated/assets.dart';
 import '../util/utils.dart';
 import '../widgets/notification_list_item_widget.dart';
+import '../widgets/profile_card_widget.dart';
 import '../widgets/profile_group_item_widget.dart';
 import '../widgets/profile_update_button_widget.dart';
 import '../widgets/see_all_btn_widget.dart';
+import '../widgets/status_card_widget.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({Key? key}) : super(key: key);
@@ -43,6 +46,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               ],
             ),
             ProfileUpdateButtonWidget(
+              title: 'Update',
+              iconPath: Assets.svgIcSvgproEdit,
               onPress: () {
                 Navigator.pushNamed(context, kRouteUpdateEmployeeProfile);
               },
@@ -91,14 +96,50 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           ],
         ),
         const SizedBox(height: 8),
-        const StatusCardWidget(
-          title: 'Notifications',
-          data: '100',
-          alignment: MainAxisAlignment.center,
-          padding: 16,
-          icon: Icons.notifications,
-        ),
-
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(
+            color: AppColors.purple_100,
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.notifications,
+                color: AppColors.deepPurple.withOpacity(0.7),
+                size: 24,
+              ),
+              const SizedBox(width: 16),
+              Text(
+                '100',
+                style: Utils.myTxtStyleTitleLarge.copyWith(
+                  color: Colors.orange,
+                  fontSize: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Notifications',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: Utils.myTxtStyleTitleExtraSmall,
+                  ),
+                  Text(
+                    'You\'ve created Created',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: Utils.myTxtStyleBodyExtraSmall.copyWith(fontSize: 8),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ), // notification count card
         const SizedBox(height: 24),
         Row(
           //crossAxisAlignment: CrossAxisAlignment.center,
@@ -151,112 +192,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           },
         ),
       ],
-    );
-  }
-}
-
-class StatusCardWidget extends StatelessWidget {
-  const StatusCardWidget({
-    super.key,
-    required this.alignment,
-    this.padding,
-    required this.title,
-    this.data = '0',
-    this.icon,
-  });
-
-  final String title;
-  final String data;
-  final IconData? icon;
-  final MainAxisAlignment alignment;
-  final double? padding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: const BoxDecoration(
-          color: AppColors.purple_100,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-        ),
-        child: Row(
-          mainAxisAlignment: alignment,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.deepPurple.withOpacity(0.7),
-              size: 24,
-            ),
-            SizedBox(width: padding ?? 4),
-            Text(
-              data,
-              style: Utils.myTxtStyleTitleLarge.copyWith(
-                color: Colors.orange,
-                fontSize: 24,
-              ),
-            ),
-            SizedBox(width: padding ?? 4),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Utils.myTxtStyleTitleExtraSmall,
-                ),
-                Text(
-                  'You\'ve created Created',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: Utils.myTxtStyleBodyExtraSmall.copyWith(fontSize: 8),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileInfoWidget extends StatelessWidget {
-  const ProfileInfoWidget({
-    super.key,
-    required this.width,
-    required this.title,
-    required this.data,
-  });
-
-  final double width;
-  final String title;
-  final String data;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: width * 0.16,
-            child: Text(
-              title,
-              style: Utils.myTxtStyleTitleSmall,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              ':',
-              style: Utils.myTxtStyleTitleSmall,
-            ),
-          ),
-          Text(data, style: Utils.myTxtStyleBodySmall),
-        ],
-      ),
     );
   }
 }

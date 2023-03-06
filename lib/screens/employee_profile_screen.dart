@@ -3,6 +3,7 @@ import 'package:notificator/constants/routes.dart';
 import 'package:notificator/util/utils.dart';
 import 'package:notificator/widgets/notification_list_item_widget.dart';
 
+import '../generated/assets.dart';
 import '../widgets/employee_profile_card.dart';
 import '../widgets/profile_group_item_widget.dart';
 import '../widgets/profile_update_button_widget.dart';
@@ -29,6 +30,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               style: Utils.myTxtStyleBodyMedium,
             ),
             ProfileUpdateButtonWidget(
+              title: 'Update',
+              iconPath: Assets.svgIcSvgproEdit,
               onPress: () {
                 Navigator.pushNamed(context, kRouteUpdateEmployeeProfile);
               },
