@@ -1,13 +1,12 @@
 import 'dart:convert';
 
-import 'package:notificator/model/login_error.dart';
-import 'package:notificator/model/login_success.dart';
+import 'package:notificator/model/login_response.dart';
 
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
 
 class LoginRepository {
-  Future<dynamic> login(String email, String password) async {
+  Future<LoginResponse> login(String email, String password) async {
     final url = Uri.parse('$kBaseUrl/login');
     final response = await http.post(
       url,
@@ -17,22 +16,12 @@ class LoginRepository {
       },
     );
 
-    //print(response.statusCode);
     final data = json.decode(response.body);
     print(data);
-    if (response.statusCode == 200) {
-      final responseSuccess = LoginResponseSuccess.fromJson(data);
-      return responseSuccess;
 
-      /*return User(
-        id: data['id'],
-        username: data['username'],
-        email: data['email'],
-        token: data['token'],
-      );*/
-    } else if (response.statusCode >= 400 && response.statusCode < 500) {
-      final responseError = LoginResponseError.fromJson(data);
-      return responseError;
+    if (response.body.isNotEmpty) {
+      final responseSuccess = LoginResponse.fromJson(data);
+      return responseSuccess;
     } else {
       throw Exception('Failed to login');
     }

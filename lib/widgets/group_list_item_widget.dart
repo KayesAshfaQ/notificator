@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:notificator/util/utils.dart';
 
 import '../constants/app_colors.dart';
-import '../generated/assets.dart';
 import 'round_icon_button_widget.dart';
 
 class GroupListItemWidget extends StatelessWidget {
+  final String name;
+
   const GroupListItemWidget({
     super.key,
+    required this.name,
   });
 
   @override
@@ -38,8 +40,8 @@ class GroupListItemWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'XYZ Developer',
+                Text(
+                  name,
                   style: Utils.myTxtStyleBodySmall,
                 ),
                 Expanded(
@@ -48,7 +50,6 @@ class GroupListItemWidget extends StatelessWidget {
                     children: [
                       RoundIconButtonWidget(
                         icon: Icons.change_circle,
-
                         onPressed: () {
                           // SnackBar snackBar = const SnackBar(content: Text('Update clicked'));
                           // ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -62,6 +63,8 @@ class GroupListItemWidget extends StatelessWidget {
                       RoundIconButtonWidget(
                         icon: Icons.remove_circle,
                         onPressed: () {
+                          //TODO: remove group from list and from database
+
                           // SnackBar snackBar = const SnackBar(content: Text('Remove clicked'));
                           // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                           print('Remove clicked');

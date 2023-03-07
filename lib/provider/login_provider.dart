@@ -21,14 +21,15 @@ class LoginProvider with ChangeNotifier {
       _success = response.success;
 
       if (success) {
-        _token = response.data.token;
+        _token = response.data?.token ?? '';
       } else {
-        _error = response.errors.message ?? 'Login failed!';
+        _error = response.errors?.message ?? 'Login failed!';
       }
       notifyListeners();
     } catch (e) {
       _success = false;
       _error = e.toString();
+      print(_error);
       notifyListeners();
     }
   }

@@ -30,11 +30,13 @@ class ToastWidget extends StatelessWidget {
             color: color ?? Colors.white,
           ),
           const SizedBox(width: 12.0),
-          Text(
-            message,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: color ?? Colors.white),
+          Flexible(
+            child: Text(
+              message,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: color ?? Colors.white),
+            ),
           ),
         ],
       ),

@@ -9,8 +9,7 @@ class AuthKeyProvider extends ChangeNotifier {
 
   void setUserToken(String userToken) {
     _userToken = userToken;
-    SharedPreferencesHelper.setUserToken(
-        userToken); // Store user token in shared preferences
+    SharedPreferencesHelper.setUserToken(userToken); // Store user token in shared preferences
     notifyListeners();
   }
 

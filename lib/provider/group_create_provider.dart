@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:notificator/repository/create_group_repository.dart';
+import 'package:notificator/repository/group_repository.dart';
 
-import '../model/crate_group_response.dart';
+import '../model/group_create_response.dart';
 
 class CreateGroupProvider with ChangeNotifier {
   bool _success = false;
   String _error = '';
-  CrateGroupResponseData? _data;
+  CreateGroupResponseData? _data;
 
   bool get success => _success;
 
   String get error => _error;
 
-  CrateGroupResponseData? get data => _data;
+  CreateGroupResponseData? get data => _data;
 
-  final CreateGroupRepository _createGroupRepository = CreateGroupRepository();
+  final GroupRepository _createGroupRepository = GroupRepository();
 
   /// This method is for submitting the email to the repository
   Future<void> create(String name, String token) async {
@@ -27,7 +27,7 @@ class CreateGroupProvider with ChangeNotifier {
       if (success) {
         _data = response.data;
       } else {
-        _error = response.errors.toString();
+        _error = response.errors!;
       }
       notifyListeners();
     } catch (e) {
