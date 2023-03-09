@@ -32,31 +32,34 @@ class _GroupScreenState extends State<GroupScreen> {
   /// This method is for initializing the provider
   /// and getting the user token
   void instantiate() async {
+    final authProvider = context.read<AuthKeyProvider>();
+    final groupProvider = context.read<GroupProvider>();
+    final groupDeleteProvider = context.read<GroupDeleteProvider>();
+
+    provider = context.read<GroupListProvider>();
+
     // get the user token from the provider
-    await context.read<AuthKeyProvider>().getUserToken();
+    await authProvider.getUserToken();
 
-    if (context.mounted) {
-      // initialize the user token
-      token = context.read<AuthKeyProvider>().userToken!;
+    // initialize the user token
+    token = authProvider.userToken!;
 
-      // initialize the provider
-      provider = context.read<GroupListProvider>();
-      await provider.getList(token);
+    // initialize the provider
+    await provider.getList(token);
 
-      // listeners for refresh the ui when item is removed
-      context.read<GroupDeleteProvider>().addListener(() {
-        if (context.read<GroupDeleteProvider>().success) {
-          provider.getList(token);
-        }
-      });
+    // listeners for refresh the ui when item is removed
+    groupDeleteProvider.addListener(() {
+      if (groupDeleteProvider.success) {
+        provider.getList(token);
+      }
+    });
 
-      // listeners for refresh the ui when item is created
-      context.read<GroupProvider>().addListener(() {
-        if (context.read<GroupProvider>().success) {
-          provider.getList(token);
-        }
-      });
-    }
+    // listeners for refresh the ui when item is created
+    groupProvider.addListener(() {
+      if (groupProvider.success) {
+        provider.getList(token);
+      }
+    });
   }
 
   @override

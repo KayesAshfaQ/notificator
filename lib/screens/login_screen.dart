@@ -220,8 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
           keyProvider.setUserToken(provider.token);
         }
 
-        // Navigate to the OTP screen
-        if (context.mounted) Navigator.pushReplacementNamed(context, kRouteOtp);
+        //TODO: Navigate to the OTP screen
+        if (context.mounted)
+          Navigator.pushReplacementNamed(context, kRouteHome);
       } else {
         // Display an error toast
         fToast.showToast(

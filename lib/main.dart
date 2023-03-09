@@ -6,6 +6,8 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/employee_create_provider.dart';
+import 'package:notificator/provider/employee_list_provider.dart';
 import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/forgot_pass_provider.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
@@ -51,6 +53,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => GroupProvider()),
         ChangeNotifierProvider(create: (_) => GroupListProvider()),
         ChangeNotifierProvider(create: (_) => GroupDeleteProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeeCreateProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeeListProvider()),
       ],
       child: const MyApp(),
     ),

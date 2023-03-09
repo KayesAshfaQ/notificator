@@ -96,7 +96,23 @@ class Utils {
       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
   static String errorString(Map<String, dynamic> map) {
-    return map.toString().toString().replaceAll('{', '').replaceAll('}', '');
+    return map.toString().replaceAll('{', '').replaceAll('}', '');
+  }
+
+  static String? validate(value) {
+    if (value.isEmpty) {
+      return 'Please enter some data';
+    }
+    return null;
+  }
+
+  static String? validatePassword(value) {
+    if (value.isEmpty) {
+      return 'Please enter your password';
+    } else if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    return null;
   }
 
 // RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");

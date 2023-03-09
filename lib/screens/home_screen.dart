@@ -59,10 +59,10 @@ class HomeScreen extends StatelessWidget {
           image: AssetImage('assets/img/appbar-background.png'),
           fit: BoxFit.cover,
         ),
-        leading: const Icon(
+       /* leading: const Icon(
           Icons.menu,
           color: AppColors.orange,
-        ),
+        ),*/
         actions: [
           Container(
             padding: const EdgeInsets.all(8),
@@ -121,6 +121,31 @@ class HomeScreen extends StatelessWidget {
             label: 'Settings',
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // TODO: Add code to handle item 1 being tapped.
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // TODO: Add code to handle item 2 being tapped.
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

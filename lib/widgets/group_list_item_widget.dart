@@ -121,10 +121,10 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
           onConfirm: () async {
             // Display a progress loader
             context.loaderOverlay.show();
+            final provider = context.read<GroupDeleteProvider>();
             await instantiate();
 
             // delete group through provider
-            final provider = context.read<GroupDeleteProvider>();
             provider.delete(widget.id, token!);
 
             // show toast when removed
@@ -132,7 +132,9 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
               // Display a success toast
               fToast?.showToast(
                 child: ToastWidget(
-                  message: provider.message,
+                  message: provider.message.isNotEmpty
+                      ? provider.message
+                      : 'deleted!',
                   iconData: Icons.check,
                   backgroundColor: Colors.black87,
                 ),
@@ -150,7 +152,8 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
             }
 
             // Hide the progress loader
-            context.loaderOverlay.hide();
+
+            if (context.mounted) context.loaderOverlay.hide();
           },
         );
       },

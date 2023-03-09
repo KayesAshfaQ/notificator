@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/widgets/toast_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
 import '../generated/assets.dart';
+import '../provider/auth_key_provider.dart';
+import '../provider/employee_delete_provider.dart';
+import 'deactivate_account_dialog.dart';
 import 'round_icon_button_widget.dart';
 
-class EmployeeListItemWidget extends StatelessWidget {
-  const EmployeeListItemWidget({
-    super.key,
-  });
+class EmployeeListItemWidget extends StatefulWidget {
+  final int id;
+  final String firstName;
+  final String lastName;
+  final String position;
+  final String? photo;
+
+  const EmployeeListItemWidget(
+      {super.key,
+      required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.position,
+      this.photo});
+
+  @override
+  State<EmployeeListItemWidget> createState() => _EmployeeListItemWidgetState();
+}
+
+class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
+  String? token;
+  FToast? fToast;
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +66,11 @@ class EmployeeListItemWidget extends StatelessWidget {
                 ClipOval(
                   child: SizedBox.fromSize(
                     size: const Size.fromRadius(20), // Image radius
-                    child: RandomAvatar(
-                      'name',
-                    ), /*Image.network('imageUrl', fit: BoxFit.cover),*/
+                    child: Image.network(
+                      widget.photo ??
+                          'https://eu.ui-avatars.com/api/?name=${widget.firstName}+${widget.lastName}&size=64',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -51,10 +78,10 @@ class EmployeeListItemWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'John Doe',
-                      style: TextStyle(
+                      '${widget.firstName} ${widget.lastName}',
+                      style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.deepPurple,
                         fontFamily: 'BaiJamjuree',
@@ -62,8 +89,8 @@ class EmployeeListItemWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Designer',
-                      style: TextStyle(
+                      widget.position,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.deepPurple,
                         fontFamily: 'BaiJamjuree',
@@ -79,8 +106,7 @@ class EmployeeListItemWidget extends StatelessWidget {
                       RoundIconButtonWidget(
                         icon: Icons.change_circle,
                         onPressed: () {
-                          // SnackBar snackBar = const SnackBar(content: Text('Update clicked'));
-                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Fluttertoast.showToast(msg: 'Update clicked');
                           print('Update clicked');
                         },
                         padding: const EdgeInsets.all(4),
@@ -91,9 +117,7 @@ class EmployeeListItemWidget extends StatelessWidget {
                       RoundIconButtonWidget(
                         icon: Icons.remove_circle,
                         onPressed: () {
-                          // SnackBar snackBar = const SnackBar(content: Text('Remove clicked'));
-                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          print('Remove clicked');
+                          Fluttertoast.showToast(msg: 'remove clicked');
                         },
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Remove',
@@ -110,5 +134,73 @@ class EmployeeListItemWidget extends StatelessWidget {
         const SizedBox(height: 12.0),
       ],
     );
+  }
+
+  // TODO: Update Employee
+  void update() {}
+
+  // TODO: remove employee
+  void removeEmployee() {
+    // Show dialog to confirm remove group
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogWidget(
+          content:
+              'You sure you want to remove employee : ${widget.firstName} ${widget.lastName}?',
+          btnTitle: 'REMOVE',
+          onConfirm: () async {
+            // Display a progress loader
+            context.loaderOverlay.show();
+            await instantiate();
+
+            // delete group through provider
+            final provider = context.read<EmployeeDeleteProvider>();
+            provider.delete(widget.id, token!);
+
+            // show toast when removed
+            if (provider.success) {
+              // Display a success toast
+              fToast?.showToast(
+                child: ToastWidget(
+                  message: provider.message,
+                  iconData: Icons.check,
+                  backgroundColor: Colors.black87,
+                ),
+              );
+            } else {
+              // Display an error toast
+              fToast?.showToast(
+                child: ToastWidget(
+                  message: provider.error,
+                  iconData: Icons.error_outline,
+                  backgroundColor: Colors.red,
+                ),
+                //toastDuration: const Duration(seconds: 20),
+              );
+            }
+
+            // Hide the progress loader
+            context.loaderOverlay.hide();
+          },
+        );
+      },
+    );
+  }
+
+  /// initialize token & fToast before using them
+  Future<void> instantiate() async {
+    // initialize toast obj if empty
+    if (fToast == null) {
+      fToast = FToast();
+      fToast?.init(context);
+    }
+
+    // get token from provider when token is empty
+    if (token == null) {
+      final authProvider = context.read<AuthKeyProvider>();
+      await authProvider.getUserToken();
+      token = authProvider.userToken!;
+    }
   }
 }
