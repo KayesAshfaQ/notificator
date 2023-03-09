@@ -2,30 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
-import 'package:notificator/provider/group_create_provider.dart';
+import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import 'separated_labeled_text_field.dart';
 
-class CreateGroupBottomSheet extends StatefulWidget {
-  const CreateGroupBottomSheet({Key? key}) : super(key: key);
+class UpdateGroupBottomSheet extends StatefulWidget {
+  final int id;
+  final String name;
+
+  const UpdateGroupBottomSheet({Key? key, required this.id, required this.name})
+      : super(key: key);
 
   @override
-  State<CreateGroupBottomSheet> createState() => _CreateGroupBottomSheetState();
+  State<UpdateGroupBottomSheet> createState() => _UpdateGroupBottomSheetState();
 }
 
-class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
+class _UpdateGroupBottomSheetState extends State<UpdateGroupBottomSheet> {
   late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _txtController = TextEditingController();
-
-  //static const double _widthPadding = 24.0;
+  late final TextEditingController _txtController;
 
   @override
   void initState() {
     super.initState();
+    _txtController = TextEditingController(text: widget.name);
     fToast = FToast();
     fToast.init(context);
   }
@@ -49,7 +52,7 @@ class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Create New Group',
+              'Update Group',
               style: TextStyle(
                 fontSize: 20,
                 color: AppColors.deepPurple,
@@ -74,7 +77,7 @@ class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: createGroup,
+              onPressed: updateGroup,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.deepPurple,
                 padding:
@@ -86,7 +89,7 @@ class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
                 minimumSize: const Size(double.infinity, 0),
               ),
               child: const Text(
-                'Create Group',
+                'Update Group',
                 style: TextStyle(
                   color: AppColors.white,
                   fontFamily: 'BaiJamjuree',
@@ -99,7 +102,7 @@ class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
     );
   }
 
-  void createGroup() async {
+  void updateGroup() async {
     String name = _txtController.text.trim();
 
     bool isValid = _formKey.currentState?.validate() ?? false;
@@ -112,15 +115,15 @@ class _CreateGroupBottomSheetState extends State<CreateGroupBottomSheet> {
       final String? token = context.read<AuthKeyProvider>().userToken;
 
       // call the rest api through provider
-      final provider = context.read<CreateGroupProvider>();
-      await provider.create(name, token!);
+      final provider = context.read<GroupProvider>();
+      await provider.update(token!, widget.id, name);
 
       // check if the submission was successful
       if (provider.success) {
         // Display a success toast
         fToast.showToast(
           child: const ToastWidget(
-            message: 'new group created successfully',
+            message: 'Group updated successfully',
             iconData: Icons.check,
             backgroundColor: Colors.green,
           ),

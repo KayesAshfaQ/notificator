@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:notificator/provider/group_create_provider.dart';
+import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_key_provider.dart';
 import '../provider/group_list_provider.dart';
-import '../widgets/create_group_bottom_sheet.dart';
+import '../widgets/group_create_bottom_sheet.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/group_list_item_widget.dart';
 
@@ -51,8 +51,8 @@ class _GroupScreenState extends State<GroupScreen> {
       });
 
       // listeners for refresh the ui when item is created
-      context.read<CreateGroupProvider>().addListener(() {
-        if (context.read<CreateGroupProvider>().success) {
+      context.read<GroupProvider>().addListener(() {
+        if (context.read<GroupProvider>().success) {
           provider.getList(token);
         }
       });

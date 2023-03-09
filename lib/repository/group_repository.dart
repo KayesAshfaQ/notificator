@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../model/group_create_response.dart';
 import '../model/group_list_response.dart';
+import '../model/group_update_response.dart';
 
 class GroupRepository {
   /// This method is used to submit the email to the server to send the password reset link
@@ -69,6 +70,28 @@ class GroupRepository {
       return GroupDeleteResponse.fromJson(data);
     } else {
       throw Exception('Failed to login');
+    }
+  }
+
+  /// This method is used to update the group name
+  Future<UpdateGroupResponse> update({required String name, required String token, required int id}) async {
+    final url = Uri.parse('$kBaseUrl/groups/$id');
+    final response = await http.put(
+      url,
+      body: {'name': name},
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    //print(response.statusCode);
+    final data = json.decode(response.body);
+    print('update:::$data');
+    if (response.body.isNotEmpty) {
+      final responseSuccess = UpdateGroupResponse.fromJson(data);
+      return responseSuccess;
+    } else {
+      throw Exception('failed!');
     }
   }
 }

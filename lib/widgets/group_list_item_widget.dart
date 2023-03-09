@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/util/utils.dart';
+import 'package:notificator/widgets/group_update_bottom_sheet.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -93,6 +94,22 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
     );
   }
 
+  /// initialize token & fToast before using them
+  Future<void> instantiate() async {
+    // initialize toast obj if empty
+    if (fToast == null) {
+      fToast = FToast();
+      fToast?.init(context);
+    }
+
+    // get token from provider when token is empty
+    if (token == null) {
+      final authProvider = context.read<AuthKeyProvider>();
+      await authProvider.getUserToken();
+      token = authProvider.userToken!;
+    }
+  }
+
   void removeGroup() {
     // Show dialog to confirm remove group
     showDialog(
@@ -104,7 +121,7 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
           onConfirm: () async {
             // Display a progress loader
             context.loaderOverlay.show();
-            await instiantiate();
+            await instantiate();
 
             // delete group through provider
             final provider = context.read<GroupDeleteProvider>();
@@ -140,25 +157,24 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
     );
   }
 
-  /// initialize token & fToast before using them
-  Future<void> instiantiate() async {
-    // initialize toast obj if empty
-    if (fToast == null) {
-      fToast = FToast();
-      fToast?.init(context);
-    }
-
-    // get token from provider when token is empty
-    if (token == null) {
-      final authProvider = context.read<AuthKeyProvider>();
-      await authProvider.getUserToken();
-      token = authProvider.userToken!;
-    }
-  }
-
   void updateGroup() {
-    // SnackBar snackBar = const SnackBar(content: Text('Update clicked'));
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    print('Update clicked');
+    // show bottom Sheet when update pressed
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: UpdateGroupBottomSheet(
+              id: widget.id,
+              name: widget.name,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
