@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/provider/group_create_provider.dart';
+import 'package:notificator/provider/group_delete_provider.dart';
+import 'package:notificator/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_key_provider.dart';
@@ -39,11 +42,27 @@ class _GroupScreenState extends State<GroupScreen> {
       // initialize the provider
       provider = context.read<GroupListProvider>();
       await provider.getList(token);
+
+      // listeners for refresh the ui when item is removed
+      context.read<GroupDeleteProvider>().addListener(() {
+        if (context.read<GroupDeleteProvider>().success) {
+          provider.getList(token);
+        }
+      });
+
+      // listeners for refresh the ui when item is created
+      context.read<CreateGroupProvider>().addListener(() {
+        if (context.read<CreateGroupProvider>().success) {
+          provider.getList(token);
+        }
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return RefreshIndicator(
       onRefresh: () {
         // Refresh the list when the user pulls down
@@ -87,17 +106,31 @@ class _GroupScreenState extends State<GroupScreen> {
                 // hide the loader overlay
                 context.loaderOverlay.hide();
 
-                // show the list of groups
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: provider.data!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final group = provider.data![index];
+                // if list is empty show no group text
+                // else show the list of groups
+                return provider.data!.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: provider.data!.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final group = provider.data![index];
 
-                    return GroupListItemWidget(name: group.name);
-                  },
-                );
+                          return GroupListItemWidget(
+                            id: group.id,
+                            name: group.name!,
+                          );
+                        },
+                      )
+                    : SizedBox(
+                        height: height * .6,
+                        child: const Center(
+                          child: Text(
+                            'No GROUPS found.',
+                            style: Utils.myTxtStyleBodySmall,
+                          ),
+                        ),
+                      );
               }
             },
           ),

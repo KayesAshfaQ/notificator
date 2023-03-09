@@ -2,7 +2,7 @@ import 'package:notificator/util/utils.dart';
 
 class GroupDeleteResponse {
   bool success;
-  String? message;
+  String? message = '';
   String? errors = '';
 
   GroupDeleteResponse({required this.success, this.message, this.errors});
@@ -16,7 +16,7 @@ class GroupDeleteResponse {
     } else {
       return GroupDeleteResponse(
         success: json['success'],
-        errors: json['message'],
+        message: json['message'],
       );
     }
   }

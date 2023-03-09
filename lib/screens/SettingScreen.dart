@@ -92,7 +92,9 @@ class _SettingScreenState extends State<SettingScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return DeactivateAccountDialog(
+        return AppAlertDialogWidget(
+          content: 'Are you sure you want to Deactivate your account?',
+          btnTitle: 'DELETE',
           onConfirm: () {
             //TODO: Perform delete account action here
           },

@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/util/utils.dart';
+import 'package:notificator/widgets/toast_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
+import '../provider/auth_key_provider.dart';
+import 'deactivate_account_dialog.dart';
 import 'round_icon_button_widget.dart';
 
-class GroupListItemWidget extends StatelessWidget {
+class GroupListItemWidget extends StatefulWidget {
   final String name;
+  final int id;
 
   const GroupListItemWidget({
     super.key,
     required this.name,
+    required this.id,
   });
+
+  @override
+  State<GroupListItemWidget> createState() => _GroupListItemWidgetState();
+}
+
+class _GroupListItemWidgetState extends State<GroupListItemWidget> {
+  String? token;
+  FToast? fToast;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +58,7 @@ class GroupListItemWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  name,
+                  widget.name,
                   style: Utils.myTxtStyleBodySmall,
                 ),
                 Expanded(
@@ -50,11 +67,7 @@ class GroupListItemWidget extends StatelessWidget {
                     children: [
                       RoundIconButtonWidget(
                         icon: Icons.change_circle,
-                        onPressed: () {
-                          // SnackBar snackBar = const SnackBar(content: Text('Update clicked'));
-                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          print('Update clicked');
-                        },
+                        onPressed: updateGroup,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Update',
                         size: 24,
@@ -62,13 +75,7 @@ class GroupListItemWidget extends StatelessWidget {
                       ),
                       RoundIconButtonWidget(
                         icon: Icons.remove_circle,
-                        onPressed: () {
-                          //TODO: remove group from list and from database
-
-                          // SnackBar snackBar = const SnackBar(content: Text('Remove clicked'));
-                          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          print('Remove clicked');
-                        },
+                        onPressed: removeGroup,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Remove',
                         size: 24,
@@ -84,5 +91,74 @@ class GroupListItemWidget extends StatelessWidget {
         const SizedBox(height: 12.0),
       ],
     );
+  }
+
+  void removeGroup() {
+    // Show dialog to confirm remove group
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AppAlertDialogWidget(
+          content: 'You sure you want to remove group ${widget.name}?',
+          btnTitle: 'REMOVE',
+          onConfirm: () async {
+            // Display a progress loader
+            context.loaderOverlay.show();
+            await instiantiate();
+
+            // delete group through provider
+            final provider = context.read<GroupDeleteProvider>();
+            provider.delete(widget.id, token!);
+
+            // show toast when removed
+            if (provider.success) {
+              // Display a success toast
+              fToast?.showToast(
+                child: ToastWidget(
+                  message: provider.message,
+                  iconData: Icons.check,
+                  backgroundColor: Colors.black87,
+                ),
+              );
+            } else {
+              // Display an error toast
+              fToast?.showToast(
+                child: ToastWidget(
+                  message: provider.error,
+                  iconData: Icons.error_outline,
+                  backgroundColor: Colors.red,
+                ),
+                //toastDuration: const Duration(seconds: 20),
+              );
+            }
+
+            // Hide the progress loader
+            context.loaderOverlay.hide();
+          },
+        );
+      },
+    );
+  }
+
+  /// initialize token & fToast before using them
+  Future<void> instiantiate() async {
+    // initialize toast obj if empty
+    if (fToast == null) {
+      fToast = FToast();
+      fToast?.init(context);
+    }
+
+    // get token from provider when token is empty
+    if (token == null) {
+      final authProvider = context.read<AuthKeyProvider>();
+      await authProvider.getUserToken();
+      token = authProvider.userToken!;
+    }
+  }
+
+  void updateGroup() {
+    // SnackBar snackBar = const SnackBar(content: Text('Update clicked'));
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    print('Update clicked');
   }
 }

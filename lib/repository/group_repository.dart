@@ -53,7 +53,7 @@ class GroupRepository {
   }
 
   /// This method is for delete the group by id
-  Future<GroupDeleteResponse> delete(String id, token) async {
+  Future<GroupDeleteResponse> delete(int id, token) async {
     final url = Uri.parse('$kBaseUrl/groups/$id');
     final response = await http.delete(
       url,

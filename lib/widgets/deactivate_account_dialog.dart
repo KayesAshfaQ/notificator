@@ -2,21 +2,31 @@ import 'package:flutter/material.dart';
 
 import '../util/utils.dart';
 
-class DeactivateAccountDialog extends StatelessWidget {
+class AppAlertDialogWidget extends StatelessWidget {
+  final String? title;
+  final String content;
+  final String btnTitle;
+  final Color? btnColor;
+
   final VoidCallback onConfirm;
 
-  const DeactivateAccountDialog({Key? key, required this.onConfirm})
+  const AppAlertDialogWidget(
+      {Key? key,
+      required this.onConfirm,
+      this.title,
+      required this.content,
+      required this.btnTitle,
+      this.btnColor})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text(
-        'Deactivate Account',
-        style: Utils.myTxtStyleTitleSmall,
-      ),
-      content: const Text(
-        'Are you sure you want to Deactivate your account?',
+      title: (title != null)
+          ? Text(title!, style: Utils.myTxtStyleTitleSmall)
+          : null,
+      content: Text(
+        content,
         style: Utils.myTxtStyleBodySmall,
       ),
       actions: <Widget>[
@@ -28,13 +38,14 @@ class DeactivateAccountDialog extends StatelessWidget {
         ),
         ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+            backgroundColor:
+                MaterialStateProperty.all<Color>(btnColor ?? Colors.red),
           ),
           onPressed: () {
             onConfirm();
             Navigator.of(context).pop();
           },
-          child: const Text('DELETE'),
+          child: Text(btnTitle),
         ),
       ],
     );
