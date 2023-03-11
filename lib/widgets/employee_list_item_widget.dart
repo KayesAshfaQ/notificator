@@ -1,15 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
-import '../generated/assets.dart';
 import '../provider/auth_key_provider.dart';
 import '../provider/employee_delete_provider.dart';
-import 'deactivate_account_dialog.dart';
+import 'app_alert_dialog.dart';
 import 'round_icon_button_widget.dart';
 
 class EmployeeListItemWidget extends StatefulWidget {
@@ -65,13 +64,12 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
               children: [
                 ClipOval(
                   child: SizedBox.fromSize(
-                    size: const Size.fromRadius(20), // Image radius
-                    child: Image.network(
-                      widget.photo ??
-                          'https://eu.ui-avatars.com/api/?name=${widget.firstName}+${widget.lastName}&size=64',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      size: const Size.fromRadius(20), // Image radius
+                      child: CachedNetworkImage(
+                        imageUrl: widget.photo ??
+                            'https://eu.ui-avatars.com/api/?name=${widget.firstName}+${widget.lastName}&size=64',
+                        fit: BoxFit.cover,
+                      )),
                 ),
                 const SizedBox(width: 8),
                 Column(
@@ -79,17 +77,24 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${widget.firstName} ${widget.lastName}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.deepPurple,
-                        fontFamily: 'BaiJamjuree',
-                        fontWeight: FontWeight.w600,
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        '${widget.firstName} ${widget.lastName}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColors.deepPurple,
+                          fontFamily: 'BaiJamjuree',
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Text(
                       widget.position,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.deepPurple,

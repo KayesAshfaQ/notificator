@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:notificator/model/login_response.dart';
+import 'package:notificator/model/logout_response.dart';
 
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
 
-class LoginRepository {
+class AuthRepository {
   Future<LoginResponse> login(String email, String password) async {
     final url = Uri.parse('$kBaseUrl/login');
     final response = await http.post(
@@ -24,6 +25,27 @@ class LoginRepository {
       return responseSuccess;
     } else {
       throw Exception('Failed to login');
+    }
+  }
+
+  /// this function is used to logout the user
+  Future<LogoutResponse> logout(String token) async {
+    final url = Uri.parse('$kBaseUrl/logout');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final data = json.decode(response.body);
+    print(data);
+
+    if (response.body.isNotEmpty) {
+      final responseSuccess = LogoutResponse.fromJson(data);
+      return responseSuccess;
+    } else {
+      throw Exception('Failed to logout');
     }
   }
 }

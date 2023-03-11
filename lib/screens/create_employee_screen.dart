@@ -168,7 +168,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
         // Display a success toast
         fToast.showToast(
           child: const ToastWidget(
-            message: 'new group created successfully',
+            message: 'new employee created successfully',
             iconData: Icons.check,
             backgroundColor: Colors.green,
           ),

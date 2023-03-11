@@ -45,143 +45,149 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: Utils.backGroundImage,
-            fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () {
+        return Utils.closeConfirm(context);
+      },
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: Utils.backGroundImage,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        height: double.infinity,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                //mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    Assets.svgIconBellLarge,
-                    height: 50,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    kAppTitle.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 22,
-                      color: AppColors.lightOrange,
-                      fontFamily: 'BaiJamjuree',
-                      fontWeight: FontWeight.w600,
+          height: double.infinity,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      Assets.svgIconBellLarge,
+                      height: 50,
                     ),
-                  ),
-                  Text(
-                    'Your personal reminder'.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 8,
-                      color: Colors.white,
-                      fontFamily: 'BaiJamjuree',
-                      fontWeight: FontWeight.w600,
+                    const SizedBox(height: 4),
+                    Text(
+                      kAppTitle.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 22,
+                        color: AppColors.lightOrange,
+                        fontFamily: 'BaiJamjuree',
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Account Login',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      fontFamily: 'BaiJamjuree',
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      'Your personal reminder'.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 8,
+                        color: Colors.white,
+                        fontFamily: 'BaiJamjuree',
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    //width: 300,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: TextFieldWidget(
-                      hintText: 'Email',
-                      controller: _mailController,
-                      validator: (value) {
-                        final bool emailValid =
-                            Utils.emailRegex.hasMatch(value);
-
-                        if (value == null) {
-                          return 'Please enter your email';
-                        } else if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Account Login',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontFamily: 'BaiJamjuree',
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: TextFieldPasswordWidget(
-                      hintText: 'Password',
-                      controller: _passwordController,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
+                    const SizedBox(height: 20),
+                    Container(
+                      //width: 300,
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: GestureDetector(
-                        child: const Text(
-                          'Forgot Password?',
+                      child: TextFieldWidget(
+                        hintText: 'Email',
+                        controller: _mailController,
+                        validator: (value) {
+                          final bool emailValid =
+                              Utils.emailRegex.hasMatch(value);
+
+                          if (value == null) {
+                            return 'Please enter your email';
+                          } else if (!emailValid) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: TextFieldPasswordWidget(
+                        hintText: 'Password',
+                        controller: _passwordController,
+                      ),
+                    ),
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: TextButton(
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'BaiJamjuree',
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              kRouteForgetPassword,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      width: double.infinity,
+                      child: WhiteButtonWidget(
+                        label: 'Login',
+                        onPressed: login,
+                      ),
+                    ),
+                    //const SizedBox(height: 8),
+
+                    /*  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          'Don\'t have an account? ',
                           style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'BaiJamjuree',
                           ),
                         ),
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            kRouteForgetPassword,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    width: double.infinity,
-                    child: WhiteButtonWidget(
-                      label: 'Login',
-                      onPressed: login,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        'Don\'t have an account? ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'BaiJamjuree',
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, kRouteRegister);
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: AppColors.orange,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'BaiJamjuree',
+                        const SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, kRouteRegister);
+                          },
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: AppColors.orange,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'BaiJamjuree',
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),*/
+                  ],
+                ),
               ),
             ),
           ),

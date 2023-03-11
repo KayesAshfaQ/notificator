@@ -74,7 +74,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
         ProfileInfoWidget(
           width: width,
           title: 'Address',
-          data: 'Mirpur, Dhaka',
+          data: 'Street, City, Country.',
         ),
         const SizedBox(height: 24),
         Row(

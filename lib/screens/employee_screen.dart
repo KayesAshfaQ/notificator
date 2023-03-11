@@ -86,7 +86,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
               const Spacer(),
               ElevatedCreateButtonWidget(
                 title: 'Create Employee',
-                icon: Icons.add_circle_outline,
+                icon: Icons.add_circle,
                 onPressed: () {
                   //navigatePush(context, const CreateEmployeeScreen());
 

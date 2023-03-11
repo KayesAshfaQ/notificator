@@ -115,5 +115,33 @@ class Utils {
     return null;
   }
 
+
+  /// This method is used to show a dialog box to confirm the exit of the app
+  static Future<bool> closeConfirm(context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Do you want to exit the App?',
+            style: Utils.myTxtStyleTitleSmall),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text(
+              'Cancel',
+              //style: TextStyle(color: AppColors.orange),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text(
+              'Exit',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 // RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 }

@@ -14,6 +14,7 @@ import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/provider/group_list_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
+import 'package:notificator/provider/logout_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/screens/SettingScreen.dart';
@@ -25,6 +26,7 @@ import 'package:notificator/screens/forget_password_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
 import 'package:notificator/screens/home_screen.dart';
 import 'package:notificator/screens/login_screen.dart';
+import 'package:notificator/screens/more_details_screen.dart';
 import 'package:notificator/screens/notification_details_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
 import 'package:notificator/screens/otp_screen.dart';
@@ -55,6 +57,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => GroupDeleteProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeCreateProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeListProvider()),
+        ChangeNotifierProvider(create: (_) => LogoutProvider()),
       ],
       child: const MyApp(),
     ),
@@ -109,6 +112,7 @@ class MyApp extends StatelessWidget {
           kRouteEmployees: (context) => const EmployeeScreen(),
           kRouteCreateEmployee: (context) => const CreateEmployeeScreen(),
           kRouteSetting: (context) => const SettingScreen(),
+          kRouteMoreDetails: (context) => const MoreScreen(),
         },
         initialRoute: kRouteSplash,
       ),

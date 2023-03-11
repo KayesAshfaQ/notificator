@@ -2,35 +2,22 @@
 class Assets {
   Assets._();
 
-  static const String fontsBaiJamjureeBold =
-      'assets/fonts/BaiJamjuree-Bold.ttf';
-  static const String fontsBaiJamjureeBoldItalic =
-      'assets/fonts/BaiJamjuree-BoldItalic.ttf';
-  static const String fontsBaiJamjureeExtraLight =
-      'assets/fonts/BaiJamjuree-ExtraLight.ttf';
-  static const String fontsBaiJamjureeExtraLightItalic =
-      'assets/fonts/BaiJamjuree-ExtraLightItalic.ttf';
-  static const String fontsBaiJamjureeItalic =
-      'assets/fonts/BaiJamjuree-Italic.ttf';
-  static const String fontsBaiJamjureeLight =
-      'assets/fonts/BaiJamjuree-Light.ttf';
-  static const String fontsBaiJamjureeLightItalic =
-      'assets/fonts/BaiJamjuree-LightItalic.ttf';
-  static const String fontsBaiJamjureeMedium =
-      'assets/fonts/BaiJamjuree-Medium.ttf';
-  static const String fontsBaiJamjureeMediumItalic =
-      'assets/fonts/BaiJamjuree-MediumItalic.ttf';
-  static const String fontsBaiJamjureeRegular =
-      'assets/fonts/BaiJamjuree-Regular.ttf';
-  static const String fontsBaiJamjureeSemiBold =
-      'assets/fonts/BaiJamjuree-SemiBold.ttf';
-  static const String fontsBaiJamjureeSemiBoldItalic =
-      'assets/fonts/BaiJamjuree-SemiBoldItalic.ttf';
+  static const String fontsBaiJamjureeBold = 'assets/fonts/BaiJamjuree-Bold.ttf';
+  static const String fontsBaiJamjureeBoldItalic = 'assets/fonts/BaiJamjuree-BoldItalic.ttf';
+  static const String fontsBaiJamjureeExtraLight = 'assets/fonts/BaiJamjuree-ExtraLight.ttf';
+  static const String fontsBaiJamjureeExtraLightItalic = 'assets/fonts/BaiJamjuree-ExtraLightItalic.ttf';
+  static const String fontsBaiJamjureeItalic = 'assets/fonts/BaiJamjuree-Italic.ttf';
+  static const String fontsBaiJamjureeLight = 'assets/fonts/BaiJamjuree-Light.ttf';
+  static const String fontsBaiJamjureeLightItalic = 'assets/fonts/BaiJamjuree-LightItalic.ttf';
+  static const String fontsBaiJamjureeMedium = 'assets/fonts/BaiJamjuree-Medium.ttf';
+  static const String fontsBaiJamjureeMediumItalic = 'assets/fonts/BaiJamjuree-MediumItalic.ttf';
+  static const String fontsBaiJamjureeRegular = 'assets/fonts/BaiJamjuree-Regular.ttf';
+  static const String fontsBaiJamjureeSemiBold = 'assets/fonts/BaiJamjuree-SemiBold.ttf';
+  static const String fontsBaiJamjureeSemiBoldItalic = 'assets/fonts/BaiJamjuree-SemiBoldItalic.ttf';
   static const String imgAppbarBackground = 'assets/img/appbar-background.png';
   static const String imgBackground = 'assets/img/background.png';
-  static const String imgBackgroundOverley =
-      'assets/img/background-overley.png';
   static const String imgBellImage = 'assets/img/bell-image.png';
+  static const String imgDrawerHeadBackground = 'assets/img/drawer-head-background.png';
   static const String imgLogo = 'assets/img/logo.png';
   static const String imgLogoSmall = 'assets/img/logo-small.png';
   static const String svgIcAdd = 'assets/svg/ic-add.svg';
@@ -38,8 +25,9 @@ class Assets {
   static const String svgIcEdit = 'assets/svg/ic-edit.svg';
   static const String svgIcNotification = 'assets/svg/ic-notification.svg';
   static const String svgIcRemove = 'assets/svg/ic-remove.svg';
-  static const String svgIcUpdate = 'assets/svg/ic-update.svg';
   static const String svgIcSvgproEdit = 'assets/svg/ic-svgpro-edit.svg';
+  static const String svgIcUpdate = 'assets/svg/ic-update.svg';
   static const String svgIconBellLarge = 'assets/svg/icon-bell-large.svg';
   static const String svgIconBellSmall = 'assets/svg/icon-bell-small.svg';
+
 }

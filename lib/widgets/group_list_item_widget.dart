@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import '../provider/auth_key_provider.dart';
-import 'deactivate_account_dialog.dart';
+import 'app_alert_dialog.dart';
 import 'round_icon_button_widget.dart';
 
 class GroupListItemWidget extends StatefulWidget {
@@ -125,7 +125,7 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
             await instantiate();
 
             // delete group through provider
-            provider.delete(widget.id, token!);
+            await provider.delete(widget.id, token!);
 
             // show toast when removed
             if (provider.success) {

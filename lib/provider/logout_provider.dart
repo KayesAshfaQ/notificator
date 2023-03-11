@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 
 import '../repository/auth_repository.dart';
 
-class LoginProvider with ChangeNotifier {
+class LogoutProvider with ChangeNotifier {
   bool _success = false;
+  String _message = '';
   String _error = '';
-  String _token = '';
 
   bool get success => _success;
 
-  String get error => _error;
+  String get message => _message;
 
-  String get token => _token;
+  String get error => _error;
 
   final AuthRepository _loginRepository = AuthRepository();
 
-  Future<void> login(String email, String password) async {
+  Future<void> logout(String token) async {
     try {
-      final response = await _loginRepository.login(email, password);
-      _success = response.success;
+      final response = await _loginRepository.logout(token);
+      _success = response.success ?? false;
 
       if (success) {
-        _token = response.data?.token ?? '';
+        _message = response.message;
       } else {
-        _error = response.errors?.message ?? 'Login failed!';
+        _error = response.message;
       }
       notifyListeners();
     } catch (e) {

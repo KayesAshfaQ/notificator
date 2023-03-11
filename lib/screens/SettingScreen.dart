@@ -5,7 +5,7 @@ import 'package:notificator/util/utils.dart';
 import '../constants/app_colors.dart';
 import '../constants/routes.dart';
 import '../generated/assets.dart';
-import '../widgets/deactivate_account_dialog.dart';
+import '../widgets/app_alert_dialog.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);

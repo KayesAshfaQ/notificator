@@ -11,4 +11,9 @@ class SharedPreferencesHelper {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(Keys.authToken);
   }
+
+  static Future<void> removeUserToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(Keys.authToken);
+  }
 }

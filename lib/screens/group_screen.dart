@@ -78,7 +78,7 @@ class _GroupScreenState extends State<GroupScreen> {
             alignment: Alignment.topRight,
             child: ElevatedCreateButtonWidget(
               title: 'Create Group',
-              icon: Icons.add_circle_outline,
+              icon: Icons.add_circle,
               onPressed: () {
                 showModalBottomSheet(
                   context: context,

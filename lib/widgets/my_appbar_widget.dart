@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/util/utils.dart';
 
 import '../constants/app_colors.dart';
 
@@ -20,11 +21,8 @@ class MyAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppColors.deepPurple,
       title: Text(
         title,
-        style: const TextStyle(
-          //fontSize: 16,
-          color: Colors.white,
-          fontFamily: 'BaiJamjuree',
-          fontWeight: FontWeight.w500,
+        style: Utils.myTxtStyleTitleMedium.copyWith(
+          color: AppColors.white,
         ),
       ),
       flexibleSpace: const Image(

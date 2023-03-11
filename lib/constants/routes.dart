@@ -1,5 +1,5 @@
 //auth
-const kRouteSplash = '/';
+const kRouteSplash = '/splash';
 const kRouteLogin = '/login';
 const kRouteRegister = '/register';
 const kRouteOtp = '/otp';
@@ -28,3 +28,4 @@ const kRouteCreateEmployee = '/employeeList/createEmployee';
 
 // settings
 const kRouteSetting = '/settings';
+const kRouteMoreDetails = '/moreDetails';

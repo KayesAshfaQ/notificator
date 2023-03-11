@@ -21,9 +21,11 @@ class ProfileInfoWidget extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: width * 0.16,
+            width: width * 0.2,
             child: Text(
               title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Utils.myTxtStyleTitleSmall,
             ),
           ),
@@ -34,7 +36,13 @@ class ProfileInfoWidget extends StatelessWidget {
               style: Utils.myTxtStyleTitleSmall,
             ),
           ),
-          Text(data, style: Utils.myTxtStyleBodySmall),
+          SizedBox(
+            width: width * 0.63,
+            child: Text(data,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Utils.myTxtStyleBodySmall),
+          ),
         ],
       ),
     );

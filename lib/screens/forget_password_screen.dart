@@ -42,6 +42,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -51,94 +53,104 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           ),
         ),
         height: double.infinity,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              //mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                SvgPicture.asset(
-                  Assets.svgIconBellLarge,
-                  height: 50,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  kAppTitle.toUpperCase(),
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: AppColors.lightOrange,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  'Your personal reminder'.toUpperCase(),
-                  style: const TextStyle(
-                    fontSize: 8,
-                    color: Colors.white,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Forget Password',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: _widthPadding),
-                  child: Text(
-                    'Enter your email address associated with your account we will send you an OTP to reset your password',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                      fontFamily: 'BaiJamjuree',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Container(
-                    //width: 300,
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: TextFieldWidget(
-                      controller: _mailController,
-                      hintText: 'Email Address',
-                      validator: (value) {
-                        final bool emailValid =
-                            Utils.emailRegex.hasMatch(value);
+        child: ListView(
+          padding: const EdgeInsets.all(24.0),
 
-                        if (value.isEmpty) {
-                          return 'Please enter your email';
-                        } else if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
+          //mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            const SizedBox(height: 16),
+            //if (Platform.isIOS)
+            Align(
+              alignment: Alignment.topLeft,
+              child: IconButton(
+                onPressed: () {
+                  print('back clicked');
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.white,
                 ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: WhiteButtonWidget(
-                    label: 'Submit',
-                    onPressed: submit,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+
+            SizedBox(
+              height: height / 20,
+            ),
+            SvgPicture.asset(
+              Assets.svgIconBellLarge,
+              height: 50,
+            ),
+            const SizedBox(height: 4),
+            Center(
+              child: Text(
+                kAppTitle.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 22,
+                  color: AppColors.lightOrange,
+                  fontFamily: 'BaiJamjuree',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                'Your personal reminder'.toUpperCase(),
+                style: const TextStyle(
+                  fontSize: 8,
+                  color: Colors.white,
+                  fontFamily: 'BaiJamjuree',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Center(
+              child: Text(
+                'Forget Password',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontFamily: 'BaiJamjuree',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            SizedBox(height: height / 16),
+            const Text(
+              'Enter your email address associated with your account we will send you an OTP to reset your password',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+                fontFamily: 'BaiJamjuree',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Form(
+              key: _formKey,
+              child: TextFieldWidget(
+                controller: _mailController,
+                hintText: 'Email Address',
+                validator: (value) {
+                  final bool emailValid = Utils.emailRegex.hasMatch(value);
+
+                  if (value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!emailValid) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+            ),
+            const SizedBox(height: 20),
+            WhiteButtonWidget(
+              label: 'Submit',
+              onPressed: submit,
+            ),
+          ],
         ),
       ),
     );
