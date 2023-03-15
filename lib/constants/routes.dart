@@ -12,7 +12,9 @@ const kRouteHome = '/home';
 //profile
 const kRouteEmployeeProfile = '/employee_profile';
 const kRouteUpdateEmployeeProfile = '/employee_profile/update';
+
 const kRouteAdminProfile = '/admin_profile';
+const kRouteUpdateAdminProfile = '/admin_profile/update';
 
 //group
 const kRouteGroups = '/GroupList';
@@ -29,3 +31,4 @@ const kRouteCreateEmployee = '/employeeList/createEmployee';
 // settings
 const kRouteSetting = '/settings';
 const kRouteMoreDetails = '/moreDetails';
+const kRouteSettingChangePass = '/settingChangePass';

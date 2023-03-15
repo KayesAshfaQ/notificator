@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../repository/auth_repository.dart';
 
-class LogoutProvider with ChangeNotifier {
+class PassChangeProvider with ChangeNotifier {
   bool _success = false;
   String _message = '';
   String _error = '';
@@ -15,10 +15,14 @@ class LogoutProvider with ChangeNotifier {
 
   final AuthRepository _loginRepository = AuthRepository();
 
-  Future<void> logout(String token) async {
+  Future<void> logout(String token, String oldPass, String newPass) async {
     try {
-      final response = await _loginRepository.logout(token);
-      _success = response.success ?? false;
+      final response = await _loginRepository.changePassword(
+        token,
+        oldPass,
+        newPass,
+      );
+      _success = response.success;
 
       if (success) {
         _message = response.message;

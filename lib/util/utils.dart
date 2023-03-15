@@ -96,7 +96,12 @@ class Utils {
       RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
   static String errorString(Map<String, dynamic> map) {
-    return map.toString().replaceAll('{', '').replaceAll('}', '');
+    return map
+        .toString()
+        .replaceAll('{', '')
+        .replaceAll('}', '')
+        .replaceAll('[', '')
+        .replaceAll(']', ',');
   }
 
   static String? validate(value) {
@@ -114,7 +119,6 @@ class Utils {
     }
     return null;
   }
-
 
   /// This method is used to show a dialog box to confirm the exit of the app
   static Future<bool> closeConfirm(context) async {

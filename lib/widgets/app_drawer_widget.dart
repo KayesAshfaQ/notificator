@@ -196,6 +196,9 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
       Fluttertoast.showToast(
           msg: provider.error, toastLength: Toast.LENGTH_LONG);
 
+      // clearing token on next app open user have to login again
+      // authProvider.removeUserToken();
+
       // Hide the progress loader
       if (context.mounted) context.loaderOverlay.hide();
 

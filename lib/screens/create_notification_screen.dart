@@ -4,7 +4,6 @@ import 'package:notificator/widgets/select_group_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
-import '../widgets/multi_select_chip.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/send_option_radio_widget.dart';

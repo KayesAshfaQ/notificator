@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/otp_field_style.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:notificator/constants/routes.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
@@ -20,6 +19,10 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  bool hasError = false;
+  String currentText = "";
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,29 +84,67 @@ class _OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
                 const SizedBox(height: 28),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: OTPTextField(
-                    length: 6,
-                    width: MediaQuery.of(context).size.width,
-                    fieldWidth: 40,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                      fontFamily: 'BaiJamjuree',
+                Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: PinCodeTextField(
+                      appContext: context,
+                      length: 6,
+                      obscuringCharacter: '*',
+                      animationType: AnimationType.scale,
+                      validator: (v) {
+                        if (v!.length < 3) {
+                          return "I'm from validator";
+                        } else {
+                          return null;
+                        }
+                      },
+                      
+                      textStyle: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontFamily: 'BaiJamjuree',
+                          fontWeight: FontWeight.w300),
+                      pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.box,
+                          borderRadius: BorderRadius.circular(5),
+                          fieldHeight: 50,
+                          fieldWidth: 42,
+                          borderWidth: 1,
+                          activeColor: Colors.orange,
+                          selectedColor: Colors.orange,
+                          inactiveColor: Colors.white.withOpacity(0.5),
+                          disabledColor: Colors.grey.withOpacity(0.2),
+                          activeFillColor: Colors.white.withOpacity(0.2),
+                          inactiveFillColor: Colors.white.withOpacity(0.2),
+                          selectedFillColor: Colors.white.withOpacity(0.2),
+                          errorBorderColor: Colors.red),
+                      animationDuration: const Duration(milliseconds: 300),
+                      keyboardType: TextInputType.number,
+                      boxShadows: const [
+                        BoxShadow(
+                          offset: Offset(0, 1),
+                          color: Colors.black12,
+                          blurRadius: 10,
+                        )
+                      ],
+                      onCompleted: (v) {
+                        debugPrint("Completed");
+                      },
+                      onChanged: (value) {
+                        debugPrint(value);
+                        setState(() {
+                          currentText = value;
+                        });
+                      },
+                      beforeTextPaste: (text) {
+                        debugPrint("Allowing to paste $text");
+                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                        return true;
+                      },
                     ),
-                    textFieldAlignment: MainAxisAlignment.spaceAround,
-                    fieldStyle: FieldStyle.box,
-                    otpFieldStyle: OtpFieldStyle(
-                      borderColor: AppColors.orange,
-                      backgroundColor: Colors.white.withOpacity(0.2),
-                      enabledBorderColor: Colors.white.withOpacity(0.2),
-                      disabledBorderColor: Colors.white.withOpacity(0.2),
-                      focusBorderColor: AppColors.orange,
-                    ),
-                    onChanged: (pin) {
-                      print("Completed: " + pin);
-                    },
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -133,12 +174,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   child: WhiteButtonWidget(
                     label: 'Submit',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, kRouteChangePass);
                     },
                   ),
                 ),
@@ -147,68 +183,6 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class OtpTextFieldWidget extends StatefulWidget {
-  const OtpTextFieldWidget({Key? key}) : super(key: key);
-
-  @override
-  State<OtpTextFieldWidget> createState() => _OtpTextFieldWidgetState();
-}
-
-class _OtpTextFieldWidgetState extends State<OtpTextFieldWidget> {
-  final _textController = TextEditingController();
-  late FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _focusNode = FocusNode();
-    _textController.addListener(_onTextChange);
-  }
-
-  void _onTextChange() {
-    print("ON_TEXT_CHANGE");
-    if (_textController.text.isNotEmpty && _textController.text.length == 1) {
-      // when text inputs are filled, move to next input
-      _focusNode.nextFocus();
-    } else if (_textController.text.isEmpty) {
-      // when text inputs are empty, move to previous input
-      _focusNode.previousFocus();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 60,
-      width: 48,
-      child: TextFormField(
-        controller: _textController,
-        focusNode: _focusNode,
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.all(0),
-          border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          filled: true,
-          fillColor: Colors.white.withOpacity(0.2),
-        ),
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: Colors.white,
-              fontFamily: 'BaiJamjuree',
-            ),
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        inputFormatters: [
-          LengthLimitingTextInputFormatter(1),
-          FilteringTextInputFormatter.digitsOnly,
-        ],
-      ), // TextFormField
     );
   }
 }

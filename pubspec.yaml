@@ -22,6 +22,8 @@ dependencies:
   # otp text field
   otp_text_field: ^1.1.3
 
+  pin_code_fields: ^7.4.0
+
   # random avatar images
   random_avatar: ^0.0.8
 

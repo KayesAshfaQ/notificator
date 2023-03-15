@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:notificator/model/change_passwrod_response.dart';
 import 'package:notificator/model/login_response.dart';
 import 'package:notificator/model/logout_response.dart';
 
@@ -46,6 +47,35 @@ class AuthRepository {
       return responseSuccess;
     } else {
       throw Exception('Failed to logout');
+    }
+  }
+
+  /// this function is used to logout the user
+  Future<ChangePassResponse> changePassword(
+    String token,
+    String oldPass,
+    String newPass,
+  ) async {
+    final url = Uri.parse('$kBaseUrl/changepassword');
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'old_password': oldPass,
+        'new_password': newPass,
+      },
+    );
+
+    final data = json.decode(response.body);
+    print(data);
+
+    if (response.body.isNotEmpty) {
+      final responseSuccess = ChangePassResponse.fromJson(data);
+      return responseSuccess;
+    } else {
+      throw Exception('Failed to change password');
     }
   }
 }

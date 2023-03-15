@@ -49,7 +49,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               title: 'Update',
               iconPath: Assets.svgIcSvgproEdit,
               onPress: () {
-                Navigator.pushNamed(context, kRouteUpdateEmployeeProfile);
+                Navigator.pushNamed(context, kRouteUpdateAdminProfile);
               },
             ),
           ],

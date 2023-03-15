@@ -6,6 +6,7 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:notificator/provider/employee_list_provider.dart';
 import 'package:notificator/provider/group_provider.dart';
@@ -15,10 +16,14 @@ import 'package:notificator/provider/group_list_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/logout_provider.dart';
+import 'package:notificator/provider/password_change_provider.dart';
+import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
+import 'package:notificator/provider/toast_provider.dart';
 import 'package:notificator/screens/SettingScreen.dart';
 import 'package:notificator/screens/change_password_screen.dart';
+import 'package:notificator/screens/setting_change_password_screen.dart';
 import 'package:notificator/screens/create_employee_screen.dart';
 import 'package:notificator/screens/create_notification_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
@@ -33,6 +38,7 @@ import 'package:notificator/screens/otp_screen.dart';
 import 'package:notificator/screens/employee_profile_screen.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
+import 'package:notificator/screens/update_admin_screen.dart';
 import 'package:notificator/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +50,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ToastProvider()),
         ChangeNotifierProvider(create: (_) => AppProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => SendToOptionProvider()),
@@ -58,6 +65,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => EmployeeCreateProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeListProvider()),
         ChangeNotifierProvider(create: (_) => LogoutProvider()),
+        ChangeNotifierProvider(create: (_) => PassChangeProvider()),
+        ChangeNotifierProvider(create: (_) => CompanyUpdateProvider()),
+        ChangeNotifierProvider(create: (_) => PreferenceProvider()),
       ],
       child: const MyApp(),
     ),
@@ -103,6 +113,7 @@ class MyApp extends StatelessWidget {
           kRouteEmployeeProfile: (context) => const EmployeeProfileScreen(),
           kRouteUpdateEmployeeProfile: (context) => const UpdateProfileScreen(),
           kRouteAdminProfile: (context) => const EmployeeProfileScreen(),
+          kRouteUpdateAdminProfile: (context) => const UpdateAdminScreen(),
           kRouteGroups: (context) => const GroupScreen(),
           kRouteNotification: (context) => const NotificationScreen(),
           kRouteCreateNotification: (context) =>
@@ -112,6 +123,8 @@ class MyApp extends StatelessWidget {
           kRouteEmployees: (context) => const EmployeeScreen(),
           kRouteCreateEmployee: (context) => const CreateEmployeeScreen(),
           kRouteSetting: (context) => const SettingScreen(),
+          kRouteSettingChangePass: (context) =>
+              const SettingChangePasswordScreen(),
           kRouteMoreDetails: (context) => const MoreScreen(),
         },
         initialRoute: kRouteSplash,

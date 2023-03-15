@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/model/employee.dart';
@@ -7,10 +6,10 @@ import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_key_provider.dart';
+import '../provider/toast_provider.dart';
 import '../util/utils.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
-import '../widgets/toast_widget.dart';
 
 class CreateEmployeeScreen extends StatefulWidget {
   const CreateEmployeeScreen({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class CreateEmployeeScreen extends StatefulWidget {
 }
 
 class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
-  late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -31,8 +29,16 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
   @override
   void initState() {
     super.initState();
-    fToast = FToast();
-    fToast.init(context);
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _positionController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -156,6 +162,10 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
         password: password,
       );
 
+      // initialize toast provider
+      final toastProvider = context.read<ToastProvider>();
+      toastProvider.initialize(context);
+
       // get token through provider
       final String? token = context.read<AuthKeyProvider>().userToken;
 
@@ -166,26 +176,13 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
       // check if the submission was successful
       if (provider.success) {
         // Display a success toast
-        fToast.showToast(
-          child: const ToastWidget(
-            message: 'new employee created successfully',
-            iconData: Icons.check,
-            backgroundColor: Colors.green,
-          ),
-        );
+        toastProvider.showSuccessToast('new employee created successfully');
 
         // hide the bottom sheet
         if (context.mounted) Navigator.pop(context);
       } else {
         // Display an error toast
-        fToast.showToast(
-          child: ToastWidget(
-            message: provider.error,
-            iconData: Icons.error_outline,
-            backgroundColor: Colors.red,
-          ),
-          //toastDuration: const Duration(seconds: 20),
-        );
+        toastProvider.showErrorToast(provider.error);
       }
 
       // Hide the progress loader

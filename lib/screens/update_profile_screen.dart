@@ -10,6 +10,7 @@ import '../constants/app_colors.dart';
 import '../generated/assets.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
+import '../widgets/update_img_widget.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -144,59 +145,5 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         _image = File(pickedFile.path);
       });
     }
-  }
-}
-
-class UpdateImgWidget extends StatelessWidget {
-  final VoidCallback? onTap;
-  final File? image;
-
-  const UpdateImgWidget({Key? key, this.onTap, this.image}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SizedBox(
-          child: ClipOval(
-            child: image != null
-                ? Image.file(
-                    image!,
-                    fit: BoxFit.cover,
-                    height: 120,
-                    width: 120,
-                  )
-                : ClipOval(
-                    child: SizedBox.fromSize(
-                      size: const Size.fromRadius(60), // Image radius
-                      child: RandomAvatar(
-                        Random(10).toString(),
-                      ),
-                    ),
-                  ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: GestureDetector(
-            onTap: onTap,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: const BoxDecoration(
-                color: Colors.black87,
-                shape: BoxShape.circle,
-              ),
-              child: SvgPicture.asset(
-                Assets.svgIcEdit,
-                color: Colors.white,
-                height: 20,
-                width: 20,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }

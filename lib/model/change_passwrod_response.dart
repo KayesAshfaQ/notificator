@@ -1,13 +1,32 @@
-class LogoutResponse {
-  bool? success;
+import 'package:notificator/util/utils.dart';
+
+class ChangePassResponse {
+  bool success;
   String message;
+  final String? errors;
 
-  LogoutResponse({this.success, required this.message});
+  ChangePassResponse({
+    required this.success,
+    required this.message,
+    this.errors,
+  });
 
-  factory LogoutResponse.fromJson(Map<String, dynamic> json) {
-    return LogoutResponse(
-      success: json['success'],
-      message: json['message'],
-    );
+  factory ChangePassResponse.fromJson(Map<String, dynamic> json) {
+    if (json['success'] == true) {
+      return ChangePassResponse(
+        success: json['success'],
+        message: json['message'],
+      );
+    } else {
+      return ChangePassResponse(
+        success: json['success'],
+        message: Utils.errorString(json['errors']),
+      );
+    }
   }
 }
+
+/*{
+"success": true,
+"message": "Password changed successfully!"
+}*/

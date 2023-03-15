@@ -6,14 +6,16 @@ class TextFieldPasswordWidget extends StatefulWidget {
   final TextEditingController? controller;
   final Color? color;
   final Color? backgroundColor;
+  final FormFieldValidator? validator;
 
-  const TextFieldPasswordWidget({
-    Key? key,
-    required this.hintText,
-    this.controller,
-    this.color,
-    this.backgroundColor,
-  }) : super(key: key);
+  const TextFieldPasswordWidget(
+      {Key? key,
+      required this.hintText,
+      this.controller,
+      this.color,
+      this.backgroundColor,
+      this.validator})
+      : super(key: key);
 
   @override
   State<TextFieldPasswordWidget> createState() =>
@@ -53,14 +55,15 @@ class _TextFieldPasswordWidgetState extends State<TextFieldPasswordWidget> {
           },
         ),
       ),
-      validator: (value) {
-        if (value == null) {
-          return 'Please enter your password';
-        } else if (value.length < 8) {
-          return 'Password must be at least 8 characters';
-        }
-        return null;
-      },
+      validator: widget.validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter your password';
+            } else if (value.length < 8) {
+              return 'Password must be at least 8 characters';
+            }
+            return null;
+          },
     );
   }
 }

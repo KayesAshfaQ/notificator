@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
+import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/util/utils.dart';
 import 'package:notificator/generated/assets.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_info.dart';
+import '../provider/toast_provider.dart';
+import '../util/keys.dart';
 import '../widgets/text_input_field.dart';
 import '../widgets/text_input_field_pass.dart';
-import '../widgets/toast_widget.dart';
 import '../widgets/white_button_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late final FToast fToast;
+  late final String token;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,8 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    fToast = FToast();
-    fToast.init(context);
   }
 
   @override
@@ -127,7 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _passwordController,
                       ),
                     ),
-
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
@@ -149,7 +147,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       width: double.infinity,
@@ -158,34 +155,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: login,
                       ),
                     ),
-                    //const SizedBox(height: 8),
-
-                    /*  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text(
-                          'Don\'t have an account? ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'BaiJamjuree',
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, kRouteRegister);
-                          },
-                          child: const Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: AppColors.orange,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'BaiJamjuree',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),*/
                   ],
                 ),
               ),
@@ -206,38 +175,37 @@ class _LoginScreenState extends State<LoginScreen> {
       // Display a progress loader
       context.loaderOverlay.show();
 
+      // initialize toast provider
+      final toastProvider = context.read<ToastProvider>();
+      toastProvider.initialize(context);
+
       // call the rest api through provider
       final provider = context.read<LoginProvider>();
       await provider.login(email, password);
 
       if (provider.success) {
         // Display a success toast
-        fToast.showToast(
-          child: const ToastWidget(
-            message: 'Login successful',
-            iconData: Icons.check,
-            backgroundColor: Colors.green,
-          ),
-        );
+        toastProvider.showSuccessToast('login successful');
 
         // store the user key in shared preferences
         if (context.mounted) {
           final keyProvider = context.read<AuthKeyProvider>();
+          debugPrint('token: ${provider.token}');
           keyProvider.setUserToken(provider.token);
+
+          // store the user type in shared preferences
+          final prefProvider = context.read<PreferenceProvider>();
+          debugPrint('user type: ${provider.data?.type}');
+          prefProvider.setData(Keys.userType, '${provider.data?.type}');
         }
 
-        //TODO: Navigate to the OTP screen
-        if (context.mounted)
+        //Navigate to the home screen
+        if (context.mounted) {
           Navigator.pushReplacementNamed(context, kRouteHome);
+        }
       } else {
         // Display an error toast
-        fToast.showToast(
-          child: ToastWidget(
-            message: provider.error,
-            iconData: Icons.error_outline,
-            backgroundColor: Colors.red,
-          ),
-        );
+        toastProvider.showErrorToast(provider.error);
       }
 
       // Hide the progress loader
