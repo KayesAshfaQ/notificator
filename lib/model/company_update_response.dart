@@ -1,5 +1,7 @@
 import 'package:notificator/model/company.dart';
 
+import '../util/utils.dart';
+
 class CompanyUpdateResponse {
   bool success;
   Company? data;
@@ -20,7 +22,7 @@ class CompanyUpdateResponse {
     } else {
       return CompanyUpdateResponse(
         success: json["success"],
-        errors: json["errors"],
+        errors: Utils.errorString(json["errors"]),
       );
     }
   }

@@ -55,7 +55,7 @@ class EmployeeCreateResponseData {
   String lastName;
   String email;
   String position;
-  int empId;
+  String empId;
   DateTime updatedAt;
   DateTime createdAt;
   int id;

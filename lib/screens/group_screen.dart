@@ -54,7 +54,7 @@ class _GroupScreenState extends State<GroupScreen> {
       }
     });
 
-    // listeners for refresh the ui when item is created
+    // listeners for refresh the ui when item is created & updated
     groupProvider.addListener(() {
       if (groupProvider.success) {
         provider.getList(token);

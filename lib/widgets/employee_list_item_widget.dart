@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/util/helper.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,12 @@ class EmployeeListItemWidget extends StatefulWidget {
 class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
   String? token;
   FToast? fToast;
+
+  @override
+  void initState() {
+    instantiate();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +128,7 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                       ),
                       RoundIconButtonWidget(
                         icon: Icons.remove_circle,
-                        onPressed: () {
-                          Fluttertoast.showToast(msg: 'remove clicked');
-                        },
+                        onPressed: removeEmployee,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Remove',
                         size: 24,
@@ -144,9 +149,8 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
   // TODO: Update Employee
   void update() {}
 
-  // TODO: remove employee
   void removeEmployee() {
-    // Show dialog to confirm remove group
+    // Show dialog to confirm remove employee
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -157,13 +161,17 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
           onConfirm: () async {
             // Display a progress loader
             context.loaderOverlay.show();
+
+            // get employee delete provider
+            final provider = context.read<EmployeeDeleteProvider>();
+
+            // initialize token & fToast if not initialized yet
             await instantiate();
 
             // delete group through provider
-            final provider = context.read<EmployeeDeleteProvider>();
-            provider.delete(widget.id, token!);
+            await provider.delete(widget.id, token!);
 
-            // show toast when removed
+            // show success message toast when removed
             if (provider.success) {
               // Display a success toast
               fToast?.showToast(
@@ -174,7 +182,7 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                 ),
               );
             } else {
-              // Display an error toast
+              // show error toast when failed to remove
               fToast?.showToast(
                 child: ToastWidget(
                   message: provider.error,
@@ -186,7 +194,9 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
             }
 
             // Hide the progress loader
-            context.loaderOverlay.hide();
+            if (context.mounted) {
+              context.loaderOverlay.hide();
+            }
           },
         );
       },
@@ -202,10 +212,6 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
     }
 
     // get token from provider when token is empty
-    if (token == null) {
-      final authProvider = context.read<AuthKeyProvider>();
-      await authProvider.getUserToken();
-      token = authProvider.userToken!;
-    }
+    token ??= await Helper.getToken(context);
   }
 }

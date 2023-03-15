@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/routes.dart';
+import 'package:notificator/provider/employee_delete_provider.dart';
 import 'package:notificator/provider/employee_list_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_key_provider.dart';
+import '../provider/employee_create_provider.dart';
 import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/employee_list_item_widget.dart';
@@ -31,31 +33,33 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   /// This method is for initializing the provider
   /// and getting the user token
   void instantiate() async {
+    final authProvider = context.read<AuthKeyProvider>();
+    final employeeDeleteProvider = context.read<EmployeeDeleteProvider>();
+    final employeeCreateProvider = context.read<EmployeeCreateProvider>();
+
+    provider = context.read<EmployeeListProvider>();
+
     // get the user token from the provider
     await context.read<AuthKeyProvider>().getUserToken();
 
-    if (context.mounted) {
-      // initialize the user token
-      token = context.read<AuthKeyProvider>().userToken!;
+    // initialize the user token
+    token = authProvider.userToken!;
 
-      // initialize the provider
-      provider = context.read<EmployeeListProvider>();
-      await provider.getList(token);
+    await provider.getList(token);
 
-      // listeners for refresh the ui when item is removed
-      /* context.read<GroupDeleteProvider>().addListener(() {
-        if (context.read<GroupDeleteProvider>().success) {
-          provider.getList(token);
-        }
-      });*/
+    // listeners for refresh the ui when item is removed or updated
+    employeeDeleteProvider.addListener(() {
+      if (employeeDeleteProvider.success) {
+        provider.getList(token);
+      }
+    });
 
-      // listeners for refresh the ui when item is created
-      /*  context.read<EmployeeCreateProvider>().addListener(() {
-        if (context.read<EmployeeCreateProvider>().success) {
-          provider.getList(token);
-        }
-      });*/
-    }
+    // listeners for refresh the ui when item is created
+    employeeCreateProvider.addListener(() {
+      if (employeeCreateProvider.success) {
+        provider.getList(token);
+      }
+    });
   }
 
   @override
@@ -130,7 +134,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                         height: height * .6,
                         child: const Center(
                           child: Text(
-                            'No GROUPS found.',
+                            'No EMPLOYEE found.',
                             style: Utils.myTxtStyleBodySmall,
                           ),
                         ),

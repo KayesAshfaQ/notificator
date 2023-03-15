@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:notificator/model/employee.dart';
 import 'package:notificator/model/employee_create_response.dart';
+import 'package:notificator/model/employee_delete_response.dart';
 import 'package:notificator/model/employee_list_response.dart';
 
 import '../constants/app_info.dart';
@@ -58,8 +59,8 @@ class EmployeeRepository {
   }
 
   /// This method is for getting the employees
-  Future<EmployeeListResponse> delete(int id, String token) async {
-    final url = Uri.parse('$kBaseUrl/employees');
+  Future<EmployeeDeleteResponse> delete(int id, String token) async {
+    final url = Uri.parse('$kBaseUrl/employees/$id');
     final response = await http.delete(
       url,
       headers: {
@@ -70,13 +71,11 @@ class EmployeeRepository {
     print(data);
 
     if (response.body.isNotEmpty) {
-      final groupList = EmployeeListResponse.fromJson(data);
+      final groupList = EmployeeDeleteResponse.fromJson(data);
       print(groupList);
       return groupList;
     } else {
       throw Exception('failed!');
     }
   }
-
-
 }
