@@ -1,15 +1,19 @@
 class Employee {
-  String firstName;
-  String lastName;
-  String email;
-  String position;
-  String password;
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? position;
+  String? groupId;
+  String? password;
 
   Employee({
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.position,
-    required this.password,
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.position,
+    this.groupId,
+    this.password,
   });
 }

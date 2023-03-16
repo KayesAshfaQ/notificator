@@ -27,6 +27,7 @@ const kRouteNotificationDetails = '/notificationList/notificationDetails';
 //employee
 const kRouteEmployees = '/employeeList';
 const kRouteCreateEmployee = '/employeeList/createEmployee';
+const kRouteUpdateEmployee = '/employeeList/updateEmployee';
 
 // settings
 const kRouteSetting = '/settings';

@@ -127,6 +127,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                             lastName: employee.lastName,
                             position: employee.position,
                             photo: employee.photo,
+                            email: employee.email,
                           );
                         },
                       )

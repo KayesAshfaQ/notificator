@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/model/employee.dart';
-import 'package:notificator/provider/employee_create_provider.dart';
+import 'package:notificator/provider/employee_update_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../model/group_list_response.dart';
@@ -16,21 +16,24 @@ import '../widgets/my_appbar_widget.dart';
 import '../widgets/select_group_bottom_sheet.dart';
 import '../widgets/separated_labeled_text_field.dart';
 
-class CreateEmployeeScreen extends StatefulWidget {
-  const CreateEmployeeScreen({Key? key}) : super(key: key);
+class UpdateEmployeeScreen extends StatefulWidget {
+  const UpdateEmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreateEmployeeScreen> createState() => _CreateEmployeeScreenState();
+  State<UpdateEmployeeScreen> createState() => _UpdateEmployeeScreenState();
 }
 
-class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
+class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _positionController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+
+  int? employeeId;
+
+  //final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -45,17 +48,29 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
     _emailController.dispose();
     _positionController.dispose();
     _groupController.dispose();
-    _passwordController.dispose();
+    //_passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Get the current route's settings
+    final settings = ModalRoute.of(context)?.settings;
+
+    // Access the arguments property and cast it to the Person class
+    final employee = settings?.arguments as Employee?;
+
+    employeeId = employee?.id;
+    _firstNameController.text = employee?.firstName ?? '';
+    _lastNameController.text = employee?.lastName ?? '';
+    _emailController.text = employee?.email ?? '';
+    _positionController.text = employee?.position ?? '';
+
     final provider = context.watch<GroupChipProvider>();
     _groupController.text = provider.selectedGroupName;
 
     return Scaffold(
-      appBar: const MyAppBarWidget(title: 'Create Employee'),
+      appBar: const MyAppBarWidget(title: 'Update Employee'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -68,7 +83,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Create Employees',
+                  'Update Employees',
                   style: TextStyle(
                     fontSize: 20,
                     color: AppColors.deepPurple,
@@ -156,14 +171,14 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 16),
-                SeparatedLabeledTextField(
-                  controller: _passwordController,
-                  labelText: 'Password',
-                  hintText: 'Employee Password',
-                  isPassword: true,
-                  validator: Utils.validatePassword,
-                ),
+                // const SizedBox(height: 16),
+                // SeparatedLabeledTextField(
+                //   controller: _passwordController,
+                //   labelText: 'Password',
+                //   hintText: 'Employee Password',
+                //   isPassword: true,
+                //   validator: Utils.validatePassword,
+                // ),
 
                 const SizedBox(height: 24),
                 ElevatedButton(
@@ -179,7 +194,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
                     minimumSize: const Size(double.infinity, 0),
                   ),
                   child: const Text(
-                    'Create Employee',
+                    'Update Employee',
                     style: TextStyle(
                       color: AppColors.white,
                       fontFamily: 'BaiJamjuree',
@@ -219,7 +234,7 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
       String lName = _lastNameController.text.trim();
       String email = _emailController.text.trim();
       String position = _positionController.text.trim();
-      String password = _passwordController.text.trim();
+      //String password = _passwordController.text.trim();
       String group = context.read<GroupChipProvider>().selectedGroupId;
 
       // create the employee obj
@@ -229,7 +244,6 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
         email: email,
         position: position,
         groupId: group,
-        password: password,
       );
 
       // initialize toast provider
@@ -240,13 +254,13 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
       final String? token = context.read<AuthKeyProvider>().userToken;
 
       // call the rest api through provider & send data through it
-      final provider = context.read<EmployeeCreateProvider>();
-      await provider.create(employee, token!);
+      final provider = context.read<EmployeeUpdateProvider>();
+      await provider.update(employee, token!, employeeId!);
 
       // check if the submission was successful
       if (provider.success) {
         // Display a success toast
-        toastProvider.showSuccessToast('new employee created successfully');
+        toastProvider.showSuccessToast('new employee Updated successfully');
 
         // hide the bottom sheet
         if (context.mounted) Navigator.pop(context);

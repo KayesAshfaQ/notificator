@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/constants/routes.dart';
+import 'package:notificator/model/employee.dart';
 import 'package:notificator/util/helper.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
-import '../provider/auth_key_provider.dart';
 import '../provider/employee_delete_provider.dart';
 import 'app_alert_dialog.dart';
 import 'round_icon_button_widget.dart';
@@ -18,14 +19,19 @@ class EmployeeListItemWidget extends StatefulWidget {
   final String lastName;
   final String position;
   final String? photo;
+  final String? email;
+  final String? groupId;
 
-  const EmployeeListItemWidget(
-      {super.key,
-      required this.id,
-      required this.firstName,
-      required this.lastName,
-      required this.position,
-      this.photo});
+  const EmployeeListItemWidget({
+    super.key,
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.position,
+    this.photo,
+    this.email,
+    this.groupId,
+  });
 
   @override
   State<EmployeeListItemWidget> createState() => _EmployeeListItemWidgetState();
@@ -117,10 +123,7 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                     children: [
                       RoundIconButtonWidget(
                         icon: Icons.change_circle,
-                        onPressed: () {
-                          Fluttertoast.showToast(msg: 'Update clicked');
-                          print('Update clicked');
-                        },
+                        onPressed: updateEmployee,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Update',
                         size: 24,
@@ -213,5 +216,17 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
 
     // get token from provider when token is empty
     token ??= await Helper.getToken(context);
+  }
+
+  void updateEmployee() {
+    // route to the update employee screen
+    Navigator.pushNamed(context, kRouteUpdateEmployee,
+        arguments: Employee(
+          id: widget.id,
+          firstName: widget.firstName,
+          lastName: widget.lastName,
+          position: widget.position,
+          email: widget.email,
+        ));
   }
 }

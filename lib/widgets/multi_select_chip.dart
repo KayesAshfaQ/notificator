@@ -19,12 +19,12 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
     List<Widget> chips = [];
 
     // creating chips widget with group names
-    provider.groupList.forEach((item) {
+    for (var item in provider.groupList) {
       chips.add(
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
           child: ChoiceChip(
-            label: Text(item),
+            label: Text(item.name),
             avatar: provider.selectedGroupList.contains(item)
                 ? const Icon(
                     Icons.check,
@@ -50,13 +50,13 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
           ),
         ),
       );
-    });
+    }
     return chips;
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedGroups = context.watch<GroupChipProvider>().selectedGroupList;
+    //final selectedGroups = context.watch<GroupChipProvider>().selectedGroupList;
 
     return Wrap(
       children: _buildChips(context),

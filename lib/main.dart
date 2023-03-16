@@ -11,6 +11,7 @@ import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:notificator/provider/employee_delete_provider.dart';
 import 'package:notificator/provider/employee_list_provider.dart';
+import 'package:notificator/provider/employee_update_provider.dart';
 import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/forgot_pass_provider.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
@@ -43,6 +44,7 @@ import 'package:notificator/screens/employee_profile_screen.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
 import 'package:notificator/screens/update_admin_screen.dart';
+import 'package:notificator/screens/update_employee_screen.dart';
 import 'package:notificator/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -76,6 +78,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ImagePickProvider()),
         ChangeNotifierProvider(create: (_) => CompanyLogoUpdateProvider()),
         ChangeNotifierProvider(create: (_) => HomeDataProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeeUpdateProvider()),
       ],
       child: const MyApp(),
     ),
@@ -130,6 +133,7 @@ class MyApp extends StatelessWidget {
               const NotificationDetailsScreen(),
           kRouteEmployees: (context) => const EmployeeScreen(),
           kRouteCreateEmployee: (context) => const CreateEmployeeScreen(),
+          kRouteUpdateEmployee: (context) => const UpdateEmployeeScreen(),
           kRouteSetting: (context) => const SettingScreen(),
           kRouteSettingChangePass: (context) =>
               const SettingChangePasswordScreen(),

@@ -4,6 +4,7 @@ import 'package:notificator/model/employee.dart';
 import 'package:notificator/model/employee_create_response.dart';
 import 'package:notificator/model/employee_delete_response.dart';
 import 'package:notificator/model/employee_list_response.dart';
+import 'package:notificator/model/employee_update_response.dart';
 
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,7 @@ class EmployeeRepository {
         'last_name': employee.lastName,
         'email': employee.email,
         'position': employee.position,
+        'group_id': employee.groupId,
         'password': employee.password,
       },
     );
@@ -53,6 +55,35 @@ class EmployeeRepository {
       final groupList = EmployeeListResponse.fromJson(data);
       print(groupList);
       return groupList;
+    } else {
+      throw Exception('failed!');
+    }
+  }
+
+  /// This method is create new employee
+  Future<EmpUpdateResponse> update(
+      Employee employee, String token, int id) async {
+    final url = Uri.parse('$kBaseUrl/employees/$id');
+    final response = await http.put(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'first_name': employee.firstName,
+        'last_name': employee.lastName,
+        'email': employee.email,
+        'position': employee.position,
+        'group_id': employee.groupId,
+      },
+    );
+
+    //print(response.statusCode);
+    final data = json.decode(response.body);
+    print(data);
+    if (response.body.isNotEmpty) {
+      final responseSuccess = EmpUpdateResponse.fromJson(data);
+      return responseSuccess;
     } else {
       throw Exception('failed!');
     }
