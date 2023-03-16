@@ -21,9 +21,9 @@ class SharedPreferencesHelper {
   }
 
   /// Generic method to store data in shared preferences
-  static Future<void> setData(String userToken, String key) async {
+  static Future<void> setData(String key, String val) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, userToken);
+    await prefs.setString(key, val);
   }
 
   /// Generic method to retrieve data from shared preferences

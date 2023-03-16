@@ -6,6 +6,7 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/company_logo_update_provider.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:notificator/provider/employee_delete_provider.dart';
@@ -14,6 +15,8 @@ import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/forgot_pass_provider.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/provider/group_list_provider.dart';
+import 'package:notificator/provider/home_data_provider.dart';
+import 'package:notificator/provider/image_pick_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/logout_provider.dart';
@@ -70,6 +73,9 @@ void main() {
         ChangeNotifierProvider(create: (_) => PassChangeProvider()),
         ChangeNotifierProvider(create: (_) => CompanyUpdateProvider()),
         ChangeNotifierProvider(create: (_) => PreferenceProvider()),
+        ChangeNotifierProvider(create: (_) => ImagePickProvider()),
+        ChangeNotifierProvider(create: (_) => CompanyLogoUpdateProvider()),
+        ChangeNotifierProvider(create: (_) => HomeDataProvider()),
       ],
       child: const MyApp(),
     ),

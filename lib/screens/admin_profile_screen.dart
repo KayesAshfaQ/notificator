@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
+import 'package:notificator/provider/home_data_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
 import '../generated/assets.dart';
+import '../provider/preference_provider.dart';
+import '../util/helper.dart';
+import '../util/keys.dart';
 import '../util/utils.dart';
 import '../widgets/notification_list_item_widget.dart';
 import '../widgets/profile_card_widget.dart';
@@ -19,6 +25,13 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
+  @override
+  void initState() {
+    // get data from server
+    instantiate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -193,5 +206,49 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
         ),
       ],
     );
+  }
+
+  void instantiate() async {
+    // show overlay
+    context.loaderOverlay.show();
+
+    // instantiate provider
+    final provider = context.read<HomeDataProvider>();
+
+    // get token
+    String token = await Helper.getToken(context);
+
+    // call api through provider
+    await provider.getData(token);
+
+    if (provider.success) {
+      debugPrint('HOME_DATA::: success');
+
+      // cache company id
+      if (provider.company.id != null) {
+        saveCompanyId(provider.company.id!);
+      }
+
+      // update company ui data
+
+
+      // update count ui data
+
+      // update recent group ui data
+
+      // update recent notification ui data
+    }
+
+    // hide overlay
+    if (context.mounted) {
+      context.loaderOverlay.hide();
+    }
+  }
+
+  void saveCompanyId(int id) {
+    // store the user type & id in shared-preferences
+    final prefProvider = context.read<PreferenceProvider>();
+    debugPrint('company type: ${id}');
+    prefProvider.setData(Keys.userCompanyID, '$id');
   }
 }

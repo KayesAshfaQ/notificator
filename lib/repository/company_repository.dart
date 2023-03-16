@@ -1,18 +1,22 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:notificator/model/company.dart';
 import 'package:notificator/model/company_update_response.dart';
 import 'package:notificator/model/employee.dart';
 import 'package:notificator/model/employee_create_response.dart';
 import 'package:notificator/model/employee_list_response.dart';
+import 'package:notificator/model/logo_update_response.dart';
 
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyRepository {
-  /// This method is create new employee
-  Future<CompanyUpdateResponse> update(Company company, String token, int id) async {
-    final url = Uri.parse('$kBaseUrl/employees/$id');
+  /// This method is to Update company info
+  Future<CompanyUpdateResponse> update(
+      Company company, String token, String id) async {
+    final url = Uri.parse('$kBaseUrl/companies/$id');
     final response = await http.put(
       url,
       headers: {
@@ -37,47 +41,48 @@ class CompanyRepository {
     }
   }
 
- /* /// This method is for getting the employees
-  Future<EmployeeListResponse> getEmployees(String token) async {
-    final url = Uri.parse('$kBaseUrl/employees');
-    final response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    final data = json.decode(response.body);
-    print(data);
+  /// This method is to update company logo
+  Future<LogoUpdateResponse> updateLogo(
+    String token,
+    String companyId,
+    File logo,
+  ) async {
+    // create url for the api call
+    final url = Uri.parse('$kBaseUrl/company/logoupdate');
 
-    if (response.body.isNotEmpty) {
-      final groupList = EmployeeListResponse.fromJson(data);
-      print(groupList);
-      return groupList;
+    // create multipart request for the api call
+    final request = http.MultipartRequest('POST', url);
+
+    // Add the token as header
+    request.headers.addAll({
+      'Authorization': 'Bearer $token',
+    });
+
+    // Add the ID as a form field
+    request.fields['company_id'] = companyId;
+
+    // Add the logo to the form field
+    final file = await http.MultipartFile.fromPath('logo', logo.path);
+    request.files.add(file);
+
+    // Send the request
+    final streamedResponse = await request.send();
+
+    // Get the response
+    final response = await http.Response.fromStream(streamedResponse);
+
+    //print
+    debugPrint(response.body);
+
+    if (response.body.isNotEmpty && response.statusCode == 200) {
+      // decode the response
+      final data = json.decode(response.body);
+
+      final logoUpdateResponse = LogoUpdateResponse.fromJson(data);
+      debugPrint(logoUpdateResponse.data!.logoUrl!);
+      return logoUpdateResponse;
     } else {
       throw Exception('failed!');
     }
   }
-
-  /// This method is for getting the employees
-  Future<EmployeeListResponse> delete(int id, String token) async {
-    final url = Uri.parse('$kBaseUrl/employees');
-    final response = await http.delete(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    final data = json.decode(response.body);
-    print(data);
-
-    if (response.body.isNotEmpty) {
-      final groupList = EmployeeListResponse.fromJson(data);
-      print(groupList);
-      return groupList;
-    } else {
-      throw Exception('failed!');
-    }
-  }*/
-
-
 }

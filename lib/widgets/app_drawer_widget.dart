@@ -5,12 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/logout_provider.dart';
+import 'package:notificator/provider/preference_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
 import '../generated/assets.dart';
 import '../provider/auth_key_provider.dart';
+import '../util/keys.dart';
 import '../util/utils.dart';
 import 'app_alert_dialog.dart';
 
@@ -161,6 +163,9 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
     context.loaderOverlay.show();
     final provider = context.read<LogoutProvider>();
 
+    // initialize pref provider
+    final prefProvider = context.read<PreferenceProvider>();
+
     // get user token
     final authProvider = context.read<AuthKeyProvider>();
     await authProvider.getUserToken();
@@ -173,6 +178,11 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
     if (provider.success) {
       // clear token
       authProvider.removeUserToken();
+
+      // clear pref
+      prefProvider.removeData(Keys.userID);
+      prefProvider.removeData(Keys.userType);
+      prefProvider.removeData(Keys.userCompanyID);
 
       // Display a logout success toast
       Fluttertoast.showToast(

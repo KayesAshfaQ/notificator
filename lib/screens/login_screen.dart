@@ -193,10 +193,11 @@ class _LoginScreenState extends State<LoginScreen> {
           debugPrint('token: ${provider.token}');
           keyProvider.setUserToken(provider.token);
 
-          // store the user type in shared preferences
+          // store the user type & id in shared-preferences
           final prefProvider = context.read<PreferenceProvider>();
           debugPrint('user type: ${provider.data?.type}');
           prefProvider.setData(Keys.userType, '${provider.data?.type}');
+          prefProvider.setData(Keys.userID, '${provider.data?.id}');
         }
 
         //Navigate to the home screen

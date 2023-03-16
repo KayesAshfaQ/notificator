@@ -1,30 +1,33 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:notificator/model/company.dart';
+import 'package:notificator/model/logo_update_response.dart';
+
 import 'package:notificator/repository/company_repository.dart';
 
-class CompanyUpdateProvider with ChangeNotifier {
+class CompanyLogoUpdateProvider with ChangeNotifier {
   bool _success = false;
-  String _error = '';
-  Company? _data;
+  String? _error;
+  Data? _data;
 
   bool get success => _success;
 
-  String get error => _error;
+  String? get error => _error;
 
-  Company? get data => _data;
+  Data? get data => _data;
 
   final CompanyRepository _companyRepository = CompanyRepository();
 
   /// This method is for creating new group
-  Future<void> update(Company company, String token, String id) async {
+  Future<void> update(String token, String id, File logo) async {
     try {
-      final response = await _companyRepository.update(company, token, id);
-      _success = response.success;
+      final response = await _companyRepository.updateLogo(token, id, logo);
+      _success = response.success ?? false;
 
       if (success) {
         _data = response.data;
       } else {
-        _error = response.errors!;
+        _error = 'image upload failed!';
       }
       notifyListeners();
     } catch (e) {

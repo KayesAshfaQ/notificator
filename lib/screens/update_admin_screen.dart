@@ -1,19 +1,19 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/provider/company_logo_update_provider.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
-import '../generated/assets.dart';
 import '../model/company.dart';
+import '../provider/image_pick_provider.dart';
+import '../provider/preference_provider.dart';
 import '../provider/toast_provider.dart';
 import '../util/helper.dart';
+import '../util/keys.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/update_img_widget.dart';
@@ -32,12 +32,45 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
-  File? _image;
+  String? token;
+  ToastProvider? toastProvider;
+  late final String companyId;
+  late final String userId;
 
   @override
   void initState() {
-    // TODO: implement initState
+    // initialize data
+    initToken();
+    initToastProvider();
+    fetchCachedData();
+
     super.initState();
+  }
+
+  /// initialize token
+  void initToken() async {
+    token ??= await Helper.getToken(context);
+  }
+
+  /// initialize toast provider
+  void initToastProvider() {
+    if (toastProvider == null) {
+      toastProvider = context.read<ToastProvider>();
+      toastProvider?.initialize(context);
+    }
+  }
+
+  /// fetch cached data from shared preferences
+  void fetchCachedData() async {
+    final prefProvider = context.read<PreferenceProvider>();
+
+    await prefProvider.getData(Keys.userID);
+    userId = prefProvider.data!;
+
+    //await prefProvider.getData(Keys.userType);
+
+    await prefProvider.getData(Keys.userCompanyID);
+    companyId = prefProvider.data!;
   }
 
   @override
@@ -51,6 +84,10 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final imgProvider = context.watch<ImagePickProvider>();
+
+    final logoUpdateProvider = context.read<CompanyLogoUpdateProvider>();
+
     return Scaffold(
       appBar: const MyAppBarWidget(
         title: 'Update Company info',
@@ -69,8 +106,29 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
                 //const SizedBox(height: 16.0),
                 Center(
                   child: UpdateImgWidget(
-                    image: _image,
-                    onTap: pickImage,
+                    image: imgProvider.image,
+                    onTap: () async {
+                      // pick image from gallery though image picker
+                      final pickedFile = await ImagePicker().pickImage(
+                        source: ImageSource.gallery,
+                      );
+
+                      // when the image is picked set the image to the provider
+                      if (pickedFile != null) {
+                        debugPrint("IMAGE_PATH:::${pickedFile.path}");
+
+                        imgProvider.setImage(File(pickedFile.path));
+
+                        // after image shown in the widget
+                        // upload it to the server
+
+                        logoUpdateProvider.update(
+                          token!,
+                          companyId,
+                          imgProvider.image!,
+                        );
+                      }
+                    },
                   ),
                 ),
                 const SizedBox(height: 16.0),
@@ -95,7 +153,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: updateEmployee,
+                  onPressed: updateCompanyInfo,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.deepPurple,
                     padding: const EdgeInsets.symmetric(
@@ -122,20 +180,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
     );
   }
 
-  void pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      print("IMAGE_PATH:::" + pickedFile.path);
-
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
-  void updateEmployee() async {
+  void updateCompanyInfo() async {
     bool isValid = _formKey.currentState?.validate() ?? false;
 
     if (isValid) {
@@ -155,9 +200,6 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
       // initialize provider
       final provider = context.read<CompanyUpdateProvider>();
 
-      // get token
-      final token = await Helper.getToken(context);
-
       // create company object
       Company company = Company(
         name: name,
@@ -166,14 +208,13 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
         address: address,
       );
 
-      //TODO: get the user id from the home screen
       // call the rest api through provider
-      await provider.update(company, token, 1);
+      await provider.update(company, token!, userId);
 
       // check if the submission was successful
       if (provider.success) {
         // Display a success toast
-        toastProvider.showSuccessToast('successful');
+        toastProvider.showSuccessToast('update successful');
 
         // Navigate to the previous/setting screen
         // if (context.mounted) {
@@ -182,6 +223,11 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
       } else {
         // Display an error toast
         toastProvider.showErrorToast(provider.error);
+      }
+
+      // hide a progress loader
+      if (context.mounted) {
+        context.loaderOverlay.hide();
       }
     }
   }
