@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/company_logo_update_provider.dart';
 import 'package:notificator/provider/company_update_provider.dart';
+import 'package:notificator/provider/home_data_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
@@ -34,17 +35,30 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
 
   String? token;
   ToastProvider? toastProvider;
-  late final String companyId;
-  late final String userId;
+  String? companyId;
+  String? userId;
 
   @override
   void initState() {
     // initialize data
+
+    initTextFields();
     initToken();
     initToastProvider();
     fetchCachedData();
 
     super.initState();
+  }
+
+  /// initialize text fields
+  void initTextFields() {
+    // as the data is fetched from the server and stored in the provider in the previous screen
+    final company = context.read<HomeDataProvider>().company;
+
+    _nameController.text = company.name ?? '';
+    _emailController.text = company.email ?? '';
+    _phoneController.text = company.phone ?? '';
+    _addressController.text = company.address ?? '';
   }
 
   /// initialize token
@@ -122,32 +136,38 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
                         // after image shown in the widget
                         // upload it to the server
 
-                        logoUpdateProvider.update(
-                          token!,
-                          companyId,
-                          imgProvider.image!,
-                        );
+                        if (token != null && companyId != null) {
+                          await logoUpdateProvider.update(
+                            token!,
+                            companyId!,
+                            imgProvider.image!,
+                          );
+                        }
                       }
                     },
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _nameController,
                   labelText: 'Company Name',
                   hintText: 'Your Company Name',
                 ),
                 const SizedBox(height: 16),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _emailController,
                   labelText: 'Email Address',
                   hintText: 'Your Company Email Address',
                 ),
                 const SizedBox(height: 16),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _phoneController,
                   labelText: 'Phone Number',
                   hintText: 'Your Company Phone Number',
                 ),
                 const SizedBox(height: 16.0),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _addressController,
                   labelText: 'Address',
                   hintText: 'Your Company Address',
                 ),
@@ -209,22 +229,24 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
       );
 
       // call the rest api through provider
-      await provider.update(company, token!, userId);
 
-      // check if the submission was successful
-      if (provider.success) {
-        // Display a success toast
-        toastProvider.showSuccessToast('update successful');
+      if (token != null && userId != null) {
+        await provider.update(company, token!, userId!);
 
-        // Navigate to the previous/setting screen
-        // if (context.mounted) {
-        //   Navigator.pop(context);
-        // }
-      } else {
-        // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        // check if the submission was successful
+        if (provider.success) {
+          // Display a success toast
+          toastProvider.showSuccessToast('update successful');
+
+          // Navigate to the previous/setting screen
+          // if (context.mounted) {
+          //   Navigator.pop(context);
+          // }
+        } else {
+          // Display an error toast
+          toastProvider.showErrorToast(provider.error);
+        }
       }
-
       // hide a progress loader
       if (context.mounted) {
         context.loaderOverlay.hide();

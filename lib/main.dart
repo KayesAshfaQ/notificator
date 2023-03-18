@@ -29,7 +29,7 @@ import 'package:notificator/provider/toast_provider.dart';
 import 'package:notificator/screens/SettingScreen.dart';
 import 'package:notificator/screens/change_password_screen.dart';
 import 'package:notificator/screens/setting_change_password_screen.dart';
-import 'package:notificator/screens/create_employee_screen.dart';
+import 'package:notificator/screens/employee_create_screen.dart';
 import 'package:notificator/screens/create_notification_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/forget_password_screen.dart';
@@ -44,7 +44,7 @@ import 'package:notificator/screens/employee_profile_screen.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
 import 'package:notificator/screens/update_admin_screen.dart';
-import 'package:notificator/screens/update_employee_screen.dart';
+import 'package:notificator/screens/employee_update_screen.dart';
 import 'package:notificator/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 

@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
+import '../provider/preference_provider.dart';
+import '../util/keys.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 
@@ -40,6 +42,9 @@ class _SplashScreenState extends State<SplashScreen> {
     // if user token exists, then navigate to home screen
     if (provider.userToken != null) {
       routeName = kRouteHome;
+
+      // get the employee type
+      initEmployeeType();
     } else {
       routeName = kRouteLogin;
     }
@@ -50,6 +55,16 @@ class _SplashScreenState extends State<SplashScreen> {
         routeName,
       );
     });
+  }
+
+  /// this method is used to get the employee type from the shared preferences
+  void initEmployeeType() async {
+    // get the employee type form the shared preferences
+    final provider = context.read<PreferenceProvider>();
+
+    // get the employee type
+    await provider.getData(Keys.userType);
+    debugPrint('employeeType: ${provider.data}');
   }
 
   @override

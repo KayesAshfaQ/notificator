@@ -225,9 +225,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            //TODO: NotificationListItemWidget dynamic data
-            return  NotificationListItemWidget(
-              messageTitle: notifications[index].message ?? '',
+            return NotificationListItemWidget(
+              messageTitle: notifications[index].subject ?? '',
               group: notifications[index].groupIndividual ?? '',
               time: Helper.processDateTime((notifications[index].updatedAt)),
             );
