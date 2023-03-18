@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
 import '../generated/assets.dart';
+import '../model/company.dart';
+import '../model/home_response.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
@@ -36,6 +38,12 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
+    final provider = Provider.of<HomeDataProvider>(context);
+
+    Company company = provider.company;
+    List<NotificationData> notifications = provider.notifications;
+    List<Group> groups = provider.groups;
+
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
@@ -46,14 +54,15 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Welcome,',
                   style: Utils.myTxtStyleBodySmall,
                 ),
                 Text(
-                  // TODO: Replace with user name
-                  'John Doe',
+                  (company.name?.isEmpty ?? true)
+                      ? '. . . . . . .'
+                      : company.name!,
                   style: Utils.myTxtStyleTitleMedium,
                 ),
               ],
@@ -72,37 +81,41 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
         ProfileInfoWidget(
           width: width,
           title: 'Name',
-          data: 'John Doe',
+          data: (company.name?.isEmpty ?? true) ? '_ _ _ _ _ _' : company.name!,
         ),
         ProfileInfoWidget(
           width: width,
           title: 'Email',
-          data: 'example@gmail.com',
+          data:
+              (company.email?.isEmpty ?? true) ? '_ _ _ _ _ _' : company.email!,
         ),
         ProfileInfoWidget(
           width: width,
           title: 'Phone',
-          data: '+880 1234567890',
+          data:
+              (company.phone?.isEmpty ?? true) ? '_ _ _ _ _ _' : company.phone!,
         ),
         ProfileInfoWidget(
           width: width,
           title: 'Address',
-          data: 'Street, City, Country.',
+          data: (company.address?.isEmpty ?? true)
+              ? '_ _ _ _ _ _'
+              : company.address!,
         ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
+          children: [
             StatusCardWidget(
               alignment: MainAxisAlignment.spaceBetween,
               title: 'Groups',
-              data: '21',
+              data: provider.totalGroup.toString(),
               icon: Icons.people_alt,
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             StatusCardWidget(
               title: 'Employees',
-              data: '71',
+              data: provider.totalEmployee.toString(),
               alignment: MainAxisAlignment.spaceAround,
               icon: Icons.work,
             ),
@@ -126,7 +139,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               ),
               const SizedBox(width: 16),
               Text(
-                '100',
+                provider.totalNotifications.toString(),
                 style: Utils.myTxtStyleTitleLarge.copyWith(
                   color: Colors.orange,
                   fontSize: 24,
@@ -154,6 +167,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           ),
         ), // notification count card
         const SizedBox(height: 24),
+
+        // Recent Group Section
         Row(
           //crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,17 +185,26 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
           ],
         ),
         const SizedBox(height: 16),
-        SizedBox(
-          height: 48,
-          child: ListView.builder(
-            itemCount: 5,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (BuildContext context, int index) {
-              return const ProfileGroupItemWidget();
-            },
-          ),
-        ),
+        groups.isNotEmpty
+            ? SizedBox(
+                height: 48,
+                child: ListView.builder(
+                  itemCount: groups.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProfileGroupItemWidget(
+                      title: groups[index].name ?? '',
+                    );
+                  },
+                ),
+              )
+            : const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('No Group Created Yet'),
+              ),
         const SizedBox(height: 24),
+
+        // Recent Notifications Section
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -197,11 +221,16 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
         ),
         const SizedBox(height: 16),
         ListView.builder(
-          itemCount: 5,
+          itemCount: notifications.length,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return const NotificationListItemWidget();
+            //TODO: NotificationListItemWidget dynamic data
+            return  NotificationListItemWidget(
+              messageTitle: notifications[index].message ?? '',
+              group: notifications[index].groupIndividual ?? '',
+              time: Helper.processDateTime((notifications[index].updatedAt)),
+            );
           },
         ),
       ],
@@ -221,6 +250,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     // call api through provider
     await provider.getData(token);
 
+    // when data is successfully fetched
     if (provider.success) {
       debugPrint('HOME_DATA::: success');
 
@@ -230,7 +260,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
       }
 
       // update company ui data
-
 
       // update count ui data
 
@@ -248,7 +277,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
   void saveCompanyId(int id) {
     // store the user type & id in shared-preferences
     final prefProvider = context.read<PreferenceProvider>();
-    debugPrint('company type: ${id}');
+    debugPrint('company id: $id');
     prefProvider.setData(Keys.userCompanyID, '$id');
   }
 }

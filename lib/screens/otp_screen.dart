@@ -9,7 +9,7 @@ import '../constants/app_info.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 import '../widgets/white_button_widgets.dart';
-import 'home_screen.dart';
+import 'main_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);

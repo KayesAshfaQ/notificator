@@ -34,7 +34,7 @@ import 'package:notificator/screens/create_notification_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/forget_password_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
-import 'package:notificator/screens/home_screen.dart';
+import 'package:notificator/screens/main_screen.dart';
 import 'package:notificator/screens/login_screen.dart';
 import 'package:notificator/screens/more_details_screen.dart';
 import 'package:notificator/screens/notification_details_screen.dart';

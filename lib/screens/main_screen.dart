@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/generated/assets.dart';
 import 'package:notificator/screens/SettingScreen.dart';
-import 'package:notificator/screens/admin_profile_screen.dart';
+import 'package:notificator/screens/admin_home_screen.dart';
 import 'package:notificator/screens/create_employee_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/group_screen.dart';

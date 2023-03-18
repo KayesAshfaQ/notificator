@@ -4,8 +4,11 @@ import '../constants/app_colors.dart';
 import '../util/utils.dart';
 
 class ProfileGroupItemWidget extends StatelessWidget {
+  final String title;
+
   const ProfileGroupItemWidget({
     super.key,
+    required this.title,
   });
 
   @override
@@ -18,8 +21,8 @@ class ProfileGroupItemWidget extends StatelessWidget {
         color: AppColors.purple_100,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: const Text(
-        'Developers',
+      child: Text(
+        title,
         style: Utils.myTxtStyleBodySmall,
       ),
     );

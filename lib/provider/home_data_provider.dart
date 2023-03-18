@@ -26,7 +26,7 @@ class HomeDataProvider with ChangeNotifier {
 
   List<Group> get groups => _groups;
 
-  List<dynamic> get notifications => _notifications;
+  List<NotificationData> get notifications => _notifications;
 
   int get totalGroup => _totalGroup;
 

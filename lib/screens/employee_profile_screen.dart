@@ -51,7 +51,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            return const ProfileGroupItemWidget();
+            return const ProfileGroupItemWidget(title: '');
           },
         ),
         const SizedBox(height: 16),

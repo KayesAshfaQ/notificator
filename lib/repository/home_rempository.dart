@@ -18,7 +18,7 @@ class HomeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    print('HOME_RESPONSE ::: $data');
     if (response.body.isNotEmpty) {
       final responseSuccess = HomeResponse.fromJson(data);
       return responseSuccess;

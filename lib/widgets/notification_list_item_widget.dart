@@ -6,11 +6,17 @@ import '../generated/assets.dart';
 import 'round_icon_button_widget.dart';
 
 class NotificationListItemWidget extends StatelessWidget {
+  final String? messageTitle;
+  final String? time;
+  final String? group;
   final VoidCallback? onPressed;
 
   const NotificationListItemWidget({
     super.key,
     this.onPressed,
+    this.messageTitle,
+    this.time,
+    this.group,
   });
 
   @override
@@ -53,27 +59,24 @@ class NotificationListItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      '7 days ago',
+                    Text(
+                      time ?? '7 days ago',
                       overflow: TextOverflow.visible,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 10,
                         color: AppColors.deepPurple,
                         fontFamily: 'BaiJamjuree',
                         fontStyle: FontStyle.normal,
-                        //overflow: TextOverflow.visible,
-
-                        //fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 4),
                     SizedBox(
                       width: width - 96,
-                      child: const Text(
-                        'We have meeting today with US clients and they are very excited about our product.',
+                      child: Text(
+                        messageTitle ?? '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _',
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: AppColors.deepPurple,
                           //fontFamily: 'BaiJamjuree',
@@ -83,17 +86,17 @@ class NotificationListItemWidget extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         text: 'Sent To : ',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 10,
                           color: Colors.black87,
                           //fontFamily: 'BaiJamjuree',
                         ),
                         children: [
                           TextSpan(
-                            text: 'Designer, Developer, Tester',
-                            style: TextStyle(
+                            text: group ?? '_ _ _ _ _ _',
+                            style: const TextStyle(
                               fontSize: 10,
                               color: AppColors.orange,
                               fontWeight: FontWeight.normal,
