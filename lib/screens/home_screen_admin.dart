@@ -8,6 +8,7 @@ import '../constants/routes.dart';
 import '../generated/assets.dart';
 import '../model/company.dart';
 import '../model/home_response.dart';
+import '../model/notification_data.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
@@ -27,13 +28,8 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
-  bool isFirstLogin = false;
-
   @override
   void initState() {
-    // check if it's user is form cached token or not
-    checkIfFirstLogin();
-
     // get data from server
     instantiate();
 
@@ -269,7 +265,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
       debugPrint('HOME_DATA::: success');
 
       // cache company id
-      if (isFirstLogin && provider.company.id != null) {
+      if (provider.company.id != null) {
         saveCompanyId(provider.company.id!);
       }
     }
@@ -285,13 +281,5 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     final prefProvider = context.read<PreferenceProvider>();
     debugPrint('company id: $id');
     prefProvider.setData(Keys.userCompanyID, '$id');
-  }
-
-  void checkIfFirstLogin() {
-    // Get the current route's settings
-    final settings = ModalRoute.of(context)?.settings;
-
-    // Access the arguments property and cast it to the Person class
-    isFirstLogin = (settings?.arguments as bool?) ?? false;
   }
 }

@@ -105,9 +105,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    initEmployeeType();
+    //initEmployeeType();
 
     super.initState();
+  }
+
+  int i = 0;
+
+  @override
+  void didChangeDependencies() {
+    if (employeeType == null) {
+      initEmployeeType();
+      print(i++);
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -180,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void initEmployeeType() async {
     // get the employee type form the shared preferences
-    final provider = context.read<PreferenceProvider>();
+    final provider = context.watch<PreferenceProvider>();
 
     // get the employee type
     await provider.getData(Keys.userType);

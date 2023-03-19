@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/widgets/select_group_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
+import '../model/group_list_response.dart';
+import '../provider/group_list_provider.dart';
+import '../util/helper.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/send_option_radio_widget.dart';
@@ -17,9 +21,22 @@ class CreateNotificationScreen extends StatefulWidget {
 }
 
 class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _subject = TextEditingController();
+  final TextEditingController _message = TextEditingController();
+  final TextEditingController _groupController = TextEditingController();
+
+  @override
+  void initState() {
+    instantiate();
+    super.initState();
+  }
+
+  // TODO: show select group field only when send to: group is selected
   @override
   Widget build(BuildContext context) {
-    final groups = context.watch<GroupChipProvider>().groupList;
+    final provider = context.watch<GroupChipProvider>();
+    _groupController.text = provider.selectedGroupName;
 
     return Scaffold(
       appBar: const MyAppBarWidget(
@@ -160,6 +177,15 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     );
   }
 
+  @override
+  void dispose() {
+    _subject.dispose();
+    _message.dispose();
+    _groupController.dispose();
+    super.dispose();
+  }
+
+  /// show bottom sheet to select group
   void onTapSelectGroup() {
     // show bottom sheet to select group or individual
     showModalBottomSheet(
@@ -174,5 +200,60 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
 
   void onPressSendNotification() {
     // send notification
+  }
+
+  /// fetch all groups
+  void instantiate() async {
+    // Display a progress loader
+    context.loaderOverlay.show();
+
+    // initialize provider
+    final provider = context.read<GroupListProvider>();
+
+    // initialize group chip provider
+    final groupChipProvider = context.read<GroupChipProvider>();
+
+    // add listener to the provider
+    /* groupChipProvider.addListener(() {
+      // check if the submission was successful
+      if (groupChipProvider.selectedGroupName?.isNotEmpty ?? false) {
+        */ /*String selectedGroupNames = '';
+
+        // loop through the selected groups list and get the group names
+        for (GroupListResponseData group
+            in groupChipProvider.selectedGroupList) {
+          debugPrint(group.name);
+          selectedGroupNames += '${group.name}, ';
+        }*/ /*
+
+        // set the selected group name to the group text field
+        _groupController.text = groupChipProvider.selectedGroupName!;
+      }
+    });*/
+
+    // get token through provider
+    String token = await Helper.getToken(context);
+
+    //call the rest api to fetch groups
+    await provider.getList(token);
+
+    // check if the submission was successful
+    if (provider.success) {
+      debugPrint('groups fetched successfully');
+
+      // initialize the global groups list with the fetched data
+      List<GroupListResponseData>? groups = provider.data;
+
+      if (groups != null && groups.isNotEmpty) {
+        // populate the groups list of group chip provider
+        groupChipProvider.setGroupList(groups);
+      }
+    } else {
+      // Display an error toast
+      debugPrint(provider.error);
+    }
+
+    // Hide the progress loader
+    if (context.mounted) context.loaderOverlay.hide();
   }
 }

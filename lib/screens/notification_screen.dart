@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/provider/notification_list_provider.dart';
 import 'package:notificator/widgets/notification_list_item_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
+import '../provider/auth_key_provider.dart';
+import '../util/helper.dart';
+import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/outlined_button_widget.dart';
 
@@ -13,9 +19,50 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
+  late final NotificationListProvider provider;
+
+  @override
+  void initState() {
+    instantiate();
+
+    super.initState();
+  }
+
+  /// This method is for initializing the provider
+  /// and getting the user token
+  void instantiate() async {
+    //final groupProvider = context.read<GroupProvider>();
+    //final groupDeleteProvider = context.read<GroupDeleteProvider>();
+
+    // initialize the notificationList provider
+    provider = context.read<NotificationListProvider>();
+
+    // initialize the user token
+    String token = await Helper.getToken(context);
+
+    print('token: $token');
+
+    // fetch the notification list data
+    await provider.getList(token);
+
+    // listeners for refresh the ui when item is removed
+    /*  groupDeleteProvider.addListener(() {
+      if (groupDeleteProvider.success) {
+        provider.getList(token);
+      }
+    });*/
+
+    // listeners for refresh the ui when item is created & updated
+    /*groupProvider.addListener(() {
+      if (groupProvider.success) {
+        provider.getList(token);
+      }
+    });*/
+  }
+
   @override
   Widget build(BuildContext context) {
-    //final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery.of(context).size.height;
     return ListView(
       padding: const EdgeInsets.all(20),
       // shrinkWrap: true,
@@ -45,20 +92,46 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ],
         ),
         const SizedBox(height: 16.0),
+        Consumer<NotificationListProvider>(
+          builder: (context, provider, child) {
+            if (provider.data == null) {
+              // show the loader overlay when the data is null
+              context.loaderOverlay.show();
 
-        //TODO: Add ListView.builder
-        ListView(
-          shrinkWrap: true,
-          cacheExtent: 10,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            NotificationListItemWidget(onPressed: onNotificationTap),
-            NotificationListItemWidget(onPressed: onNotificationTap),
-            NotificationListItemWidget(onPressed: onNotificationTap),
-            NotificationListItemWidget(onPressed: onNotificationTap),
-            NotificationListItemWidget(onPressed: onNotificationTap),
-            NotificationListItemWidget(onPressed: onNotificationTap),
-          ],
+              return const SizedBox();
+            } else {
+              // hide the loader overlay
+              context.loaderOverlay.hide();
+
+              // if list is empty show no group text
+              // else show the list of groups
+              return provider.data!.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: provider.data?.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        final notification = provider.data![index];
+
+                        return NotificationListItemWidget(
+                          messageTitle: notification.subject ?? '',
+                          group: notification.groupIndividual ?? '',
+                          time:
+                              Helper.processDateTime((notification.updatedAt)),
+                        );
+                      },
+                    )
+                  : SizedBox(
+                      height: height * .6,
+                      child: const Center(
+                        child: Text(
+                          'No GROUPS found.',
+                          style: Utils.myTxtStyleBodySmall,
+                        ),
+                      ),
+                    );
+            }
+          },
         ),
       ],
     );

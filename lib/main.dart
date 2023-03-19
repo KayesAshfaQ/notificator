@@ -21,6 +21,7 @@ import 'package:notificator/provider/image_pick_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/logout_provider.dart';
+import 'package:notificator/provider/notification_list_provider.dart';
 import 'package:notificator/provider/password_change_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
@@ -30,7 +31,7 @@ import 'package:notificator/screens/setting_screen.dart';
 import 'package:notificator/screens/change_password_screen.dart';
 import 'package:notificator/screens/change_password_setting_screen.dart';
 import 'package:notificator/screens/employee_create_screen.dart';
-import 'package:notificator/screens/create_notification_screen.dart';
+import 'package:notificator/screens/notification_create_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/forget_password_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
@@ -79,6 +80,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => CompanyLogoUpdateProvider()),
         ChangeNotifierProvider(create: (_) => HomeDataProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeUpdateProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationListProvider()),
       ],
       child: const MyApp(),
     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notificator/model/company.dart';
 
 import '../model/home_response.dart';
+import '../model/notification_data.dart';
 import '../repository/home_rempository.dart';
 
 class HomeDataProvider with ChangeNotifier {
