@@ -14,7 +14,6 @@ import '../constants/app_info.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 import '../widgets/text_input_field.dart';
-import '../widgets/toast_widget.dart';
 import '../widgets/white_button_widgets.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {

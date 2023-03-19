@@ -67,7 +67,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void onNotificationTap() {
     // SnackBar snackBar = const SnackBar(content: Text('Employee clicked'));
     // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    print('Employee clicked');
+    debugPrint('Employee clicked');
 
     Navigator.pushNamed(context, kRouteNotificationDetails);
   }

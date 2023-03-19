@@ -202,7 +202,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
         //Navigate to the home screen
         if (context.mounted) {
-          Navigator.pushReplacementNamed(context, kRouteHome);
+          // passing the argument to know that user in logging for first time
+          Navigator.pushReplacementNamed(
+            context,
+            kRouteHome,
+            arguments: true,
+          );
         }
       } else {
         // Display an error toast

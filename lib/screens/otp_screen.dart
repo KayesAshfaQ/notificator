@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -9,7 +8,6 @@ import '../constants/app_info.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 import '../widgets/white_button_widgets.dart';
-import 'main_screen.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);

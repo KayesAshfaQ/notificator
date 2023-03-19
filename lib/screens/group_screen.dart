@@ -121,7 +121,7 @@ class _GroupScreenState extends State<GroupScreen> {
 
                           return GroupListItemWidget(
                             id: group.id,
-                            name: group.name!,
+                            name: group.name,
                           );
                         },
                       )

@@ -4,7 +4,6 @@ import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/widgets/my_appbar_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/auth_key_provider.dart';
 import '../provider/password_change_provider.dart';
 import '../provider/toast_provider.dart';
 import '../util/helper.dart';

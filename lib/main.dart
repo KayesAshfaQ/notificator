@@ -26,9 +26,9 @@ import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/provider/toast_provider.dart';
-import 'package:notificator/screens/SettingScreen.dart';
+import 'package:notificator/screens/setting_screen.dart';
 import 'package:notificator/screens/change_password_screen.dart';
-import 'package:notificator/screens/setting_change_password_screen.dart';
+import 'package:notificator/screens/change_password_setting_screen.dart';
 import 'package:notificator/screens/employee_create_screen.dart';
 import 'package:notificator/screens/create_notification_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
@@ -40,12 +40,12 @@ import 'package:notificator/screens/more_details_screen.dart';
 import 'package:notificator/screens/notification_details_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
 import 'package:notificator/screens/otp_screen.dart';
-import 'package:notificator/screens/employee_profile_screen.dart';
+import 'package:notificator/screens/home_screen_employee.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
-import 'package:notificator/screens/update_admin_screen.dart';
+import 'package:notificator/screens/update_profile_admin_screen.dart';
 import 'package:notificator/screens/employee_update_screen.dart';
-import 'package:notificator/screens/update_profile_screen.dart';
+import 'package:notificator/screens/update_profile_employee_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

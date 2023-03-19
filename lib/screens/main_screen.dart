@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/preference_provider.dart';
-import 'package:notificator/screens/SettingScreen.dart';
-import 'package:notificator/screens/admin_home_screen.dart';
+import 'package:notificator/screens/setting_screen.dart';
+import 'package:notificator/screens/home_screen_admin.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../provider/app_provider.dart';
 import '../util/keys.dart';
 import '../widgets/app_drawer_widget.dart';
-import 'employee_profile_screen.dart';
+import 'home_screen_employee.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

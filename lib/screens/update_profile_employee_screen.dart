@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
-import '../generated/assets.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/update_img_widget.dart';
