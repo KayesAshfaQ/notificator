@@ -21,6 +21,7 @@ import 'package:notificator/provider/image_pick_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/logout_provider.dart';
+import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
 import 'package:notificator/provider/password_change_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
@@ -81,6 +82,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => HomeDataProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeUpdateProvider()),
         ChangeNotifierProvider(create: (_) => NotificationListProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationCreateProvider()),
       ],
       child: const MyApp(),
     ),

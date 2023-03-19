@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
+import 'package:notificator/provider/notification_create_provider.dart';
+import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/widgets/select_group_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import '../model/group_list_response.dart';
+import '../provider/auth_key_provider.dart';
 import '../provider/group_list_provider.dart';
+import '../provider/toast_provider.dart';
 import '../util/helper.dart';
+import '../util/utils.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/send_option_radio_widget.dart';
@@ -47,90 +53,51 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
           padding: const EdgeInsets.all(20.0),
           width: double.infinity,
           //height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Create Notification',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: AppColors.deepPurple,
-                  fontFamily: 'BaiJamjuree',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 24.0),
-              const SeparatedLabeledTextField(
-                labelText: 'Subject',
-                hintText: 'Notification Subject',
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Message',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.deepPurple,
-                  fontFamily: 'BaiJamjuree',
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              TextField(
-                onChanged: (value) {},
-                maxLines: null,
-                minLines: 5,
-                style: const TextStyle(
-                  color: AppColors.deepPurple,
-                  fontFamily: 'BaiJamjuree',
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Enter your message',
-                  hintStyle: TextStyle(
-                    color: AppColors.deepPurple.withOpacity(0.5),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Create Notification',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: AppColors.deepPurple,
                     fontFamily: 'BaiJamjuree',
-                  ),
-                  filled: true,
-                  fillColor: AppColors.deepPurple.withOpacity(0.1),
-                  isDense: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    borderSide: BorderSide.none,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Send To',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.deepPurple,
-                  fontFamily: 'BaiJamjuree',
-                  fontWeight: FontWeight.w500,
+                const SizedBox(height: 24.0),
+                SeparatedLabeledTextField(
+                  controller: _subject,
+                  validator: Utils.validate,
+                  labelText: 'Subject',
+                  hintText: 'Notification Subject',
                 ),
-              ),
-              const SendOptionRadioWidget(),
-              const SizedBox(height: 4),
-              const Text(
-                'Group',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.deepPurple,
-                  fontFamily: 'BaiJamjuree',
-                  fontWeight: FontWeight.w500,
+                const SizedBox(height: 16),
+                const Text(
+                  'Message',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.deepPurple,
+                    fontFamily: 'BaiJamjuree',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8.0),
-              GestureDetector(
-                onTap: onTapSelectGroup,
-                child: TextField(
-                  enabled: false,
+                const SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _message,
+                  validator: Utils.validate,
+                  //onChanged: (value) {},
+                  maxLines: null,
+                  minLines: 5,
                   style: const TextStyle(
                     color: AppColors.deepPurple,
                     fontFamily: 'BaiJamjuree',
                   ),
                   decoration: InputDecoration(
-                    hintText: 'Select Group',
+                    hintText: 'Enter your message',
                     hintStyle: TextStyle(
                       color: AppColors.deepPurple.withOpacity(0.5),
                       fontFamily: 'BaiJamjuree',
@@ -142,35 +109,83 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                       borderRadius: BorderRadius.circular(6),
                       borderSide: BorderSide.none,
                     ),
-                    suffixIcon: const Icon(
-                      Icons.arrow_drop_down,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Send To',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.deepPurple,
+                    fontFamily: 'BaiJamjuree',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SendOptionRadioWidget(),
+                const SizedBox(height: 4),
+                const Text(
+                  'Group',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: AppColors.deepPurple,
+                    fontFamily: 'BaiJamjuree',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                GestureDetector(
+                  onTap: onTapSelectGroup,
+                  child: TextFormField(
+                    controller: _groupController,
+                    validator: Utils.validate,
+                    enabled: false,
+                    style: const TextStyle(
                       color: AppColors.deepPurple,
+                      fontFamily: 'BaiJamjuree',
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Select Group',
+                      hintStyle: TextStyle(
+                        color: AppColors.deepPurple.withOpacity(0.5),
+                        fontFamily: 'BaiJamjuree',
+                      ),
+                      filled: true,
+                      fillColor: AppColors.deepPurple.withOpacity(0.1),
+                      isDense: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(6),
+                        borderSide: BorderSide.none,
+                      ),
+                      suffixIcon: const Icon(
+                        Icons.arrow_drop_down,
+                        color: AppColors.deepPurple,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: onPressSendNotification,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.deepPurple,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: sendNewNotification,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.deepPurple,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    minimumSize: const Size(double.infinity, 0),
                   ),
-                  minimumSize: const Size(double.infinity, 0),
-                ),
-                child: const Text(
-                  'Send Notification',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontFamily: 'BaiJamjuree',
+                  child: const Text(
+                    'Send Notification',
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontFamily: 'BaiJamjuree',
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -198,8 +213,57 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     );
   }
 
-  void onPressSendNotification() {
-    // send notification
+  Future<void> sendNewNotification() async {
+    // validate form
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (isValid) {
+      // Display a progress loader
+      context.loaderOverlay.show();
+
+      //get send to type from it's provider
+      int sendTo = context.read<SendToOptionProvider>().selectedOption;
+
+      // get the filed texts
+      String subject = _subject.text.trim();
+      String message = _message.text.trim();
+      String group = context.read<GroupChipProvider>().selectedGroupId;
+      String sendOption = sendTo == 1 ? 'group' : 'individual';
+
+      // create the employee obj
+      NotificationData notification = NotificationData(
+        subject: subject,
+        message: message,
+        groupIndividualIds: group,
+        groupIndividual: sendOption,
+      );
+
+      // initialize toast provider
+      final toastProvider = context.read<ToastProvider>();
+      toastProvider.initialize(context);
+
+      // get token through provider
+      final String? token = context.read<AuthKeyProvider>().userToken;
+
+      // call the rest api through provider & send data through it
+      final provider = context.read<NotificationCreateProvider>();
+      await provider.create(notification, token!);
+
+      // check if the submission was successful
+      if (provider.success) {
+        // Display a success toast
+        toastProvider.showSuccessToast('notification successfully sent');
+
+        // hide the bottom sheet
+        if (context.mounted) Navigator.pop(context);
+      } else {
+        // Display an error toast
+        toastProvider.showErrorToast(provider.error);
+      }
+
+      // Hide the progress loader
+      if (context.mounted) context.loaderOverlay.hide();
+    }
   }
 
   /// fetch all groups
