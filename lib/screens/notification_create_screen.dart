@@ -38,7 +38,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     super.initState();
   }
 
-  // TODO: show select group field only when send to: group is selected
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<GroupChipProvider>();
@@ -59,7 +58,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                /*const Text(
                   'Create Notification',
                   style: TextStyle(
                     fontSize: 20,
@@ -67,8 +66,8 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                     fontFamily: 'BaiJamjuree',
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                const SizedBox(height: 24.0),
+                ),*/
+                const SizedBox(height: 8.0),
                 SeparatedLabeledTextField(
                   controller: _subject,
                   validator: Utils.validate,
@@ -202,13 +201,17 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
 
   /// show bottom sheet to select group
   void onTapSelectGroup() {
+
+    // get the number of chips
+    int chipsCount = context.read<GroupChipProvider>().groupList.length;
+
     // show bottom sheet to select group or individual
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return const SelectGroupBottomSheet();
+        return  SelectGroupBottomSheet(count: chipsCount,);
       },
     );
   }
@@ -275,7 +278,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     final provider = context.read<GroupListProvider>();
 
     // initialize group chip provider
+    // clear the selected group list selected before
     final groupChipProvider = context.read<GroupChipProvider>();
+    groupChipProvider.clearSelectedGroups();
 
     // add listener to the provider
     /* groupChipProvider.addListener(() {

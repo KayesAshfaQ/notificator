@@ -49,4 +49,10 @@ class GroupChipProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearSelectedGroups() {
+    _selectedGroupList.clear();
+    _selectedGroupName = '';
+    _selectedGroupId = '';
+    //notifyListeners();
+  }
 }

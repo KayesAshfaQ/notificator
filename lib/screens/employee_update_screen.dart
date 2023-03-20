@@ -82,7 +82,7 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                /*const Text(
                   'Update Employees',
                   style: TextStyle(
                     fontSize: 20,
@@ -90,8 +90,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
                     fontFamily: 'BaiJamjuree',
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                const SizedBox(height: 24.0),
+                ),*/
+                const SizedBox(height: 8.0),
                 SeparatedLabeledTextField(
                   controller: _firstNameController,
                   labelText: 'First Name',
@@ -211,12 +211,17 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
 
   /// show bottom sheet to select group
   void onTapSelectGroup() {
+    // get the number of chips
+    int chipsCount = context.read<GroupChipProvider>().groupList.length;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return const SelectGroupBottomSheet();
+        return SelectGroupBottomSheet(
+          count: chipsCount,
+        );
       },
     );
   }
@@ -284,6 +289,7 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
 
     // initialize group chip provider
     final groupChipProvider = context.read<GroupChipProvider>();
+    groupChipProvider.clearSelectedGroups();
 
     // add listener to the provider
     /* groupChipProvider.addListener(() {

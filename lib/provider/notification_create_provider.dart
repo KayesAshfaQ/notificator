@@ -26,7 +26,7 @@ class NotificationCreateProvider with ChangeNotifier {
       if (success) {
         _message = response.message;
       } else {
-        _error = 'notification send failed';
+        _error = response.errors ?? 'notification send failed';
       }
       notifyListeners();
     } catch (e) {

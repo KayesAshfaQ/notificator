@@ -6,7 +6,7 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
-import 'package:notificator/provider/company_logo_update_provider.dart';
+import 'package:notificator/provider/logo_update_provider_company.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:notificator/provider/employee_delete_provider.dart';
@@ -16,10 +16,12 @@ import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/forgot_pass_provider.dart';
 import 'package:notificator/provider/group_delete_provider.dart';
 import 'package:notificator/provider/group_list_provider.dart';
-import 'package:notificator/provider/home_data_provider.dart';
+import 'package:notificator/provider/home_admin_data_provider.dart';
+import 'package:notificator/provider/home_employee_data_provider.dart';
 import 'package:notificator/provider/image_pick_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
+import 'package:notificator/provider/logo_update_provider_employee.dart';
 import 'package:notificator/provider/logout_provider.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
@@ -79,10 +81,12 @@ void main() {
         ChangeNotifierProvider(create: (_) => PreferenceProvider()),
         ChangeNotifierProvider(create: (_) => ImagePickProvider()),
         ChangeNotifierProvider(create: (_) => CompanyLogoUpdateProvider()),
-        ChangeNotifierProvider(create: (_) => HomeDataProvider()),
+        ChangeNotifierProvider(create: (_) => HomeAdminDataProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeUpdateProvider()),
         ChangeNotifierProvider(create: (_) => NotificationListProvider()),
         ChangeNotifierProvider(create: (_) => NotificationCreateProvider()),
+        ChangeNotifierProvider(create: (_) => HomeEmployeeDataProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeePhotoUpdateProvider()),
       ],
       child: const MyApp(),
     ),

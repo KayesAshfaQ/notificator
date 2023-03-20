@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:notificator/provider/company_logo_update_provider.dart';
+import 'package:notificator/provider/logo_update_provider_company.dart';
 import 'package:notificator/provider/company_update_provider.dart';
-import 'package:notificator/provider/home_data_provider.dart';
+import 'package:notificator/provider/home_admin_data_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
@@ -53,7 +53,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
   /// initialize text fields
   void initTextFields() {
     // as the data is fetched from the server and stored in the provider in the previous screen
-    final company = context.read<HomeDataProvider>().company;
+    final company = context.read<HomeAdminDataProvider>().company;
 
     _nameController.text = company.name ?? '';
     _emailController.text = company.email ?? '';

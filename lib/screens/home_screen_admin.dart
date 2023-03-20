@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
-import 'package:notificator/provider/home_data_provider.dart';
+import 'package:notificator/provider/home_admin_data_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
 import '../generated/assets.dart';
 import '../model/company.dart';
-import '../model/home_response.dart';
+import '../model/home_response_admin.dart';
 import '../model/notification_data.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
@@ -28,6 +28,8 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
+  String? token;
+
   @override
   void initState() {
     // get data from server
@@ -40,7 +42,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final provider = context.watch<HomeDataProvider>();
+    final provider = context.watch<HomeAdminDataProvider>();
 
     Company company = provider.company;
     List<NotificationData> notifications = provider.notifications;
@@ -245,14 +247,12 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     );
   }
 
-  String? token;
-
   Future<void> instantiate() async {
     // show overlay
     context.loaderOverlay.show();
 
     // instantiate provider
-    final provider = context.read<HomeDataProvider>();
+    final provider = context.read<HomeAdminDataProvider>();
 
     // get token
     token ??= await Helper.getToken(context);
@@ -264,6 +264,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     if (provider.success) {
       debugPrint('HOME_DATA::: success');
 
+      // TODO: this must be done in a better way (maybe in the login screen)
       // cache company id
       if (provider.company.id != null) {
         saveCompanyId(provider.company.id!);

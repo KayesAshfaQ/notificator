@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:notificator/model/company.dart';
 
-import '../model/home_response.dart';
+import '../model/home_response_employee.dart';
 import '../model/notification_data.dart';
 import '../repository/home_rempository.dart';
 
-class HomeDataProvider with ChangeNotifier {
+class HomeEmployeeDataProvider with ChangeNotifier {
   bool _success = false;
 
-  Company _company = Company();
+  Employee _employee = Employee();
 
   List<Group> _groups = [];
 
   List<NotificationData> _notifications = [];
-
-  int _totalGroup = 0;
-
-  int _totalEmployee = 0;
-
-  int _totalNotifications = 0;
 
   String _error = '';
 
@@ -29,13 +22,7 @@ class HomeDataProvider with ChangeNotifier {
 
   List<NotificationData> get notifications => _notifications;
 
-  int get totalGroup => _totalGroup;
-
-  int get totalEmployee => _totalEmployee;
-
-  int get totalNotifications => _totalNotifications;
-
-  Company get company => _company;
+  Employee get employee => _employee;
 
   String get error => _error;
 
@@ -44,17 +31,14 @@ class HomeDataProvider with ChangeNotifier {
   /// This method is for submitting the email to the repository
   Future<void> getData(String token) async {
     try {
-      final response = await _homeRepository.getData(token);
+      final response = await _homeRepository.getEmployeeData(token);
       print('EmployeeListProvider::: $_success');
       _success = response.success ?? false;
 
       if (success) {
-        _company = response.company ?? Company();
+        _employee = response.employee ?? Employee();
         _groups = response.group ?? [];
         _notifications = response.notification ?? [];
-        _totalGroup = response.totalGroup ?? 0;
-        _totalEmployee = response.totalEmployee ?? 0;
-        _totalNotifications = response.totalNotifications ?? 0;
 
         notifyListeners();
       } else {

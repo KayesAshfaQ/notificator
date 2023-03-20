@@ -8,7 +8,10 @@ import '../provider/group_chip_provider.dart';
 import 'separated_labeled_text_field.dart';
 
 class SelectGroupBottomSheet extends StatefulWidget {
-  const SelectGroupBottomSheet({Key? key}) : super(key: key);
+  final int count;
+
+  const SelectGroupBottomSheet({Key? key, required this.count})
+      : super(key: key);
 
   @override
   State<SelectGroupBottomSheet> createState() => _SelectGroupBottomSheetState();
@@ -17,9 +20,15 @@ class SelectGroupBottomSheet extends StatefulWidget {
 class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
   @override
   Widget build(BuildContext context) {
-    bool? v = false;
-    //final myProvider = Provider.of<MyProvider>(context);
+    // calculate the height of the bottom sheet
+    final chipHeight = ((widget.count / 3) * 50.0) + 200;
     final height = MediaQuery.of(context).size.height;
+
+    final sheetHeight = chipHeight / height;
+    debugPrint('chipHeight: $chipHeight');
+    debugPrint('height: $height');
+    debugPrint('height / chipHeight: ${chipHeight / height}');
+
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
       child: Container(
@@ -27,8 +36,8 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
         child: GestureDetector(
           onTap: () {},
           child: DraggableScrollableSheet(
-            initialChildSize: 0.25,
-            minChildSize: 0.2,
+            initialChildSize: sheetHeight,
+            minChildSize: sheetHeight,
             maxChildSize: 0.65,
             builder: (_, controller) {
               return Container(
@@ -40,44 +49,47 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
-                      Icons.remove,
-                      color: Colors.grey[600],
-                    ),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(16, 8, 16, 12),
-                        child: Text(
-                          'Choose Your Group *',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: AppColors.deepPurple,
-                            fontFamily: 'BaiJamjuree',
-                            fontWeight: FontWeight.w500,
+                    ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      shrinkWrap: true,
+                      controller: controller,
+                      children: [
+                        Icon(
+                          Icons.remove,
+                          color: Colors.grey[600],
+                        ),
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                            child: Text(
+                              'Choose Your Group *',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.deepPurple,
+                                fontFamily: 'BaiJamjuree',
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
+                        const SizedBox(height: 8),
+                        const MultiSelectChip(),
+
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: CommonPurpleButtonWidget(
+                        title: 'Submit',
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        onPress: groupSelectSubmit,
                       ),
                     ),
-                    Expanded(
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        shrinkWrap: true,
-                        controller: controller,
-                        children: [
-                          const SizedBox(height: 8),
-                          const MultiSelectChip(),
-                          const SizedBox(height: 8),
-                          CommonPurpleButtonWidget(
-                            title: 'Submit',
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            onPress: groupSelectSubmit,
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
-                    ),
+                    const SizedBox(height: 12),
                   ],
                 ),
               );
@@ -91,6 +103,10 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
   void groupSelectSubmit() async {
     // when the submit button is pressed, the provider isSubmitted value is set to true
     final provider = context.read<GroupChipProvider>();
+
+    //clear the selected group name and id
+    provider.setSelectedGroupName('');
+    provider.setSelectedGroupId('');
 
     String selectedGroupNames = '';
     String selectedGroupId = '';
