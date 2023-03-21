@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/provider/notification_get_provider.dart';
+import 'package:notificator/util/date_helper.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/widgets/my_appbar_widget.dart';
 
+import '../util/helper.dart';
 import '../util/utils.dart';
 
 class NotificationDetailsScreen extends StatefulWidget {
@@ -15,20 +20,45 @@ class NotificationDetailsScreen extends StatefulWidget {
 }
 
 class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
-  // TODO: get data from server
+  int i = 0;
+  NotificationDetailsProvider? provider;
 
   @override
   Widget build(BuildContext context) {
+    // do the following only once
+    if (i == 0) {
+      // Get the current route's settings
+      final settings = ModalRoute.of(context)?.settings;
+
+      // Access the arguments property and cast it to the Person class
+      final notificationId = settings?.arguments as String?;
+
+      provider ??= context.watch<NotificationDetailsProvider>();
+
+      // fetch the notification details data
+      if (notificationId != null) {
+        fetchNotificationDetails(notificationId, provider!);
+      }
+
+      i++;
+      print('NotificationDetailsScreen: build()');
+    }
+
+    print(i);
+
     return Scaffold(
       appBar: const MyAppBarWidget(title: 'Notification Details'),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('20 February 2023, 10:00 AM',
-              style: Utils.myTxtStyleBodyExtraSmall),
+          Text(
+            DateTimeHelper.convertDatetime(provider?.data?.updatedAt),
+            style: Utils.myTxtStyleBodyExtraSmall,
+          ),
           const SizedBox(height: 4),
-          const Text(
-            'We have meeting with our client today with USA team',
+          Text(
+            //'We have meeting with our client today with USA team',
+            provider?.data?.subject ?? '',
             style: Utils.myTxtStyleTitleMedium,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
@@ -40,7 +70,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
               style: Utils.myTxtStyleTitleExtraSmall,
               children: [
                 TextSpan(
-                  text: 'John Doe',
+                  text: provider?.data?.groupIndividualName ?? '',
                   style: Utils.myTxtStyleBodyExtraSmall.copyWith(
                     color: AppColors.lightOrange,
                   ),
@@ -51,7 +81,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
           const SizedBox(height: 16),
           Linkify(
             onOpen: onTapLink,
-            text: Utils.dummyText,
+            text: provider?.data?.message ?? '',
             style: Utils.myTxtStyleBodySmall.copyWith(
               fontSize: 14,
             ),
@@ -77,5 +107,25 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
     } else {
       throw 'Could not launch $link';
     }
+  }
+
+  fetchNotificationDetails(
+    String id,
+    NotificationDetailsProvider provider,
+  ) async {
+    // show overlay
+    context.loaderOverlay.show();
+
+    // get token
+    String token = await Helper.getToken(context);
+
+    // get data from server
+    await provider.getData(
+      token,
+      id,
+    );
+
+    // hide overlay
+    if (context.mounted) context.loaderOverlay.hide();
   }
 }

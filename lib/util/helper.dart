@@ -15,7 +15,7 @@ class Helper {
   }
 
   /// This method is used to process the date time
-  static String processDateTime(DateTime? dateTime) {
+  static String processDate(DateTime? dateTime) {
     // get current date time
     DateTime now = DateTime.now();
 

@@ -123,8 +123,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             id: notification.id.toString(),
                             messageTitle: notification.subject ?? '',
                             group: notification.groupIndividualName ?? '',
-                            time: Helper.processDateTime(
-                                (notification.updatedAt)),
+                            time: Helper.processDate(
+                              (notification.updatedAt),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                context,
+                                kRouteNotificationDetails,
+                                arguments: '${notification.id}',
+                              );
+                            },
                           );
                         },
                       )
@@ -143,13 +151,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ],
       ),
     );
-  }
-
-  void onNotificationTap() {
-    // SnackBar snackBar = const SnackBar(content: Text('Employee clicked'));
-    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    debugPrint('Employee clicked');
-
-    Navigator.pushNamed(context, kRouteNotificationDetails);
   }
 }

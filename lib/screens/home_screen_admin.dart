@@ -239,7 +239,14 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                 id: notifications[index].id.toString(),
                 messageTitle: notifications[index].subject ?? '',
                 group: notifications[index].groupIndividualName ?? '',
-                time: Helper.processDateTime((notifications[index].updatedAt)),
+                time: Helper.processDate((notifications[index].updatedAt)),
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    kRouteNotificationDetails,
+                    arguments: '${notifications[index].id}',
+                  );
+                },
               );
             },
           ),
