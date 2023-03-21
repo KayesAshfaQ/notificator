@@ -19,8 +19,12 @@ class Helper {
     // get current date time
     DateTime now = DateTime.now();
 
+    if(dateTime == null) {
+      return 'unknown';
+    }
+
     // calculate difference
-    Duration difference = now.difference(dateTime!);
+    Duration difference = now.difference(dateTime);
 
     // print difference
     if (difference.inDays > 0) {

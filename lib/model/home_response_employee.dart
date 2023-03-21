@@ -1,13 +1,3 @@
-/*// To parse this JSON data, do
-//
-//     final employeeHomeResponse = employeeHomeResponseFromJson(jsonString);
-
-import 'dart:convert';
-
-EmployeeHomeResponse employeeHomeResponseFromJson(String str) => EmployeeHomeResponse.fromJson(json.decode(str));
-
-String employeeHomeResponseToJson(EmployeeHomeResponse data) => json.encode(data.toJson());*/
-
 import 'package:notificator/model/notification_data.dart';
 
 class EmployeeHomeResponse {

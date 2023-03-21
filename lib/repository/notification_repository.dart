@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:notificator/model/notification_data.dart';
+import 'package:notificator/model/notification_details_response.dart';
 import 'package:notificator/model/notification_list_response.dart';
 import 'package:notificator/model/notification_send_response.dart';
 
@@ -62,6 +63,35 @@ class NotificationRepository {
       throw Exception('failed!');
     }
   }
+
+  /// This method is for getting the notification details
+  Future<NotificationDetailsResponse> getNotificationDetails(
+      String token, String id) async {
+    final url = Uri.parse('$kBaseUrl/notifications/$id');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final data = json.decode(response.body);
+
+    print(data);
+    //print('NotificationList::: ${response.statusCode}');
+
+    if (response.body.isNotEmpty) {
+      final notificationList = NotificationDetailsResponse.fromJson(data);
+      print(notificationList);
+      return notificationList;
+    } else {
+      print('NotificationList::: 6');
+
+      throw Exception('failed!');
+    }
+  }
+
 /*
   /// This method is for delete the group by id
   Future<GroupDeleteResponse> delete(int id, token) async {

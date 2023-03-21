@@ -15,7 +15,6 @@ import '../util/keys.dart';
 import '../widgets/employee_profile_card.dart';
 import '../widgets/profile_group_item_widget.dart';
 import '../widgets/profile_update_button_widget.dart';
-import '../widgets/see_all_btn_widget.dart';
 
 class EmployeeProfileScreen extends StatefulWidget {
   const EmployeeProfileScreen({Key? key}) : super(key: key);
@@ -147,8 +146,9 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return NotificationListItemWidget(
+                      id: notifications[index].id.toString(),
                       messageTitle: notifications[index].subject ?? '',
-                      group: notifications[index].groupIndividual ?? '',
+                      group: notifications[index].groupIndividualName ?? '',
                       time: Helper.processDateTime(
                           (notifications[index].updatedAt)),
                     );

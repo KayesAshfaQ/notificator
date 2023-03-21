@@ -6,6 +6,7 @@ import '../generated/assets.dart';
 import 'round_icon_button_widget.dart';
 
 class NotificationListItemWidget extends StatelessWidget {
+  final String id;
   final String? messageTitle;
   final String? time;
   final String? group;
@@ -13,6 +14,7 @@ class NotificationListItemWidget extends StatelessWidget {
 
   const NotificationListItemWidget({
     super.key,
+    required this.id,
     this.onPressed,
     this.messageTitle,
     this.time,

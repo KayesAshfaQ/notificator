@@ -15,6 +15,8 @@ class NotificationDetailsScreen extends StatefulWidget {
 }
 
 class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
+  // TODO: get data from server
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

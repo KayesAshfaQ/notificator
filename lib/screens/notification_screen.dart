@@ -120,8 +120,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           final notification = provider.data![index];
 
                           return NotificationListItemWidget(
+                            id: notification.id.toString(),
                             messageTitle: notification.subject ?? '',
-                            group: notification.groupIndividual ?? '',
+                            group: notification.groupIndividualName ?? '',
                             time: Helper.processDateTime(
                                 (notification.updatedAt)),
                           );
