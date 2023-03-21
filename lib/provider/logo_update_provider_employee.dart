@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
-import 'package:notificator/repository/company_repository.dart';
-import 'package:notificator/repository/employee_repository.dart';
 import 'package:notificator/repository/employee_update_repository.dart';
 
 class EmployeePhotoUpdateProvider with ChangeNotifier {

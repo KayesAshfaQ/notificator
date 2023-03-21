@@ -108,11 +108,11 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
           EmployeeProfileCardWidget(
             employee: employee,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
 
           // Recent Group Section
           const Text(
-            'Recent Groups',
+            'Recently Joined Groups',
             style: Utils.myTxtStyleBodyMedium,
           ),
           const SizedBox(height: 16),
@@ -133,10 +133,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: Text('No Group Assigned Yet'),
                 ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
 
           const Text(
-            'Recent Notifications',
+            'Recently Received Notifications',
             style: Utils.myTxtStyleBodyMedium,
           ),
           const SizedBox(height: 16),

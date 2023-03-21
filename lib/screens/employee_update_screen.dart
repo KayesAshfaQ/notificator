@@ -182,7 +182,7 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
 
                 const SizedBox(height: 24),
                 ElevatedButton(
-                  onPressed: createEmployee,
+                  onPressed: updateEmployee,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.deepPurple,
                     padding: const EdgeInsets.symmetric(
@@ -226,8 +226,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
     );
   }
 
-  /// create new employee
-  void createEmployee() async {
+  /// update the employee
+  void updateEmployee() async {
     // validate form
     final isValid = _formKey.currentState?.validate() ?? false;
     if (isValid) {
@@ -260,7 +260,7 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
 
       // call the rest api through provider & send data through it
       final provider = context.read<EmployeeUpdateProvider>();
-      await provider.update(employee, token!, employeeId!);
+      await provider.updateByAdmin(employee, token!, employeeId!);
 
       // check if the submission was successful
       if (provider.success) {

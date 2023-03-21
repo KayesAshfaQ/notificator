@@ -2,17 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/home_employee_data_provider.dart';
 import 'package:notificator/provider/logo_update_provider_employee.dart';
 import 'package:notificator/provider/toast_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
-import '../provider/home_admin_data_provider.dart';
+import '../model/employee.dart';
+import '../provider/employee_update_provider.dart';
 import '../provider/image_pick_provider.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
+import '../util/utils.dart';
 import '../widgets/my_appbar_widget.dart';
 import '../widgets/separated_labeled_text_field.dart';
 import '../widgets/update_img_widget.dart';
@@ -157,61 +160,33 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _firstNameController,
                   labelText: 'First Name',
                   hintText: 'Your First Name',
                 ),
                 const SizedBox(height: 16),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _lastNameController,
                   labelText: 'Last Name',
                   hintText: 'Your Last Name',
                 ),
                 const SizedBox(height: 16),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _emailController,
                   labelText: 'Email Address',
                   hintText: 'Your Email Address',
+                  validator: Utils.validate,
                 ),
                 const SizedBox(height: 16),
-                const SeparatedLabeledTextField(
+                SeparatedLabeledTextField(
+                  controller: _phoneController,
                   labelText: 'Phone Number',
                   hintText: 'Your Phone Number',
                 ),
                 const SizedBox(height: 24),
-                /* const Text(
-                  'Profile Picture',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                Row(
-                  children: [
-                    const Icon(Icons.camera_alt_outlined),
-                    const SizedBox(width: 8.0),
-                    GestureDetector(
-                      onTap: pickImage,
-                      child: const Text(
-                        'Upload Profile Picture',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.deepPurple,
-                          fontFamily: 'BaiJamjuree',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Image.file(
-                  _image ?? File(Assets.imgBellImage),
-                  fit: BoxFit.cover,
-                  height: 100,
-                ),*/
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: updateEmployeeInfo,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.deepPurple,
                     padding: const EdgeInsets.symmetric(
@@ -238,7 +213,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  void pickImage() async {
+  /*void pickImage() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -248,6 +223,60 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       setState(() {
         //_image = File(pickedFile.path);
       });
+    }
+  }*/
+
+  /// update the employee
+  void updateEmployeeInfo() async {
+    // validate form
+    final isValid = _formKey.currentState?.validate() ?? false;
+    if (isValid) {
+      // Display a progress loader
+      context.loaderOverlay.show();
+
+      // get the filed texts
+      String fName = _firstNameController.text.trim();
+      String lName = _lastNameController.text.trim();
+      String email = _emailController.text.trim();
+      String phone = _phoneController.text.trim();
+      //String password = _passwordController.text.trim();
+      //String group = context.read<GroupChipProvider>().selectedGroupId;
+
+      // create the employee obj
+      Employee employee = Employee(
+        firstName: fName,
+        lastName: lName,
+        email: email,
+        phone: phone,
+      );
+
+      // initialize toast provider
+      initToastProvider();
+
+      // initialize token
+      initToken();
+
+      if (token == null || employeeId == null) {
+        return;
+      }
+      // call the rest api through provider & send data through it
+      final provider = context.read<EmployeeUpdateProvider>();
+      await provider.updateByEmployee(employee, token!, employeeId!);
+
+      // check if the submission was successful
+      if (provider.success) {
+        // Display a success toast
+        toastProvider?.showSuccessToast('new employee Updated successfully');
+
+        // hide the bottom sheet
+        if (context.mounted) Navigator.pop(context);
+      } else {
+        // Display an error toast
+        toastProvider?.showErrorToast(provider.error);
+      }
+
+      // Hide the progress loader
+      if (context.mounted) context.loaderOverlay.hide();
     }
   }
 }

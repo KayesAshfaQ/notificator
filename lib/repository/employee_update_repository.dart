@@ -2,44 +2,61 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:notificator/model/company.dart';
-import 'package:notificator/model/company_update_response.dart';
 import 'package:notificator/model/employee.dart';
-import 'package:notificator/model/employee_create_response.dart';
-import 'package:notificator/model/employee_list_response.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
 
+import '../model/employee_update_response.dart';
+
 class EmployeeUpdateRepository {
-  /// This method is to Update company info
-/*  Future<CompanyUpdateResponse> update(
-      Company company, String token, String id) async {
-    final url = Uri.parse('$kBaseUrl/companies/$id');
+  /// This method is to Update employee info by employee
+  Future<EmpUpdateResponse> update(
+    Employee employee,
+    String token,
+    String id,
+  ) async {
+
+
+    print('EmpUpdateResponse::: 1');
+
+    final url = Uri.parse('$kBaseUrl/employee/update/$id');
     final response = await http.put(
       url,
       headers: {
         'Authorization': 'Bearer $token',
       },
       body: {
-        'name': company.name,
-        'phone': company.phone,
-        'email': company.email,
-        'address': company.address,
+        'first_name': employee.firstName,
+        'last_name': employee.lastName,
+        'email': employee.email,
+        'phone': employee.phone,
       },
     );
 
+    print('EmpUpdateResponse::: 2');
+
     //print(response.statusCode);
     final data = json.decode(response.body);
+
+
+    print('EmpUpdateResponse::: 3');
     print(data);
     if (response.body.isNotEmpty) {
-      final responseSuccess = CompanyUpdateResponse.fromJson(data);
+
+print('EmpUpdateResponse::: 4');
+
+      final responseSuccess = EmpUpdateResponse.fromJson(data);
       return responseSuccess;
     } else {
+
+print('EmpUpdateResponse::: 5');
+
       throw Exception('failed!');
     }
-  }*/
+
+  }
 
   /// This method is to update employee photo
   Future<LogoUpdateResponse> updatePhoto(

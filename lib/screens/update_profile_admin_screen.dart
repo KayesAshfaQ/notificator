@@ -214,8 +214,10 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
       final address = _addressController.text.trim();
 
       // initialize toast provider
-      final toastProvider = context.read<ToastProvider>();
-      toastProvider.initialize(context);
+      initToastProvider();
+
+      // initialize token
+      initToken();
 
       // initialize provider
       final provider = context.read<CompanyUpdateProvider>();
@@ -236,7 +238,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
         // check if the submission was successful
         if (provider.success) {
           // Display a success toast
-          toastProvider.showSuccessToast('update successful');
+          toastProvider?.showSuccessToast('update successful');
 
           // Navigate to the previous/setting screen
           // if (context.mounted) {
@@ -244,7 +246,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
           // }
         } else {
           // Display an error toast
-          toastProvider.showErrorToast(provider.error);
+          toastProvider?.showErrorToast(provider.error);
         }
       }
       // hide a progress loader

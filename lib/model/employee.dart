@@ -3,6 +3,7 @@ class Employee {
   String? firstName;
   String? lastName;
   String? email;
+  String? phone;
   String? position;
   String? groupId;
   String? password;
@@ -12,6 +13,7 @@ class Employee {
     this.firstName,
     this.lastName,
     this.email,
+    this.phone,
     this.position,
     this.groupId,
     this.password,

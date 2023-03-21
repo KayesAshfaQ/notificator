@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/repository/employee_update_repository.dart';
 
 import '../model/employee.dart';
 import '../model/employee_update_response.dart';
@@ -18,9 +19,37 @@ class EmployeeUpdateProvider with ChangeNotifier {
   final EmployeeRepository _employeeRepository = EmployeeRepository();
 
   /// This method is for creating new group
-  Future<void> update(Employee employee, String token, int id) async {
+  Future<void> updateByAdmin(Employee employee, String token, int id) async {
     try {
       final response = await _employeeRepository.update(employee, token, id);
+      _success = response.success ?? false;
+
+      if (success) {
+        _data = response.data;
+      } else {
+        _error = 'response.errors!';
+      }
+      notifyListeners();
+    } catch (e) {
+      print('EmployeeUpdateProvider:::${e.toString()}');
+      _success = false;
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
+
+  /// This method is for creating new group
+  Future<void> updateByEmployee(
+    Employee employee,
+    String token,
+    String id,
+  ) async {
+    try {
+      final response = await EmployeeUpdateRepository().update(
+        employee,
+        token,
+        id,
+      );
       _success = response.success ?? false;
 
       if (success) {
