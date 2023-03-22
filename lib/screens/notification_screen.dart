@@ -144,7 +144,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               Navigator.pushNamed(
                                 context,
                                 kRouteNotificationDetails,
-                                arguments: '${notification.id}',
+                                arguments: {
+                                  'id': '${notification.id}',
+                                  'userType': employeeType,
+                                },
                               );
                             },
                           );

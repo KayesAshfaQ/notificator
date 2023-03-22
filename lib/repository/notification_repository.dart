@@ -64,9 +64,9 @@ class NotificationRepository {
     }
   }
 
-
   /// This method is for getting the notification list by employee
-  Future<NotificationListResponse> getNotificationsEmployee(String token) async {
+  Future<NotificationListResponse> getNotificationsEmployee(
+      String token) async {
     final url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
 
     final response = await http.get(
@@ -94,8 +94,17 @@ class NotificationRepository {
 
   /// This method is for getting the notification details
   Future<NotificationDetailsResponse> getNotificationDetails(
-      String token, String id) async {
-    final url = Uri.parse('$kBaseUrl/notifications/$id');
+    String token,
+    String id,
+    String userType,
+  ) async {
+    Uri url;
+
+    if (userType == '1') {
+      url = Uri.parse('$kBaseUrl/notifications/$id');
+    } else {
+      url = Uri.parse('$kBaseUrl/notifications/details/$id');
+    }
 
     final response = await http.get(
       url,

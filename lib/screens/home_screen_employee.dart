@@ -23,6 +23,7 @@ class EmployeeProfileScreen extends StatefulWidget {
 }
 
 class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
+  late final String employeeType;
   String? token;
 
   @override
@@ -31,6 +32,19 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     instantiate();
 
     super.initState();
+  }
+
+  Future<void> initEmployeeType() async {
+    // get the employee type form the shared preferences
+    final provider = context.read<PreferenceProvider>();
+
+    // get the employee type
+    await provider.getData(Keys.userType);
+
+    // set the employee type
+    employeeType = provider.data ?? '';
+
+    debugPrint('employeeType: $employeeType');
   }
 
   Future<void> instantiate() async {
@@ -43,8 +57,11 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     // get token
     token ??= await Helper.getToken(context);
 
+    // get the employee type
+    await initEmployeeType();
+
     // call api through provider
-    await provider.getData(token!);
+    if (token != null) await provider.getData(token!);
 
     // when data is successfully fetched
     if (provider.success) {
@@ -155,7 +172,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                         Navigator.pushNamed(
                           context,
                           kRouteNotificationDetails,
-                          arguments: '${notifications[index]}',
+                          arguments: {
+                            'id': '${notifications[index].id}',
+                            'userType': employeeType,
+                          },
                         );
                       },
                     );

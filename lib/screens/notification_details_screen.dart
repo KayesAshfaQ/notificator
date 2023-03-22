@@ -43,14 +43,18 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
     final settings = ModalRoute.of(context)?.settings;
 
     // Access the arguments property and cast it to the Person class
-    final notificationId = settings?.arguments as String?;
+    final data = settings?.arguments as Map<String, String>?;
 
     // get token
     String token = await Helper.getToken(context);
 
     // fetch the notification details data from server
-    if (notificationId != null) {
-      await provider.getData(token, notificationId);
+    if (data != null) {
+
+      String id = data['id'] ?? '';
+      String userType = data['userType'] ?? '';
+
+      await provider.getData(token, id, userType);
     }
   }
 

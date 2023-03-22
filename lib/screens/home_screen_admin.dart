@@ -28,6 +28,7 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
+  late final String employeeType;
   String? token;
 
   @override
@@ -36,6 +37,19 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     instantiate();
 
     super.initState();
+  }
+
+  Future<void> initEmployeeType() async {
+    // get the employee type form the shared preferences
+    final provider = context.read<PreferenceProvider>();
+
+    // get the employee type
+    await provider.getData(Keys.userType);
+
+    // set the employee type
+    employeeType = provider.data ?? '';
+
+    debugPrint('employeeType: $employeeType');
   }
 
   @override
@@ -244,7 +258,11 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                   Navigator.pushNamed(
                     context,
                     kRouteNotificationDetails,
-                    arguments: '${notifications[index].id}',
+                    arguments: {
+                      'id': '${notifications[index].id}',
+                      'userType': employeeType,
+                    },
+                    //arguments: '${notifications[index].id}',
                   );
                 },
               );
@@ -264,6 +282,9 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
 
     // get token
     token ??= await Helper.getToken(context);
+
+    // get the employee type
+    await initEmployeeType();
 
     // call api through provider
     await provider.getData(token!);
