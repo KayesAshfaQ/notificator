@@ -37,9 +37,37 @@ class NotificationRepository {
     }
   }
 
-  /// This method is for getting the notifications
+  /// This method is for getting the notification list from admin
   Future<NotificationListResponse> getNotifications(String token) async {
     final url = Uri.parse('$kBaseUrl/notifications');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final data = json.decode(response.body);
+
+    print(data);
+    //print('NotificationList::: ${response.statusCode}');
+
+    if (response.body.isNotEmpty) {
+      final notificationList = NotificationListResponse.fromJson(data);
+      print(notificationList);
+      return notificationList;
+    } else {
+      print('NotificationList::: 6');
+
+      throw Exception('failed!');
+    }
+  }
+
+
+  /// This method is for getting the notification list by employee
+  Future<NotificationListResponse> getNotificationsEmployee(String token) async {
+    final url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
 
     final response = await http.get(
       url,

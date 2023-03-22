@@ -16,7 +16,7 @@ class EmployeeListProvider with ChangeNotifier {
 
   List<EmployeeListResponseData>? get data => _data;
 
-  final EmployeeRepository _employeeRepository = EmployeeRepository();
+  final SettingRepository _employeeRepository = SettingRepository();
 
   /// This method is for submitting the email to the repository
   Future<void> getList(String token) async {

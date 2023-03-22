@@ -6,7 +6,9 @@ import 'package:notificator/widgets/notification_list_item_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
+import '../provider/preference_provider.dart';
 import '../util/helper.dart';
+import '../util/keys.dart';
 import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/outlined_button_widget.dart';
@@ -21,12 +23,26 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   late final NotificationListProvider provider;
   late final String token;
+  late final String employeeType;
 
   @override
   void initState() {
     instantiate();
 
     super.initState();
+  }
+
+  Future<void> initEmployeeType() async {
+    // get the employee type form the shared preferences
+    final provider = context.read<PreferenceProvider>();
+
+    // get the employee type
+    await provider.getData(Keys.userType);
+
+    // set the employee type
+    employeeType = provider.data ?? '';
+
+    debugPrint('employeeType: $employeeType');
   }
 
   /// This method is for initializing the provider
@@ -43,20 +59,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     print('token: $token');
 
-    // fetch the notification list data
-    await provider.getList(token);
+    // get the employee type
+    await initEmployeeType();
 
-    // listeners for refresh the ui when item is removed
-    /*  groupDeleteProvider.addListener(() {
-      if (groupDeleteProvider.success) {
-        provider.getList(token);
-      }
-    });*/
+    // fetch the notification list data
+    if (employeeType.isNotEmpty) {
+      await provider.getList(token, employeeType);
+    }
 
     // listeners for refresh the ui when item is created & updated
     notificationProvider.addListener(() {
       if (notificationProvider.success) {
-        provider.getList(token);
+        provider.getList(token, employeeType);
       }
     });
   }
@@ -67,7 +81,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return RefreshIndicator(
       onRefresh: () {
         // Refresh the list when the user pulls down
-        return provider.getList(token);
+        return provider.getList(token, employeeType);
       },
       child: ListView(
         padding: const EdgeInsets.all(20),
@@ -140,7 +154,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         height: height * .6,
                         child: const Center(
                           child: Text(
-                            'No GROUPS found.',
+                            'No Notification found.',
                             style: Utils.myTxtStyleBodySmall,
                           ),
                         ),

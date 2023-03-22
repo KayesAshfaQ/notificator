@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/model/notification_data.dart';
+import 'package:notificator/model/notification_list_response.dart';
 import 'package:notificator/repository/notification_repository.dart';
-
 
 class NotificationListProvider with ChangeNotifier {
   bool _success = false;
@@ -14,12 +14,20 @@ class NotificationListProvider with ChangeNotifier {
 
   List<NotificationData>? get data => _data;
 
-  final NotificationRepository _notificationRepository = NotificationRepository();
+  final NotificationRepository _notificationRepository =
+      NotificationRepository();
 
   /// This method is for fetching the notifications form the repository
-  Future<void> getList(String token) async {
+  Future<void> getList(String token, String userType) async {
     try {
-      final response = await _notificationRepository.getNotifications(token);
+      NotificationListResponse response;
+      if (userType == '1') {
+        response = await _notificationRepository.getNotifications(token);
+      } else {
+        response =
+            await _notificationRepository.getNotificationsEmployee(token);
+      }
+
       _success = response.success;
 
       if (success) {

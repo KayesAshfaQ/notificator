@@ -8,7 +8,6 @@ import 'package:notificator/widgets/notification_list_item_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../generated/assets.dart';
-import '../model/notification_data.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
@@ -73,12 +72,12 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
 
     final provider = context.watch<HomeEmployeeDataProvider>();
 
     Employee employee = provider.employee;
-    List<NotificationData> notifications = provider.notifications;
+    List<NotificationHome> notifications = provider.notifications;
     List<Group> groups = provider.groups;
 
     return RefreshIndicator(

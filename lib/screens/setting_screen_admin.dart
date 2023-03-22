@@ -40,7 +40,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
           InkWell(
             onTap: () {
-              Navigator.pushNamed(context, kRouteChangePass);
+              Navigator.pushNamed(context, kRouteSettingChangePass);
             },
             child: Container(
               width: double.infinity,
@@ -48,10 +48,61 @@ class _SettingScreenState extends State<SettingScreen> {
                 horizontal: 8.0,
                 vertical: 12.0,
               ),
-              child: const Text(
-                'Change Password',
-                textAlign: TextAlign.left,
-                style: Utils.myTxtStyleBodySmall,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Change Password',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: Utils.myTxtStyleBodySmall,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      Icons.arrow_right,
+                      //size: 24,
+                      //color: Colors.grey.shade800,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(
+            color: Colors.grey.shade400,
+            height: 4,
+          ),
+          InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, kRouteEmailConfig);
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 12.0,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Update Email Configuration',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: Utils.myTxtStyleBodySmall,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      Icons.arrow_right,
+                      //size: 24,
+                      //color: Colors.grey.shade800,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -64,14 +115,11 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 16, 8),
               child: Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: width - 86,
-                    child: const Text(
-                      'Deactivate your account',
-                      style: Utils.myTxtStyleBodySmall,
-                    ),
+                  const Text(
+                    'Deactivate your account',
+                    style: Utils.myTxtStyleBodySmall,
                   ),
                   SvgPicture.asset(
                     Assets.svgIcDelete,

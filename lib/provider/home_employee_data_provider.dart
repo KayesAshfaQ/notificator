@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../model/home_response_employee.dart';
-import '../model/notification_data.dart';
 import '../repository/home_rempository.dart';
 
 class HomeEmployeeDataProvider with ChangeNotifier {
@@ -11,7 +10,7 @@ class HomeEmployeeDataProvider with ChangeNotifier {
 
   List<Group> _groups = [];
 
-  List<NotificationData> _notifications = [];
+  List<NotificationHome> _notifications = [];
 
   String _error = '';
 
@@ -20,7 +19,7 @@ class HomeEmployeeDataProvider with ChangeNotifier {
 
   List<Group> get groups => _groups;
 
-  List<NotificationData> get notifications => _notifications;
+  List<NotificationHome> get notifications => _notifications;
 
   Employee get employee => _employee;
 

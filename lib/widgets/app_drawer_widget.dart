@@ -11,6 +11,7 @@ import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
 import '../generated/assets.dart';
+import '../provider/app_provider.dart';
 import '../provider/auth_key_provider.dart';
 import '../util/keys.dart';
 import '../util/utils.dart';
@@ -166,6 +167,9 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
     // initialize pref provider
     final prefProvider = context.read<PreferenceProvider>();
 
+    // initialize app provider
+    final appProvider = Provider.of<AppProvider>(context, listen: false);
+
     // get user token
     final authProvider = context.read<AuthKeyProvider>();
     await authProvider.getUserToken();
@@ -187,6 +191,10 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
       // Display a logout success toast
       Fluttertoast.showToast(
           msg: provider.message, toastLength: Toast.LENGTH_LONG);
+
+
+      // reset app provider
+      appProvider.reset();
 
       // Hide the progress loader
       if (context.mounted) {

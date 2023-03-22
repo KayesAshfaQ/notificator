@@ -37,4 +37,10 @@ class NotificationDetailsProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+void clearData() {
+    _data = null;
+    //notifyListeners();
+  }
+
 }

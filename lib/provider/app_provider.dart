@@ -17,4 +17,10 @@ class AppProvider extends ChangeNotifier {
     _title = value;
     notifyListeners();
   }
+
+  void reset() {
+    _currentIndex = 0;
+    _title = 'Home';
+   // notifyListeners();
+  }
 }

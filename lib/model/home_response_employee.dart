@@ -1,17 +1,15 @@
-import 'package:notificator/model/notification_data.dart';
-
 class EmployeeHomeResponse {
-  bool? success;
-  Employee? employee;
-  List<Group>? group;
-  List<NotificationData>? notification;
-
   EmployeeHomeResponse({
     this.success,
     this.employee,
     this.group,
     this.notification,
   });
+
+  bool? success;
+  Employee? employee;
+  List<Group>? group;
+  List<NotificationHome>? notification;
 
   factory EmployeeHomeResponse.fromJson(Map<String, dynamic> json) =>
       EmployeeHomeResponse(
@@ -24,7 +22,8 @@ class EmployeeHomeResponse {
             : List<Group>.from(json["group"]!.map((x) => Group.fromJson(x))),
         notification: json["notification"] == null
             ? []
-            : List<NotificationData>.from(json["notification"]!.map((x) => x)),
+            : List<NotificationHome>.from(
+                json["notification"]!.map((x) => NotificationHome.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,7 +34,7 @@ class EmployeeHomeResponse {
             : List<dynamic>.from(group!.map((x) => x.toJson())),
         "notification": notification == null
             ? []
-            : List<dynamic>.from(notification!.map((x) => x)),
+            : List<dynamic>.from(notification!.map((x) => x.toJson())),
       };
 }
 
@@ -59,7 +58,7 @@ class Employee {
   int? id;
   String? userId;
   String? companyId;
-  String? photo;
+  dynamic photo;
   String? firstName;
   String? lastName;
   String? empId;
@@ -124,5 +123,57 @@ class Group {
   Map<String, dynamic> toJson() => {
         "group_id": groupId,
         "group_name": groupName,
+      };
+}
+
+class NotificationHome {
+  NotificationHome({
+    this.id,
+    this.userId,
+    this.subject,
+    this.message,
+    this.groupIndividual,
+    this.groupIndividualIds,
+    this.groupIndividualName,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  String? id;
+  String? userId;
+  String? subject;
+  String? message;
+  String? groupIndividual;
+  String? groupIndividualIds;
+  String? groupIndividualName;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  factory NotificationHome.fromJson(Map<String, dynamic> json) => NotificationHome(
+        id: json["id"],
+        userId: json["user_id"],
+        subject: json["subject"],
+        message: json["message"],
+        groupIndividual: json["group_individual"],
+        groupIndividualIds: json["group_individual_ids"],
+        groupIndividualName: json["group_individual_name"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "user_id": userId,
+        "subject": subject,
+        "message": message,
+        "group_individual": groupIndividual,
+        "group_individual_ids": groupIndividualIds,
+        "group_individual_name": groupIndividualName,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

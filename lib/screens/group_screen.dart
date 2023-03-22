@@ -44,7 +44,7 @@ class _GroupScreenState extends State<GroupScreen> {
     // initialize the user token
     token = authProvider.userToken!;
 
-    // initialize the provider
+    // get the list of groups from the server using provider
     await provider.getList(token);
 
     // listeners for refresh the ui when item is removed

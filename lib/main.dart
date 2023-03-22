@@ -6,6 +6,7 @@ import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/email_config_provider.dart';
 import 'package:notificator/provider/logo_update_provider_company.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
@@ -31,7 +32,8 @@ import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/provider/toast_provider.dart';
-import 'package:notificator/screens/setting_screen.dart';
+import 'package:notificator/screens/email_config_screen.dart';
+import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/change_password_screen.dart';
 import 'package:notificator/screens/change_password_setting_screen.dart';
 import 'package:notificator/screens/employee_create_screen.dart';
@@ -89,6 +91,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => HomeEmployeeDataProvider()),
         ChangeNotifierProvider(create: (_) => EmployeePhotoUpdateProvider()),
         ChangeNotifierProvider(create: (_) => NotificationDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => EmailConfigProvider()),
       ],
       child: const MyApp(),
     ),
@@ -147,6 +150,7 @@ class MyApp extends StatelessWidget {
           kRouteSetting: (context) => const SettingScreen(),
           kRouteSettingChangePass: (context) =>
               const SettingChangePasswordScreen(),
+          kRouteEmailConfig: (context) => const EmailConfigScreen(),
           kRouteMoreDetails: (context) => const MoreScreen(),
         },
         initialRoute: kRouteSplash,

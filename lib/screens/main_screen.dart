@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/preference_provider.dart';
-import 'package:notificator/screens/setting_screen.dart';
+import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/home_screen_admin.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
@@ -103,12 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  @override
-  void initState() {
-    //initEmployeeType();
 
-    super.initState();
-  }
 
   int i = 0;
 
@@ -116,17 +111,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     if (employeeType == null) {
       initEmployeeType();
-      print(i++);
-    }
 
+    }print(i++);
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     final appProvider = Provider.of<AppProvider>(context);
-    final currentIndex = appProvider.currentIndex;
-    final title = appProvider.title;
     final width = MediaQuery.of(context).size.width;
 
     debugPrint('home_build');
@@ -139,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(
-            title,
+            appProvider.title,
             style: Utils.myTxtStyleTitleMedium.copyWith(
               color: AppColors.white,
             ),
@@ -162,30 +154,37 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         drawer: AppDrawerWidget(width: width),
-        body: Center(
-          child: employeeType == '1'
-              ? _screensAdmin[currentIndex]
-              : _screensEmployee[currentIndex],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: currentIndex,
-            onTap: (index) {
-              appProvider.setCurrentIndex(index);
-              appProvider.setTitle(
-                employeeType == '1'
-                    ? _titlesAdmin[currentIndex]
-                    : _titlesEmployee[currentIndex],
-              );
-            },
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.deepPurple,
-            selectedItemColor: AppColors.orange,
-            selectedFontSize: 10,
-            selectedIconTheme: const IconThemeData(size: 28),
-            unselectedItemColor: Colors.grey.shade300,
-            unselectedLabelStyle:
-                const TextStyle(color: AppColors.white, fontSize: 8),
-            items: employeeType == '1' ? _itemsAdmin : _itemsEmployee),
+        body: employeeType == null
+            ? const SizedBox()
+            : Center(
+                child: employeeType == '1'
+                    ? _screensAdmin[appProvider.currentIndex]
+                    : _screensEmployee[appProvider.currentIndex],
+              ),
+        bottomNavigationBar: employeeType == null
+            ? null
+            : BottomNavigationBar(
+                currentIndex: appProvider.currentIndex,
+                onTap: (index) {
+                  appProvider.setCurrentIndex(index);
+                  appProvider.setTitle(
+                    employeeType == '1'
+                        ? _titlesAdmin[appProvider.currentIndex]
+                        : _titlesEmployee[appProvider.currentIndex],
+                  );
+                },
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: AppColors.deepPurple,
+                selectedItemColor: AppColors.orange,
+                selectedFontSize: 10,
+                selectedIconTheme: const IconThemeData(size: 28),
+                unselectedItemColor: Colors.grey.shade300,
+                unselectedLabelStyle: const TextStyle(
+                  color: AppColors.white,
+                  fontSize: 8,
+                ),
+                items: employeeType == '1' ? _itemsAdmin : _itemsEmployee,
+              ),
       ),
     );
   }

@@ -33,3 +33,4 @@ const kRouteUpdateEmployee = '/employeeList/updateEmployee';
 const kRouteSetting = '/settings';
 const kRouteMoreDetails = '/moreDetails';
 const kRouteSettingChangePass = '/settingChangePass';
+const kRouteEmailConfig = '/emailConfiguration';
