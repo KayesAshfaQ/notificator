@@ -28,7 +28,7 @@ class AdminProfileScreen extends StatefulWidget {
 }
 
 class _AdminProfileScreenState extends State<AdminProfileScreen> {
-  late final String employeeType;
+  String? employeeType;
   String? token;
 
   @override
@@ -47,7 +47,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     await provider.getData(Keys.userType);
 
     // set the employee type
-    employeeType = provider.data ?? '';
+    employeeType ??= provider.data ?? '';
 
     debugPrint('employeeType: $employeeType');
   }

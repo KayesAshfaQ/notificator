@@ -57,7 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // initialize the user token
     token = await Helper.getToken(context);
 
-    print('token: $token');
+    debugPrint('token: $token');
 
     // get the employee type
     await initEmployeeType();
@@ -102,11 +102,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 icon: Icons.filter_list,
               ),
               const Spacer(),
-              ElevatedCreateButtonWidget(
-                title: 'Send Notification',
-                icon: Icons.circle_notifications_sharp,
-                onPressed: () {
-                  Navigator.pushNamed(context, kRouteCreateNotification);
+              Consumer<PreferenceProvider>(
+                builder: (BuildContext context, value, Widget? child) {
+                  return value.data == '1'
+                      ? ElevatedCreateButtonWidget(
+                          title: 'Send Notification',
+                          icon: Icons.circle_notifications_sharp,
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, kRouteCreateNotification);
+                          },
+                        )
+                      : const SizedBox();
                 },
               ),
             ],
