@@ -168,7 +168,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
     final prefProvider = context.read<PreferenceProvider>();
 
     // initialize app provider
-    final appProvider = Provider.of<AppProvider>(context, listen: false);
+    final appProvider = context.read<AppProvider>();
 
     // get user token
     final authProvider = context.read<AuthKeyProvider>();
@@ -192,10 +192,6 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
       Fluttertoast.showToast(
           msg: provider.message, toastLength: Toast.LENGTH_LONG);
 
-
-      // reset app provider
-      appProvider.reset();
-
       // Hide the progress loader
       if (context.mounted) {
         context.loaderOverlay.hide();
@@ -203,12 +199,15 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
 
       // Navigate to login screen
       if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
+        await Navigator.pushNamedAndRemoveUntil(
           context,
           kRouteLogin,
           (route) => false,
         );
       }
+
+      // reset app provider
+      appProvider.reset();
     } else {
       // Display a logout fail toast
       Fluttertoast.showToast(

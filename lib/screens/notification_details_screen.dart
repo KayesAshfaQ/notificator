@@ -43,7 +43,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
     final settings = ModalRoute.of(context)?.settings;
 
     // Access the arguments property and cast it to the Person class
-    final data = settings?.arguments as Map<String, String>?;
+    final data = settings?.arguments as Map;
 
     // get token
     String token = await Helper.getToken(context);

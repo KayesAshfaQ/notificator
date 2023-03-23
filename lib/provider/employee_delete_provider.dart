@@ -12,7 +12,7 @@ class EmployeeDeleteProvider with ChangeNotifier {
 
   String get message => _message;
 
-  final SettingRepository _employeeRepository = SettingRepository();
+  final EmployeeRepository _employeeRepository = EmployeeRepository();
 
   Future<void> delete(int id, String token) async {
     try {

@@ -18,7 +18,7 @@ class EmailConfigProvider with ChangeNotifier {
   /// This method is to get email configurations
   Future<void> getEmailConfig(String token) async {
     try {
-      final response = await _settingRepository.getEmailConfig(token);
+      final response = await _settingRepository.getSmtpConfig(token);
       _success = response.success ?? false;
 
       if (success) {
@@ -38,7 +38,7 @@ class EmailConfigProvider with ChangeNotifier {
   /// This method is for post email configuration
   Future<void> setEmailConfig(Config config, String token) async {
     try {
-      final response = await _settingRepository.setConfig(config, token);
+      final response = await _settingRepository.setSmtpConfig(config, token);
       _success = response.success ?? false;
 
       if (success) {

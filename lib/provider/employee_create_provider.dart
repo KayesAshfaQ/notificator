@@ -15,7 +15,7 @@ class EmployeeCreateProvider with ChangeNotifier {
 
   EmployeeCreateResponseData? get data => _data;
 
-  final SettingRepository _employeeRepository = SettingRepository();
+  final EmployeeRepository _employeeRepository = EmployeeRepository();
 
   /// This method is for creating new group
   Future<void> create(Employee employee, String token) async {

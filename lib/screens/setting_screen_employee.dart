@@ -1,38 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/constants/setting_constants.dart';
+import 'package:notificator/provider/setting_data_get_provider.dart';
 import 'package:notificator/util/utils.dart';
+import 'package:provider/provider.dart';
 
-import '../constants/app_colors.dart';
 import '../constants/routes.dart';
 import '../generated/assets.dart';
+import '../provider/toast_provider.dart';
+import '../util/helper.dart';
 import '../widgets/app_alert_dialog.dart';
+import '../widgets/setting_item_widget.dart';
 
-class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+class SettingEmployeeScreen extends StatefulWidget {
+  const SettingEmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  State<SettingScreen> createState() => _SettingScreenState();
+  State<SettingEmployeeScreen> createState() => _SettingEmployeeScreenState();
 }
 
-class _SettingScreenState extends State<SettingScreen> {
+class _SettingEmployeeScreenState extends State<SettingEmployeeScreen> {
+  String? token;
+
+  @override
+  void initState() {
+    instantiate();
+    super.initState();
+  }
+
+  Future<void> instantiate() async {
+    // show overlay
+    context.loaderOverlay.show();
+
+    // instantiate provider
+    final provider = context.read<SettingDataGetProvider>();
+
+    // get token
+    token ??= await Helper.getToken(context);
+
+    // call api through provider
+    await provider.getData(token!);
+
+    // hide overlay
+    if (context.mounted) {
+      context.loaderOverlay.hide();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    //final width = MediaQuery.of(context).size.width;
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    final provider = context.watch<SettingDataGetProvider>();
+
+    return RefreshIndicator(
+      onRefresh: () {
+        final provider = context.read<SettingDataGetProvider>();
+        return provider.getData(token!);
+      },
+      child: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: [
-          const SettingItemWidget(
-            title: 'Receive notification to mail',
+          SettingItemWidget(
+            title: 'Receive notifications on mail',
+            switchValue: provider.mailNotification,
+            onChanged: (value) => sendSettingsData(
+              value,
+              SettingConstants.keyReceiveMailNotification,
+            ),
           ),
           Divider(
             color: Colors.grey.shade400,
             height: 4,
           ),
-          const SettingItemWidget(
+          SettingItemWidget(
             title: 'Receive push notifications',
+            switchValue: provider.pushNotification,
+            onChanged: (value) => sendSettingsData(
+              value,
+              SettingConstants.keyReceivePushNotification,
+            ),
           ),
           Divider(
             color: Colors.grey.shade400,
@@ -48,13 +96,27 @@ class _SettingScreenState extends State<SettingScreen> {
                 horizontal: 8.0,
                 vertical: 12.0,
               ),
-              child: const Text(
-                'Change Password',
-                textAlign: TextAlign.left,
-                style: Utils.myTxtStyleBodySmall,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Text(
+                    'Change Password',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.left,
+                    style: Utils.myTxtStyleBodySmall,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      Icons.arrow_right,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
+
           Divider(
             color: Colors.grey.shade400,
             height: 4,
@@ -64,14 +126,11 @@ class _SettingScreenState extends State<SettingScreen> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 16, 8),
               child: Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: width - 86,
-                    child: const Text(
-                      'Deactivate your account',
-                      style: Utils.myTxtStyleBodySmall,
-                    ),
+                  const Text(
+                    'Deactivate your account',
+                    style: Utils.myTxtStyleBodySmall,
                   ),
                   SvgPicture.asset(
                     Assets.svgIcDelete,
@@ -87,6 +146,38 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
+  /// send settings data to server
+  void sendSettingsData(bool value, String key) async {
+    debugPrint('value: $value, key: $key');
+
+    // show progress loader
+    context.loaderOverlay.show();
+
+    // initialize toast provider
+    final toastProvider = context.read<ToastProvider>();
+    toastProvider.initialize(context);
+
+    // call api through provider
+    final provider = context.read<SettingDataGetProvider>();
+    await provider.setData(
+      token!,
+      key,
+      value ? SettingConstants.switchOn : SettingConstants.switchOff,
+    );
+
+    // show toast message
+    if (provider.success) {
+      // Display a success toast
+      toastProvider.showSuccessToast('success');
+    } else {
+      // Display a success toast
+      toastProvider.showErrorToast('error');
+    }
+
+    // hide progress loader
+    if (context.mounted) context.loaderOverlay.hide();
+  }
+
   /// Show dialog to confirm delete account
   void onDeactivateAccount() {
     showDialog(
@@ -100,39 +191,6 @@ class _SettingScreenState extends State<SettingScreen> {
           },
         );
       },
-    );
-  }
-}
-
-class SettingItemWidget extends StatelessWidget {
-  final String title;
-
-  const SettingItemWidget({
-    super.key,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const SizedBox(width: 4),
-        SizedBox(
-          width: width - 108,
-          child: Text(
-            title,
-            style: Utils.myTxtStyleBodySmall,
-          ),
-        ),
-        Switch(
-          activeColor: AppColors.deepPurple,
-          value: true,
-          onChanged: (value) {},
-        ),
-      ],
     );
   }
 }

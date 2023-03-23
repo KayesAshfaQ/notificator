@@ -11,7 +11,7 @@ class Helper {
     if (authProvider.userToken == null) {
       await authProvider.getUserToken();
     }
-    return authProvider.userToken!;
+    return authProvider.userToken ?? '';
   }
 
   /// This method is used to process the date time

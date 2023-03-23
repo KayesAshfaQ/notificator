@@ -9,7 +9,7 @@ import 'package:notificator/model/employee_update_response.dart';
 import '../constants/app_info.dart';
 import 'package:http/http.dart' as http;
 
-class SettingRepository {
+class EmployeeRepository {
   /// This method is create new employee
   Future<EmployeeCreateResponse> create(Employee employee, String token) async {
     final url = Uri.parse('$kBaseUrl/employees');

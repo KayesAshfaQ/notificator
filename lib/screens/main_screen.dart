@@ -6,6 +6,7 @@ import 'package:notificator/screens/home_screen_admin.dart';
 import 'package:notificator/screens/employee_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
 import 'package:notificator/screens/notification_screen.dart';
+import 'package:notificator/screens/setting_screen_employee.dart';
 import 'package:notificator/util/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //GroupScreen(),
     NotificationScreen(),
     //EmployeeScreen(),
-    SettingScreen(),
+    SettingEmployeeScreen(),
   ];
 
   // bottom navigation bar screens list for admin
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     GroupScreen(),
     NotificationScreen(),
     EmployeeScreen(),
-    SettingScreen(),
+    SettingAdminScreen(),
   ];
 
   final _itemsEmployee = const [
@@ -103,16 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-
-
   int i = 0;
 
   @override
   void didChangeDependencies() {
     if (employeeType == null) {
       initEmployeeType();
-
-    }print(i++);
+    }
+    print(i++);
     super.didChangeDependencies();
   }
 

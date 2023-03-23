@@ -16,7 +16,7 @@ class EmployeeUpdateProvider with ChangeNotifier {
 
   Data? get data => _data;
 
-  final SettingRepository _employeeRepository = SettingRepository();
+  final EmployeeRepository _employeeRepository = EmployeeRepository();
 
   /// This method is for creating new group
   Future<void> updateByAdmin(Employee employee, String token, int id) async {
