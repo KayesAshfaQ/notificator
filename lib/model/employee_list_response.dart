@@ -52,19 +52,19 @@ class EmployeeListResponseData {
     required this.updatedAt,
   });
 
-  int id;
-  String userId;
-  String companyId;
-  String? photo;
-  String firstName;
-  String lastName;
-  String empId;
-  String email;
+  int? id;
+  int? userId;
+  int? companyId;
+  dynamic photo;
+  String? firstName;
+  String? lastName;
+  String? empId;
+  String? email;
   String? phone;
-  String position;
-  String status;
-  DateTime createdAt;
-  DateTime updatedAt;
+  String? position;
+  int? status;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   factory EmployeeListResponseData.fromJson(Map<String, dynamic> json) =>
       EmployeeListResponseData(
@@ -79,8 +79,8 @@ class EmployeeListResponseData {
         phone: json["phone"],
         position: json["position"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -95,7 +95,7 @@ class EmployeeListResponseData {
         "phone": phone,
         "position": position,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
       };
 }

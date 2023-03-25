@@ -149,9 +149,6 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
     );
   }
 
-  // TODO: Update Employee
-  void update() {}
-
   void removeEmployee() {
     // Show dialog to confirm remove employee
     showDialog(

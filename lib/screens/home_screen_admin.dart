@@ -290,7 +290,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     await provider.getData(token!);
 
     // when data is successfully fetched
-    if (provider.success) {
+   /* if (provider.success) {
       debugPrint('HOME_DATA::: success');
 
       // TODO: this must be done in a better way (maybe in the login screen)
@@ -298,7 +298,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
       if (provider.company.id != null) {
         saveCompanyId(provider.company.id!);
       }
-    }
+    }*/
 
     // hide overlay
     if (context.mounted) {
@@ -310,6 +310,6 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     // store the user type & id in shared-preferences
     final prefProvider = context.read<PreferenceProvider>();
     debugPrint('company id: $id');
-    prefProvider.setData(Keys.userCompanyID, '$id');
+    prefProvider.setData(Keys.companyID, '$id');
   }
 }

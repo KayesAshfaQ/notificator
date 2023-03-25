@@ -32,13 +32,25 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
   final TextEditingController _groupController = TextEditingController();
 
   int? employeeId;
+  int i = 0;
 
   //final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
-    instantiate();
+    fetchData();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // instantiate the controllers only once when the screen is loaded for the first time
+    if (i == 0) {
+      instantiate();
+      i++;
+    }
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -54,18 +66,6 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get the current route's settings
-    final settings = ModalRoute.of(context)?.settings;
-
-    // Access the arguments property and cast it to the Person class
-    final employee = settings?.arguments as Employee?;
-
-    employeeId = employee?.id;
-    _firstNameController.text = employee?.firstName ?? '';
-    _lastNameController.text = employee?.lastName ?? '';
-    _emailController.text = employee?.email ?? '';
-    _positionController.text = employee?.position ?? '';
-
     final provider = context.watch<GroupChipProvider>();
     _groupController.text = provider.selectedGroupName;
 
@@ -279,8 +279,23 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
     }
   }
 
-  /// fetch all groups
+  /// instantiate the text fields with the employee data
   void instantiate() async {
+    // Get the current route's settings
+    final settings = ModalRoute.of(context)?.settings;
+
+    // Access the arguments property and cast it to the Person class
+    final employee = settings?.arguments as Employee?;
+
+    employeeId = employee?.id;
+    _firstNameController.text = employee?.firstName ?? '';
+    _lastNameController.text = employee?.lastName ?? '';
+    _emailController.text = employee?.email ?? '';
+    _positionController.text = employee?.position ?? '';
+  }
+
+  /// fetch all groups
+  void fetchData() async {
     // Display a progress loader
     context.loaderOverlay.show();
 

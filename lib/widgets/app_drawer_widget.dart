@@ -186,7 +186,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
       // clear pref
       prefProvider.removeData(Keys.userID);
       prefProvider.removeData(Keys.userType);
-      prefProvider.removeData(Keys.userCompanyID);
+      prefProvider.removeData(Keys.companyID);
 
       // Display a logout success toast
       Fluttertoast.showToast(

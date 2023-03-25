@@ -83,7 +83,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
 
     //await prefProvider.getData(Keys.userType);
 
-    await prefProvider.getData(Keys.userCompanyID);
+    await prefProvider.getData(Keys.companyID);
     companyId = prefProvider.data!;
   }
 

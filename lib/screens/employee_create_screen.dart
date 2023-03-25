@@ -67,15 +67,6 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /*const Text(
-                  'Create Employees',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),*/
                 const SizedBox(height: 8.0),
                 SeparatedLabeledTextField(
                   controller: _firstNameController,

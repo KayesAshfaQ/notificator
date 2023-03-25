@@ -122,10 +122,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                           final employee = provider.data![index];
 
                           return EmployeeListItemWidget(
-                            id: employee.id,
-                            firstName: employee.firstName,
-                            lastName: employee.lastName,
-                            position: employee.position,
+                            id: employee.id!,
+                            firstName: employee.firstName ?? '',
+                            lastName: employee.lastName ?? '',
+                            position: employee.position ?? '',
                             photo: employee.photo,
                             email: employee.email,
                           );

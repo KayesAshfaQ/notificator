@@ -1,6 +1,6 @@
 class Company {
   int? id;
-  String? userId;
+  dynamic userId;
   String? logo;
   String? name;
   String? phone;

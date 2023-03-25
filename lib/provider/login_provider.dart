@@ -8,6 +8,8 @@ class LoginProvider with ChangeNotifier {
   bool _success = false;
   String _error = '';
   String _token = '';
+  int _employeeId = 0;
+  int _companyId = 0;
   LoginSuccessResponseData? _data;
 
   bool get success => _success;
@@ -15,6 +17,10 @@ class LoginProvider with ChangeNotifier {
   String get error => _error;
 
   String get token => _token;
+
+  int get employeeId => _employeeId;
+
+  int get companyId => _companyId;
 
   LoginSuccessResponseData? get data => _data;
 
@@ -27,6 +33,8 @@ class LoginProvider with ChangeNotifier {
 
       if (success) {
         _token = response.token ?? '';
+        _employeeId = response.employeeId ?? 0;
+        _companyId = response.companyId ?? 0;
         _data = response.data;
       } else {
         _error = response.errors?.message ?? 'Login failed!';

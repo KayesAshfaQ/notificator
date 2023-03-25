@@ -198,6 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
           debugPrint('user type: ${provider.data?.type}');
           prefProvider.setData(Keys.userType, '${provider.data?.type}');
           prefProvider.setData(Keys.userID, '${provider.data?.id}');
+          prefProvider.setData(Keys.companyID, '${provider.companyId}');
+          prefProvider.setData(Keys.employeeID, '${provider.employeeId}');
         }
 
         //Navigate to the home screen
@@ -217,5 +219,12 @@ class _LoginScreenState extends State<LoginScreen> {
       // Hide the progress loader
       if (context.mounted) context.loaderOverlay.hide();
     }
+  }
+
+  void saveCompanyId(String id) {
+    // store the user type & id in shared-preferences
+    final prefProvider = context.read<PreferenceProvider>();
+    debugPrint('company id: $id');
+    prefProvider.setData(Keys.companyID, id);
   }
 }

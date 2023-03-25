@@ -64,7 +64,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     if (token != null) await provider.getData(token!);
 
     // when data is successfully fetched
-    if (provider.success) {
+    /* if (provider.success) {
       debugPrint('HOME_DATA::: success');
 
       // cache company id
@@ -72,7 +72,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
       if (provider.employee.companyId != null) {
         saveCompanyId(provider.employee.companyId!);
       }
-    }
+    }*/
 
     // hide overlay
     if (context.mounted) {
@@ -84,7 +84,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     // store the user type & id in shared-preferences
     final prefProvider = context.read<PreferenceProvider>();
     debugPrint('company id: $id');
-    prefProvider.setData(Keys.userCompanyID, id);
+    prefProvider.setData(Keys.companyID, id);
   }
 
   @override

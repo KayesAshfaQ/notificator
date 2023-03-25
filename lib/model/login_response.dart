@@ -1,10 +1,19 @@
 class LoginResponse {
-  final bool success;
-  final LoginSuccessResponseData? data;
-  final String? token;
-  final LoginErrorResponseData? errors;
+  bool success;
+  LoginSuccessResponseData? data;
+  String? token;
+  int? employeeId;
+  int? companyId;
+  LoginErrorResponseData? errors;
 
-  LoginResponse({required this.success, this.token, this.data, this.errors});
+  LoginResponse({
+    required this.success,
+    this.token,
+    this.data,
+    this.employeeId,
+    this.companyId,
+    this.errors,
+  });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     if (json['success'] == false) {
@@ -17,6 +26,8 @@ class LoginResponse {
         success: json['success'],
         token: json['token'],
         data: LoginSuccessResponseData.fromJson(json['data']),
+        employeeId: json["employee_id"],
+        companyId: json["company_id"],
       );
     }
   }
@@ -32,21 +43,6 @@ class LoginErrorResponseData {
     return LoginErrorResponseData(message: json['message']);
   }
 }
-
-// for handle success response
-/*class LoginSuccessResponseData {
-  final String token;
-  final int userId;
-
-  LoginSuccessResponseData({required this.token, required this.userId});
-
-  factory LoginSuccessResponseData.fromJson(Map<String, dynamic> json) {
-    return LoginSuccessResponseData(
-      token: json['token'],
-      userId: json['user_id'],
-    );
-  }
-}*/
 
 class LoginSuccessResponseData {
   LoginSuccessResponseData({
