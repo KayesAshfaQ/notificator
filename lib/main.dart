@@ -7,6 +7,7 @@ import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/email_config_provider.dart';
+import 'package:notificator/provider/forgot_code_provider.dart';
 import 'package:notificator/provider/logo_update_provider_company.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
@@ -34,6 +35,7 @@ import 'package:notificator/provider/setting_data_get_provider.dart';
 import 'package:notificator/provider/setting_data_post_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/provider/toast_provider.dart';
+import 'package:notificator/provider/user_preference_provider.dart';
 import 'package:notificator/screens/email_config_screen.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/change_password_screen.dart';
@@ -41,7 +43,7 @@ import 'package:notificator/screens/change_password_setting_screen.dart';
 import 'package:notificator/screens/employee_create_screen.dart';
 import 'package:notificator/screens/notification_create_screen.dart';
 import 'package:notificator/screens/employee_screen.dart';
-import 'package:notificator/screens/forget_password_screen.dart';
+import 'package:notificator/screens/forgot_password_screen.dart';
 import 'package:notificator/screens/group_screen.dart';
 import 'package:notificator/screens/main_screen.dart';
 import 'package:notificator/screens/login_screen.dart';
@@ -96,6 +98,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => EmailConfigProvider()),
         ChangeNotifierProvider(create: (_) => SettingDataGetProvider()),
         ChangeNotifierProvider(create: (_) => SettingDataSendProvider()),
+        ChangeNotifierProvider(create: (_) => ForgotCodeProvider()),
+        ChangeNotifierProvider(create: (_) => UserPreferenceProvider()),
       ],
       child: const MyApp(),
     ),

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:notificator/constants/app_info.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../generated/assets.dart';
@@ -10,8 +11,10 @@ import '../generated/assets.dart';
 class UpdateImgWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final File? image;
+  final String? imageUrl;
 
-  const UpdateImgWidget({Key? key, this.onTap, this.image}) : super(key: key);
+  const UpdateImgWidget({Key? key, this.onTap, this.image, this.imageUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,14 @@ class UpdateImgWidget extends StatelessWidget {
                     height: 120,
                     width: 120,
                   )
+                //TODO: uncomment this when the server is ready
+                /*   : imageUrl != null
+                    ? Image.network(
+                        '$kImgUrl$imageUrl!',
+                        fit: BoxFit.cover,
+                        height: 120,
+                        width: 120,
+                      )*/
                 : ClipOval(
                     child: SizedBox.fromSize(
                       size: const Size.fromRadius(60), // Image radius

@@ -38,6 +38,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   ToastProvider? toastProvider;
   String? employeeId;
   String? userId;
+  String? imgUrl;
 
   @override
   void initState() {
@@ -59,6 +60,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _lastNameController.text = employee.lastName ?? '';
     _emailController.text = employee.email ?? '';
     _phoneController.text = employee.phone ?? '';
+
+    imgUrl = employee.photo ?? '';
   }
 
   /// initialize token
@@ -133,6 +136,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 Center(
                   child: UpdateImgWidget(
                     image: imgProvider.image,
+                    imageUrl: imgUrl,
                     onTap: () async {
                       // pick image from gallery though image picker
                       final pickedFile = await ImagePicker().pickImage(
@@ -259,6 +263,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (token == null || employeeId == null) {
         return;
       }
+
       // call the rest api through provider & send data through it
       final provider = context.read<EmployeeUpdateProvider>();
       await provider.updateByEmployee(employee, token!, employeeId!);
@@ -267,6 +272,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       if (provider.success) {
         // Display a success toast
         toastProvider?.showSuccessToast('new employee Updated successfully');
+
+        // update cached data in shared preferences for the user info
+        if (context.mounted) {
+          final prefProvider = context.read<PreferenceProvider>();
+          prefProvider.setData(Keys.userName,
+              '${provider.data?.firstName} ${provider.data?.lastName}');
+          prefProvider.setData(Keys.userEmail, '${provider.data?.email}');
+          prefProvider.setData(Keys.userImg, '${provider.data?.photo}');
+        }
 
         // hide the bottom sheet
         if (context.mounted) Navigator.pop(context);

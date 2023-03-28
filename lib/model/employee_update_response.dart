@@ -37,16 +37,16 @@ class Data {
   });
 
   int? id;
-  String? userId;
-  String? companyId;
-  dynamic photo;
+  int? userId;
+  int? companyId;
+  String? photo;
   String? firstName;
   String? lastName;
   String? empId;
   String? email;
   String? phone;
   String? position;
-  String? status;
+  int? status;
   DateTime? createdAt;
   DateTime? updatedAt;
 

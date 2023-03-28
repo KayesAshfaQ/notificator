@@ -15,7 +15,7 @@ class PassChangeProvider with ChangeNotifier {
 
   final AuthRepository _loginRepository = AuthRepository();
 
-  Future<void> logout(String token, String oldPass, String newPass) async {
+  Future<void> changePass(String token, String oldPass, String newPass) async {
     try {
       final response = await _loginRepository.changePassword(
         token,
@@ -37,4 +37,29 @@ class PassChangeProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> resetPass(String email, String code, String pass) async {
+    try {
+      final response = await _loginRepository.resetPassword(
+        email,
+        code,
+        pass,
+      );
+      _success = response.success;
+
+      if (success) {
+        _message = response.message;
+      } else {
+        _error = response.message;
+      }
+      notifyListeners();
+    } catch (e) {
+      _success = false;
+      _error = e.toString();
+      print(_error);
+      notifyListeners();
+    }
+  }
+
+
 }

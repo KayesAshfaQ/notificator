@@ -78,4 +78,31 @@ class AuthRepository {
       throw Exception('Failed to change password');
     }
   }
+
+  /// this function is used to logout the user
+  Future<ChangePassResponse> resetPassword(
+    String email,
+    String code,
+    String pass,
+  ) async {
+    final url = Uri.parse('$kBaseUrl/confirmreset');
+    final response = await http.post(
+      url,
+      body: {
+        'email': email,
+        'verification_code': code,
+        'password': pass,
+      },
+    );
+
+    final data = json.decode(response.body);
+    print(data);
+
+    if (response.body.isNotEmpty) {
+      final responseSuccess = ChangePassResponse.fromJson(data);
+      return responseSuccess;
+    } else {
+      throw Exception('Failed to change password');
+    }
+  }
 }

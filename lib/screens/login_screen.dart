@@ -199,7 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
           prefProvider.setData(Keys.userType, '${provider.data?.type}');
           prefProvider.setData(Keys.userID, '${provider.data?.id}');
           prefProvider.setData(Keys.companyID, '${provider.companyId}');
-          prefProvider.setData(Keys.employeeID, '${provider.employeeId}');
+          prefProvider.setData(Keys.userName, '${provider.data?.name}');
+          prefProvider.setData(Keys.userEmail, '${provider.data?.email}');
+          prefProvider.setData(Keys.userImg, provider.imageUrl);
         }
 
         //Navigate to the home screen

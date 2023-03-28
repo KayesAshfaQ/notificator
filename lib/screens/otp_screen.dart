@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/routes.dart';
+import 'package:notificator/provider/forgot_code_provider.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
+import '../provider/forgot_pass_provider.dart';
+import '../provider/toast_provider.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 import '../widgets/white_button_widgets.dart';
@@ -18,8 +23,21 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   bool hasError = false;
-  String currentText = "";
+  String currentCode = "";
   final formKey = GlobalKey<FormState>();
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // get the email from the arguments passed to this screen
+    email ??= ModalRoute.of(context)?.settings.arguments as String;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,14 +109,13 @@ class _OtpScreenState extends State<OtpScreen> {
                       length: 6,
                       obscuringCharacter: '*',
                       animationType: AnimationType.scale,
-                      validator: (v) {
-                        if (v!.length < 3) {
-                          return "I'm from validator";
+                      /*validator: (v) {
+                        if (v!.length < 6) {
+                          return "enter 6 digit code";
                         } else {
                           return null;
                         }
-                      },
-                      
+                      },*/
                       textStyle: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -132,9 +149,10 @@ class _OtpScreenState extends State<OtpScreen> {
                       },
                       onChanged: (value) {
                         debugPrint(value);
-                        setState(() {
+                        currentCode = value;
+                        /* setState(() {
                           currentText = value;
-                        });
+                        });*/
                       },
                       beforeTextPaste: (text) {
                         debugPrint("Allowing to paste $text");
@@ -146,35 +164,38 @@ class _OtpScreenState extends State<OtpScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                RichText(
-                  text: const TextSpan(
-                    text: 'Don\'t receive OTP? ',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontFamily: 'BaiJamjuree',
+
+                //const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  width: double.infinity,
+                  child: WhiteButtonWidget(
+                    label: 'Submit',
+                    onPressed: sendCode,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Didn\'t receive OTP? ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'BaiJamjuree',
+                      ),
                     ),
-                    children: [
-                      TextSpan(
-                        text: 'Resend OTP',
+                    TextButton(
+                      onPressed: resend,
+                      child: const Text(
+                        'Resend OTP',
                         style: TextStyle(
                           color: AppColors.orange,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'BaiJamjuree',
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  width: double.infinity,
-                  child: WhiteButtonWidget(
-                    label: 'Submit',
-                    onPressed: () {
-                      Navigator.pushNamed(context, kRouteChangePass);
-                    },
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -182,5 +203,89 @@ class _OtpScreenState extends State<OtpScreen> {
         ),
       ),
     );
+  }
+
+  void sendCode() async {
+    // toast
+    final toastProvider = context.read<ToastProvider>();
+    toastProvider.initialize(context);
+
+    if (email?.isEmpty ?? true) {
+      toastProvider.showErrorToast('Email is required');
+    } else if (currentCode.isEmpty) {
+      toastProvider.showErrorToast('OTP is required');
+    } else if (currentCode.length < 6) {
+      toastProvider.showErrorToast('OTP must be 6 digits');
+    } else {
+      // hide the keyboard
+      FocusScope.of(context).unfocus();
+
+      // Display a progress loader
+      context.loaderOverlay.show();
+
+      // call the rest api through provider
+      final provider = context.read<ForgotCodeProvider>();
+      await provider.submit(email!, currentCode);
+
+      // check if the submission was successful
+      if (provider.success) {
+        // Display a success toast
+
+        // toastProvider.showSuccessToast('submission successful, check your email');
+
+        toastProvider
+            .showSuccessToast('code matched, please change your password');
+
+        // Navigate to the otp screen
+        if (context.mounted) {
+          Navigator.pushNamed(
+            context,
+            kRouteChangePass,
+            arguments: {
+              'email': email,
+              'code': currentCode,
+            },
+          );
+        }
+
+        // Hide the progress loader
+        if (context.mounted) context.loaderOverlay.hide();
+      } else {
+        // Display the error toast
+        toastProvider.showErrorToast(provider.error);
+
+        // Hide the progress loader
+        if (context.mounted) context.loaderOverlay.hide();
+      }
+    }
+  }
+
+  void resend() async {
+    // Display a progress loader
+    context.loaderOverlay.show();
+
+    // toast
+    final toastProvider = context.read<ToastProvider>();
+    toastProvider.initialize(context);
+
+    // call the rest api through provider
+    final provider = context.read<ForgotPassProvider>();
+    await provider.submit(email!);
+
+    // check if the submission was successful
+    if (provider.success) {
+      // Display a success toast
+
+      // toastProvider.showSuccessToast('submission successful, check your email');
+
+      toastProvider
+          .showSuccessToast('code resend successful, CODE:  ${provider.code}');
+    } else {
+      // Display an error toast
+      toastProvider.showErrorToast(provider.error);
+    }
+
+    // Hide the progress loader
+    if (context.mounted) context.loaderOverlay.hide();
   }
 }

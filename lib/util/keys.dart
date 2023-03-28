@@ -8,5 +8,8 @@ class Keys {
   static const String userID = 'user_id_key';
   static const String companyID = 'user_company_key';
   static const String employeeID = 'user_employee_key';
+  static const String userImg = 'user_img_url';
+  static const String userEmail = 'user_email_address';
+  static const String userName = 'user_name';
   static const int isFirstLogin = 0; // 1 = first time, 0 = not first time
 }

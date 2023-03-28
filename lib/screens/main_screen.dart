@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/preference_provider.dart';
+import 'package:notificator/provider/user_preference_provider.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/home_screen_admin.dart';
 import 'package:notificator/screens/employee_screen.dart';
@@ -197,6 +198,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // set the employee type
     employeeType = provider.data ?? '';
+
+    if (context.mounted) {
+      await context
+          .read<UserPreferenceProvider>()
+          .getData(Keys.userName, Keys.userImg);
+    }
 
     debugPrint('employeeType: $employeeType');
   }

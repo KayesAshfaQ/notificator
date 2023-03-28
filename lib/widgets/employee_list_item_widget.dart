@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/constants/app_info.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/model/employee.dart';
 import 'package:notificator/util/helper.dart';
@@ -79,8 +80,9 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                   child: SizedBox.fromSize(
                       size: const Size.fromRadius(20), // Image radius
                       child: CachedNetworkImage(
-                        imageUrl: widget.photo ??
-                            'https://eu.ui-avatars.com/api/?name=${widget.firstName}+${widget.lastName}&size=64',
+                        imageUrl: widget.photo == null
+                            ? 'https://eu.ui-avatars.com/api/?name=${widget.firstName}+${widget.lastName}&size=64'
+                            : '$kImgUrl${widget.photo}',
                         fit: BoxFit.cover,
                       )),
                 ),

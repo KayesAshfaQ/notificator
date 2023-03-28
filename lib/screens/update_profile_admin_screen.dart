@@ -37,6 +37,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
   ToastProvider? toastProvider;
   String? companyId;
   String? userId;
+  String? imgUrl;
 
   @override
   void initState() {
@@ -59,6 +60,8 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
     _emailController.text = company.email ?? '';
     _phoneController.text = company.phone ?? '';
     _addressController.text = company.address ?? '';
+
+    imgUrl = company.logo ?? '';
   }
 
   /// initialize token
@@ -121,6 +124,7 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
                 Center(
                   child: UpdateImgWidget(
                     image: imgProvider.image,
+                    imageUrl: imgUrl,
                     onTap: () async {
                       // pick image from gallery though image picker
                       final pickedFile = await ImagePicker().pickImage(
@@ -240,10 +244,13 @@ class _UpdateAdminScreenState extends State<UpdateAdminScreen> {
           // Display a success toast
           toastProvider?.showSuccessToast('update successful');
 
-          // Navigate to the previous/setting screen
-          // if (context.mounted) {
-          //   Navigator.pop(context);
-          // }
+          // save the user data in shared preferences when data is updated
+          if (context.mounted) {
+            final prefProvider = context.read<PreferenceProvider>();
+            prefProvider.setData(Keys.userName, '${provider.data?.name}');
+            prefProvider.setData(Keys.userEmail, '${provider.data?.email}');
+            prefProvider.setData(Keys.userImg, '${provider.data?.logo}');
+          }
         } else {
           // Display an error toast
           toastProvider?.showErrorToast(provider.error);

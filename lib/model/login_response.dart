@@ -4,6 +4,7 @@ class LoginResponse {
   String? token;
   int? employeeId;
   int? companyId;
+  String? imageUrl;
   LoginErrorResponseData? errors;
 
   LoginResponse({
@@ -12,6 +13,7 @@ class LoginResponse {
     this.data,
     this.employeeId,
     this.companyId,
+    this.imageUrl,
     this.errors,
   });
 
@@ -28,6 +30,7 @@ class LoginResponse {
         data: LoginSuccessResponseData.fromJson(json['data']),
         employeeId: json["employee_id"],
         companyId: json["company_id"],
+        imageUrl: json["image_url"],
       );
     }
   }

@@ -186,12 +186,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       if (provider.success) {
         // Display a success toast
 
+        // toastProvider.showSuccessToast('submission successful, check your email');
+
         toastProvider
-            .showSuccessToast('submission successful, check your email');
+            .showSuccessToast('submission successful, CODE:  ${provider.code}');
 
         // Navigate to the otp screen
         if (context.mounted) {
-          Navigator.pushNamed(context, kRouteOtp);
+          Navigator.pushNamed(
+            context,
+            kRouteOtp,
+            arguments: email,
+          );
         }
       } else {
         // Display an error toast

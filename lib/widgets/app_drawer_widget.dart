@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_info.dart';
 import '../generated/assets.dart';
 import '../provider/app_provider.dart';
 import '../provider/auth_key_provider.dart';
+import '../provider/user_preference_provider.dart';
 import '../util/keys.dart';
 import '../util/utils.dart';
 import 'app_alert_dialog.dart';
@@ -30,6 +32,19 @@ class AppDrawerWidget extends StatefulWidget {
 }
 
 class _AppDrawerWidgetState extends State<AppDrawerWidget> {
+  String userName = 'User Name';
+  String imgUrl = '';
+
+  @override
+  void initState() {
+    // read data from shared preferences provider
+    final provider = context.read<UserPreferenceProvider>();
+    userName = provider.username ?? 'User Name';
+    imgUrl = provider.userImg ?? '';
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -53,17 +68,25 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
                   child: ClipOval(
                     child: SizedBox.fromSize(
                       size: const Size.fromRadius(24), // Image radius
-                      child: RandomAvatar(
-                        Random().nextInt(1000).toString(),
-                        height: 50,
-                        width: 50,
-                      ),
+                      child: imgUrl.isEmpty
+                          ? RandomAvatar(
+                              Random().nextInt(1000).toString(),
+                              height: 50,
+                              width: 50,
+                            )
+                          : SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Image.network(
+                                '$kImgUrl$imgUrl',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                   ),
                 ),
                 Text(
-                  //TODO: show user name
-                  'User Name',
+                  userName,
                   style:
                       Utils.myTxtStyleTitleMedium.copyWith(color: Colors.white),
                 ),

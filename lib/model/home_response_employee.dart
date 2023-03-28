@@ -56,8 +56,8 @@ class Employee {
   });
 
   int? id;
-  String? userId;
-  String? companyId;
+  int? userId;
+  int? companyId;
   dynamic photo;
   String? firstName;
   String? lastName;
@@ -65,7 +65,7 @@ class Employee {
   String? email;
   String? phone;
   String? position;
-  String? status;
+  int? status;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -149,7 +149,8 @@ class NotificationHome {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory NotificationHome.fromJson(Map<String, dynamic> json) => NotificationHome(
+  factory NotificationHome.fromJson(Map<String, dynamic> json) =>
+      NotificationHome(
         id: json["id"],
         userId: json["user_id"],
         subject: json["subject"],

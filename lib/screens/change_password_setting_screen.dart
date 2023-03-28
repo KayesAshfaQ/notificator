@@ -118,7 +118,7 @@ class _SettingChangePasswordScreenState
       token = await Helper.getToken(context);
 
       // call the rest api through provider
-      await provider.logout(token, oldPass, newPass);
+      await provider.changePass(token, oldPass, newPass);
 
       // check if the submission was successful
       if (provider.success) {

@@ -17,8 +17,6 @@ class EmployeeUpdateRepository {
     String token,
     String id,
   ) async {
-
-
     print('EmpUpdateResponse::: 1');
 
     final url = Uri.parse('$kBaseUrl/employee/update/$id');
@@ -40,22 +38,18 @@ class EmployeeUpdateRepository {
     //print(response.statusCode);
     final data = json.decode(response.body);
 
-
     print('EmpUpdateResponse::: 3');
     print(data);
     if (response.body.isNotEmpty) {
-
-print('EmpUpdateResponse::: 4');
+      print('EmpUpdateResponse::: 4');
 
       final responseSuccess = EmpUpdateResponse.fromJson(data);
       return responseSuccess;
     } else {
-
-print('EmpUpdateResponse::: 5');
+      print('EmpUpdateResponse::: 5');
 
       throw Exception('failed!');
     }
-
   }
 
   /// This method is to update employee photo
