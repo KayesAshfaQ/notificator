@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -59,9 +60,16 @@ import 'package:notificator/screens/employee_update_screen.dart';
 import 'package:notificator/screens/update_profile_employee_screen.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+void main() async {
   // ensure bind
   WidgetsFlutterBinding.ensureInitialized();
+
+  // initialize firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // run app with multi provider
   runApp(

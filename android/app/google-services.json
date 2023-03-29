@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "625662842114",
+    "project_id": "notificator-ad6ee",
+    "storage_bucket": "notificator-ad6ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625662842114:android:7448b0ff0d015f72eb9e1b",
+        "android_client_info": {
+          "package_name": "com.notificator.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625662842114-igcsiobq7jkkv69td1dj2tc8j5s5felg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG7SeU8H4b0GNqYMpbNy8eWSPQ1jgBQEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625662842114-igcsiobq7jkkv69td1dj2tc8j5s5felg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -52,6 +52,12 @@ dependencies:
   # for caching images
   cached_network_image: ^3.2.3
 
+  # for firebase
+  firebase_core: ^2.8.0
+  firebase_messaging: ^14.3.0
+  firebase_analytics: ^10.1.6
+
+
 # dependency's for third party packages for dev environment
 dev_dependencies:
   flutter_test:
