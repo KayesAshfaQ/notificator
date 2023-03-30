@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,6 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
+
+    // TODO: Add on notification tap listener
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      // Handle background message
+      _handleMessage(context, message);
+    });
+
     final provider = context.read<AuthKeyProvider>();
     await provider.getUserToken();
 
@@ -55,6 +63,14 @@ class _SplashScreenState extends State<SplashScreen> {
         routeName,
       );
     });
+
+  }
+
+  void _handleMessage(BuildContext context, RemoteMessage message) {
+    String screenName = message.data['screen_name'];
+    String notificationId = message.data['notification_id'];
+    Navigator.pushNamed(context, screenName, arguments: notificationId);
+    // TODO: retrieve notification id and pass it to the notification details screen
   }
 
   /// this method is used to get the employee type from the shared preferences

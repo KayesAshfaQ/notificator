@@ -57,6 +57,9 @@ dependencies:
   firebase_messaging: ^14.3.0
   firebase_analytics: ^10.1.6
 
+  # for stream capabilities
+  rxdart: ^0.27.7
+
 
 # dependency's for third party packages for dev environment
 dev_dependencies:
