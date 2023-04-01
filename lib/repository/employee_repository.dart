@@ -89,7 +89,7 @@ class EmployeeRepository {
     }
   }
 
-  /// This method is for getting the employees
+  /// This method is for delete employee
   Future<EmployeeDeleteResponse> delete(int id, String token) async {
     final url = Uri.parse('$kBaseUrl/employees/$id');
     final response = await http.delete(
@@ -105,6 +105,32 @@ class EmployeeRepository {
       final groupList = EmployeeDeleteResponse.fromJson(data);
       print(groupList);
       return groupList;
+    } else {
+      throw Exception('failed!');
+    }
+  }
+
+  /// This method is to sort/filter employees
+  Future<EmployeeListResponse> search(
+      String token, String searchTxt, String sort) async {
+    final url = Uri.parse('$kBaseUrl/employee/search');
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+      body: {
+        'search_text': searchTxt,
+        'sort_by': sort,
+      },
+    );
+
+    //print(response.statusCode);
+    final data = json.decode(response.body);
+    print(data);
+    if (response.body.isNotEmpty) {
+      final responseSuccess = EmployeeListResponse.fromJson(data);
+      return responseSuccess;
     } else {
       throw Exception('failed!');
     }

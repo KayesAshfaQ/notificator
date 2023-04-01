@@ -5,20 +5,23 @@ import '../constants/app_colors.dart';
 class OutlinedButtonWidget extends StatelessWidget {
   final String label;
   final IconData? icon;
+  final VoidCallback? onPressed;
 
   const OutlinedButtonWidget({
     super.key,
     required this.label,
     this.icon,
+    this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: OutlinedButton.styleFrom(
+        side: const BorderSide(color: AppColors.deepPurple, width: 0.7),
         foregroundColor: AppColors.orange,
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

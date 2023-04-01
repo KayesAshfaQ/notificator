@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:notificator/constants/setting_constants.dart';
 import 'package:notificator/provider/setting_data_get_provider.dart';
 import 'package:notificator/util/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/routes.dart';
+import '../constants/setting_constants.dart';
 import '../generated/assets.dart';
 import '../provider/toast_provider.dart';
 import '../util/helper.dart';

@@ -11,7 +11,7 @@ import '../util/helper.dart';
 import '../util/keys.dart';
 import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
-import '../widgets/outlined_button_widget.dart';
+import '../widgets/popup_button_widget.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -92,14 +92,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const OutlinedButtonWidget(
+              const PopupButtonWidget(
                 label: 'Sort By',
                 icon: Icons.sort,
+                sortOptions: [
+                  'Date',
+                  'Title',
+                  'Description',
+                  'Status',
+                ],
               ),
               const SizedBox(width: 4),
-              const OutlinedButtonWidget(
+              const PopupButtonWidget(
                 label: 'Filter',
                 icon: Icons.filter_list,
+                sortOptions: [
+                  'All',
+                  'Read',
+                  'Unread',
+                  'Sent',
+                  'Received',
+                ],
               ),
               const Spacer(),
               Consumer<PreferenceProvider>(

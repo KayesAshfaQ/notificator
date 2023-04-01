@@ -92,6 +92,32 @@ class NotificationRepository {
     }
   }
 
+  /// This method is to sort/filter notifications
+  Future<NotificationListResponse> searchNotifications(String token) async {
+    final url = Uri.parse('$kBaseUrl/notifications/search');
+
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $token',
+    }, body: {
+      'search': 'search',
+    });
+
+    final data = json.decode(response.body);
+
+    print(data);
+    //print('NotificationList::: ${response.statusCode}');
+
+    if (response.body.isNotEmpty) {
+      final notificationList = NotificationListResponse.fromJson(data);
+      print(notificationList);
+      return notificationList;
+    } else {
+      print('NotificationList::: 6');
+
+      throw Exception('failed!');
+    }
+  }
+
   /// This method is for getting the notification details
   Future<NotificationDetailsResponse> getNotificationDetails(
     String token,
