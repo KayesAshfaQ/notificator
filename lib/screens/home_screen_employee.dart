@@ -172,10 +172,11 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                         Navigator.pushNamed(
                           context,
                           kRouteNotificationDetails,
-                          arguments: {
-                            'id': '${notifications[index].id}',
-                            'userType': employeeType,
-                          },
+                          arguments: '${notifications[index].id}',
+                          // arguments: {
+                          //   'id': '${notifications[index].id}',
+                          //   'userType': employeeType,
+                          // },
                         );
                       },
                     );

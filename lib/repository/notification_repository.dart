@@ -120,17 +120,10 @@ class NotificationRepository {
 
   /// This method is for getting the notification details
   Future<NotificationDetailsResponse> getNotificationDetails(
-    String token,
-    String id,
-    String userType,
-  ) async {
+      String token, String id) async {
     Uri url;
 
-    if (userType == '1') {
-      url = Uri.parse('$kBaseUrl/notifications/$id');
-    } else {
-      url = Uri.parse('$kBaseUrl/notifications/details/$id');
-    }
+    url = Uri.parse('$kBaseUrl/notifications/details/$id');
 
     final response = await http.get(
       url,

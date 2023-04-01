@@ -258,11 +258,11 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                   Navigator.pushNamed(
                     context,
                     kRouteNotificationDetails,
-                    arguments: {
-                      'id': '${notifications[index].id}',
-                      'userType': employeeType,
-                    },
-                    //arguments: '${notifications[index].id}',
+                    arguments: '${notifications[index].id}',
+                    // arguments: {
+                    //   'id': '${notifications[index].id}',
+                    //   'userType': employeeType,
+                    // },
                   );
                 },
               );
@@ -290,7 +290,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
     await provider.getData(token!);
 
     // when data is successfully fetched
-   /* if (provider.success) {
+    /* if (provider.success) {
       debugPrint('HOME_DATA::: success');
 
       // TODO: this must be done in a better way (maybe in the login screen)

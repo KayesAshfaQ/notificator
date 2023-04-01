@@ -17,10 +17,10 @@ class NotificationDetailsProvider with ChangeNotifier {
       NotificationRepository();
 
   /// This method is for fetching the notifications form the repository
-  Future<void> getData(String token, String id, String userType) async {
+  Future<void> getData(String token, String id) async {
     try {
       final response =
-          await _notificationRepository.getNotificationDetails(token, id, userType);
+          await _notificationRepository.getNotificationDetails(token, id);
       _success = response.success ?? false;
 
       if (success) {
