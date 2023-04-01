@@ -44,6 +44,7 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
 
     // Access the arguments property and cast it to the Person class
     final String id = settings?.arguments as String;
+    print('notification id: $id');
 
     // get token
     String token = await Helper.getToken(context);

@@ -1,9 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/firebase_token_provider.dart';
 import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/util/utils.dart';
@@ -204,6 +206,10 @@ class _LoginScreenState extends State<LoginScreen> {
           prefProvider.setData(Keys.userImg, provider.imageUrl);
         }
 
+        // send firebase token to server
+        sendFirebaseToken(
+            provider.token, provider.data?.id, provider.data?.type);
+
         //Navigate to the home screen
         if (context.mounted) {
           // passing the argument to know that user in logging for first time
@@ -228,5 +234,23 @@ class _LoginScreenState extends State<LoginScreen> {
     final prefProvider = context.read<PreferenceProvider>();
     debugPrint('company id: $id');
     prefProvider.setData(Keys.companyID, id);
+  }
+
+  void sendFirebaseToken(String? token, int? id, String? userType) async {
+    String? firebaseToken = await FirebaseMessaging.instance.getToken();
+
+    // whe data is not null
+    if (firebaseToken != null &&
+        id != null &&
+        token != null &&
+        userType != null) {
+      // user type is employee
+      if (userType == '2') {
+        if (context.mounted) {
+          final provider = context.read<FirebaseTokenProvider>();
+          await provider.sendToken(token, '$id', firebaseToken);
+        }
+      }
+    }
   }
 }

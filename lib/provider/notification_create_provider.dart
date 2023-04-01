@@ -6,11 +6,17 @@ import '../repository/notification_repository.dart';
 class NotificationCreateProvider with ChangeNotifier {
   bool _success = false;
   String _error = '';
+  List<String>? _token;
+  int? _id;
   String? _message;
 
   bool get success => _success;
 
   String get error => _error;
+
+  List<String>? get token => _token;
+
+  int? get id => _id;
 
   String? get data => _message;
 

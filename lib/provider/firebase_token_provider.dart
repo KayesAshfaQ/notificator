@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../repository/auth_repository.dart';
 
-class LogoutProvider with ChangeNotifier {
+class FirebaseTokenProvider with ChangeNotifier {
   bool _success = false;
   String _message = '';
   String _error = '';
@@ -15,15 +15,17 @@ class LogoutProvider with ChangeNotifier {
 
   final AuthRepository _loginRepository = AuthRepository();
 
-  Future<void> logout(String token) async {
+  Future<void> sendToken(
+      String token, String userId, String firebaseToken) async {
     try {
-      final response = await _loginRepository.logout(token);
+      final response = await _loginRepository.sendFirebaseToken(
+          token, userId, firebaseToken);
       _success = response.success ?? false;
 
       if (success) {
         _message = response.message;
       } else {
-        _error = response.errors ?? '';
+        _error = response.message;
       }
       notifyListeners();
     } catch (e) {

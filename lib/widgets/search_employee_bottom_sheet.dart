@@ -10,14 +10,14 @@ import 'package:provider/provider.dart';
 import '../constants/app_colors.dart';
 import 'separated_labeled_text_field.dart';
 
-class SearchBottomSheet extends StatefulWidget {
-  const SearchBottomSheet({Key? key}) : super(key: key);
+class SearchEmployeeBottomSheet extends StatefulWidget {
+  const SearchEmployeeBottomSheet({Key? key}) : super(key: key);
 
   @override
-  State<SearchBottomSheet> createState() => _SearchBottomSheetState();
+  State<SearchEmployeeBottomSheet> createState() => _SearchEmployeeBottomSheetState();
 }
 
-class _SearchBottomSheetState extends State<SearchBottomSheet> {
+class _SearchEmployeeBottomSheetState extends State<SearchEmployeeBottomSheet> {
   late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _txtController = TextEditingController();

@@ -3,13 +3,12 @@ import '../util/utils.dart';
 class NotificationSendResponse {
   bool? success;
   String? message;
+  List<String>? token;
+  int? id;
   String? errors;
 
-  NotificationSendResponse({
-    this.success,
-    this.message,
-    this.errors,
-  });
+  NotificationSendResponse(
+      {this.success, this.message, this.errors, this.token, this.id});
 
   factory NotificationSendResponse.fromJson(Map<String, dynamic> json) {
     bool isSuccess = json['success'] ?? false;
@@ -18,6 +17,10 @@ class NotificationSendResponse {
       return NotificationSendResponse(
         success: json["success"],
         message: json["message"],
+        id: json["id"],
+        token: json["token"] == null
+            ? []
+            : List<String>.from(json["token"]!.map((x) => x)),
       );
     } else {
       return NotificationSendResponse(
@@ -26,11 +29,6 @@ class NotificationSendResponse {
       );
     }
   }
-
-  Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-      };
 }
 
 class Errors {

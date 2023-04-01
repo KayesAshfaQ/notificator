@@ -5,7 +5,7 @@ import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/employee_delete_provider.dart';
 import 'package:notificator/provider/employee_list_provider.dart';
 import 'package:notificator/widgets/outlined_button_widget.dart';
-import 'package:notificator/widgets/search_bottom_sheet.dart';
+import 'package:notificator/widgets/search_employee_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
@@ -14,7 +14,6 @@ import '../provider/employee_create_provider.dart';
 import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/employee_list_item_widget.dart';
-import '../widgets/group_create_bottom_sheet.dart';
 import '../widgets/popup_button_widget.dart';
 
 class EmployeeScreen extends StatefulWidget {
@@ -110,7 +109,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                           padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom,
                           ),
-                          child: const SearchBottomSheet(),
+                          child: const SearchEmployeeBottomSheet(),
                         ),
                       );
                     },

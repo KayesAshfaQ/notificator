@@ -93,13 +93,17 @@ class NotificationRepository {
   }
 
   /// This method is to sort/filter notifications
-  Future<NotificationListResponse> searchNotifications(String token) async {
+  Future<NotificationListResponse> search(
+      String token, String sort, String searchTxt) async {
     final url = Uri.parse('$kBaseUrl/notifications/search');
 
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $token',
     }, body: {
-      'search': 'search',
+      'user_ids': '',
+      'group_ids': '',
+      'sort': sort,
+      'search_text': searchTxt,
     });
 
     final data = json.decode(response.body);
@@ -123,7 +127,8 @@ class NotificationRepository {
       String token, String id) async {
     Uri url;
 
-    url = Uri.parse('$kBaseUrl/notifications/details/$id');
+    url = Uri.parse('$kBaseUrl/notification/details/$id');
+    print(url);
 
     final response = await http.get(
       url,

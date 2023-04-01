@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/model/notification_data.dart';
+import 'package:notificator/provider/firebase_notification_send_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
@@ -201,7 +202,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
 
   /// show bottom sheet to select group
   void onTapSelectGroup() {
-
     // get the number of chips
     int chipsCount = context.read<GroupChipProvider>().groupList.length;
 
@@ -211,7 +211,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return  SelectGroupBottomSheet(count: chipsCount,);
+        return SelectGroupBottomSheet(
+          count: chipsCount,
+        );
       },
     );
   }
@@ -256,6 +258,24 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       if (provider.success) {
         // Display a success toast
         toastProvider.showSuccessToast('notification successfully sent');
+
+        // TODO: check individual or group
+        String firebaseToken = provider.token?.first ?? '';
+        String notificationId = provider.id.toString();
+
+        // send push notification to FCM
+        if (context.mounted) {
+          final firebaseNotificationSendProvider =
+              context.read<FirebaseNotificationSendProvider>();
+
+          firebaseNotificationSendProvider.sendNotification(
+            token: firebaseToken,
+            title: subject,
+            body: message,
+            notificationId: notificationId,
+            badge: '',
+          );
+        }
 
         // hide the bottom sheet
         if (context.mounted) Navigator.pop(context);

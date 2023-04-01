@@ -44,4 +44,29 @@ class NotificationListProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  /// This method is for fetching the notifications form the repository
+  Future<void> notificationSearch(
+      String token, String sort, String searchTxt) async {
+    try {
+      NotificationListResponse response;
+
+      response = await _notificationRepository.search(token, sort, searchTxt);
+
+      _success = response.success;
+
+      if (success) {
+        _data = response.data;
+        notifyListeners();
+      } else {
+        _error = 'Failed to fetch the notifications!';
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+      _success = false;
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
 }
