@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/provider/employee_chip_provider.dart';
 import 'package:notificator/widgets/multi_select_chip.dart';
+import 'package:notificator/widgets/single_select_chip.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
@@ -7,17 +9,18 @@ import '../model/group_list_response.dart';
 import '../provider/group_chip_provider.dart';
 import 'separated_labeled_text_field.dart';
 
-class SelectGroupBottomSheet extends StatefulWidget {
+class SelectEmployeeBottomSheet extends StatefulWidget {
   final int count;
 
-  const SelectGroupBottomSheet({Key? key, required this.count})
+  const SelectEmployeeBottomSheet({Key? key, required this.count})
       : super(key: key);
 
   @override
-  State<SelectGroupBottomSheet> createState() => _SelectGroupBottomSheetState();
+  State<SelectEmployeeBottomSheet> createState() =>
+      _SelectEmployeeBottomSheetState();
 }
 
-class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
+class _SelectEmployeeBottomSheetState extends State<SelectEmployeeBottomSheet> {
   @override
   Widget build(BuildContext context) {
     // calculate the height of the bottom sheet
@@ -66,7 +69,7 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                             child: Text(
-                              'Choose Your Group *',
+                              'Select an employee *',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.deepPurple,
@@ -77,8 +80,7 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const MultiSelectChip(),
-
+                        const SingleSelectChip(),
                       ],
                     ),
                     Padding(
@@ -86,7 +88,7 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                       child: CommonPurpleButtonWidget(
                         title: 'Submit',
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        onPress: groupSelectSubmit,
+                        onPress: employeeSelectSubmit,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -100,31 +102,30 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
     );
   }
 
-  void groupSelectSubmit() async {
+  void employeeSelectSubmit() async {
     // when the submit button is pressed, the provider isSubmitted value is set to true
-    final provider = context.read<GroupChipProvider>();
+    final provider = context.read<EmployeeChipProvider>();
 
     //clear the selected group name and id
-    provider.setSelectedGroupName('');
-    provider.setSelectedGroupId('');
+    //provider.setSelectedEmployeeName('');
+    //provider.setSelectedEmployeeId('');
 
-    String selectedGroupNames = '';
-    String selectedGroupId = '';
+    String selectedEmployeeNames = provider.getSelectedEmployeeName();
+    String selectedEmployeeId = provider.getSelectedEmployeeId();
 
-    // loop through the selected groups list and get the group names
+/*    // loop through the selected groups list and get the group names
     for (GroupListResponseData group in provider.selectedGroupList) {
       //debugPrint(group.name);
       selectedGroupNames += '${group.name}, ';
       selectedGroupId += '${group.id}, ';
-    }
-    debugPrint(selectedGroupNames);
+    }*/
+    debugPrint('employeeName : $selectedEmployeeNames');
     // set the selected group name to the provider
-    provider.setSelectedGroupName(selectedGroupNames);
+    //provider.setSelectedEmployeeName(selectedEmployeeNames);
 
-    debugPrint(selectedGroupId);
-
+    debugPrint('employeeId : $selectedEmployeeId');
     // set the selected group id to the provider
-    provider.setSelectedGroupId(selectedGroupId);
+    //provider.setSelectedEmployeeId(selectedEmployeeId);
 
     // hide the bottom sheet
     Navigator.of(context).pop();

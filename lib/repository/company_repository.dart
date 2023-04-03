@@ -4,9 +4,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:notificator/model/company.dart';
 import 'package:notificator/model/company_update_response.dart';
-import 'package:notificator/model/employee.dart';
-import 'package:notificator/model/employee_create_response.dart';
-import 'package:notificator/model/employee_list_response.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
 import '../constants/app_info.dart';

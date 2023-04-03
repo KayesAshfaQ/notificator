@@ -10,6 +10,8 @@ import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/email_config_provider.dart';
+import 'package:notificator/provider/employee_chip_provider.dart';
+import 'package:notificator/provider/firebase_notification_send_provider.dart';
 import 'package:notificator/provider/firebase_token_provider.dart';
 import 'package:notificator/provider/forgot_code_provider.dart';
 import 'package:notificator/provider/logo_update_provider_company.dart';
@@ -169,6 +171,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ForgotCodeProvider()),
         ChangeNotifierProvider(create: (_) => UserPreferenceProvider()),
         ChangeNotifierProvider(create: (_) => FirebaseTokenProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeeChipProvider()),
+        ChangeNotifierProvider(create: (_) => FirebaseNotificationSendProvider()),
       ],
       child: const MyApp(),
     ),

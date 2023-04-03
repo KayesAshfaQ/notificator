@@ -14,16 +14,44 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
 
   final FcmRepository _notificationRepository = FcmRepository();
 
-  Future<void> sendNotification({
+  Future<void> sendIndividualNotification({
     required String token,
     required String title,
     required String body,
     required String notificationId,
     required String badge,
   }) async {
+
+    print('FCM firebase notification send provider');
+
     try {
       final response = await _notificationRepository.sendIndividual(
-        token: token,
+        userToken: token,
+        body: body,
+        title: title,
+        notificationId: notificationId,
+        badge: badge,
+      );
+      _success = (response.success ?? false) as int;
+
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      print(_error);
+      notifyListeners();
+    }
+  }
+
+  Future<void> sendGroupNotification({
+    required List<String>? userTokens,
+    required String title,
+    required String body,
+    required String notificationId,
+    required String badge,
+  }) async {
+    try {
+      final response = await _notificationRepository.sendGroup(
+        userTokens: userTokens,
         body: body,
         title: title,
         notificationId: notificationId,

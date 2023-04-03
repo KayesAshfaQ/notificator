@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/model/employee_list_response.dart';
 import 'package:notificator/model/notification_data.dart';
+import 'package:notificator/provider/employee_chip_provider.dart';
+import 'package:notificator/provider/employee_list_provider.dart';
 import 'package:notificator/provider/firebase_notification_send_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
+import 'package:notificator/widgets/select_employee_bottom_sheet.dart';
 import 'package:notificator/widgets/select_group_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
@@ -31,18 +35,31 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _subject = TextEditingController();
   final TextEditingController _message = TextEditingController();
-  final TextEditingController _groupController = TextEditingController();
+  final TextEditingController _groupIndividualController =
+      TextEditingController();
 
   @override
   void initState() {
-    instantiate();
+    // Display a progress loader
+    context.loaderOverlay.show();
+
+    // Instantiate the group and employee list
+    instantiateGroup();
+    instantiateEmployee();
+
+    // Hide the progress loader
+    context.loaderOverlay.hide();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final sendToProvider = context.watch<SendToOptionProvider>();
     final provider = context.watch<GroupChipProvider>();
-    _groupController.text = provider.selectedGroupName;
+    final employeeProvider = context.watch<EmployeeChipProvider>();
+    _groupIndividualController.text = sendToProvider.selectedOption == 1
+        ? employeeProvider.getSelectedEmployeeName()
+        : provider.selectedGroupName;
 
     return Scaffold(
       appBar: const MyAppBarWidget(
@@ -59,15 +76,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /*const Text(
-                  'Create Notification',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),*/
                 const SizedBox(height: 8.0),
                 SeparatedLabeledTextField(
                   controller: _subject,
@@ -123,9 +131,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                 ),
                 const SendOptionRadioWidget(),
                 const SizedBox(height: 4),
-                const Text(
-                  'Group',
-                  style: TextStyle(
+                Text(
+                  sendToProvider.selectedOption == 1 ? 'Individual' : 'Group',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.deepPurple,
                     fontFamily: 'BaiJamjuree',
@@ -134,9 +142,11 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                 ),
                 const SizedBox(height: 8.0),
                 GestureDetector(
-                  onTap: onTapSelectGroup,
+                  onTap: sendToProvider.selectedOption == 1
+                      ? onTapSelectEmployee
+                      : onTapSelectGroup,
                   child: TextFormField(
-                    controller: _groupController,
+                    controller: _groupIndividualController,
                     validator: Utils.validate,
                     enabled: false,
                     style: const TextStyle(
@@ -144,7 +154,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                       fontFamily: 'BaiJamjuree',
                     ),
                     decoration: InputDecoration(
-                      hintText: 'Select Group',
+                      hintText: sendToProvider.selectedOption == 1
+                          ? 'Select Employee'
+                          : 'Choose Group',
                       hintStyle: TextStyle(
                         color: AppColors.deepPurple.withOpacity(0.5),
                         fontFamily: 'BaiJamjuree',
@@ -196,7 +208,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
   void dispose() {
     _subject.dispose();
     _message.dispose();
-    _groupController.dispose();
+    _groupIndividualController.dispose();
     super.dispose();
   }
 
@@ -218,82 +230,26 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     );
   }
 
-  Future<void> sendNewNotification() async {
-    // validate form
-    final isValid = _formKey.currentState?.validate() ?? false;
+  /// show bottom sheet to select employee
+  void onTapSelectEmployee() {
+    // get the number of chips
+    int chipsCount = context.read<EmployeeChipProvider>().employeeList.length;
 
-    if (isValid) {
-      // Display a progress loader
-      context.loaderOverlay.show();
-
-      //get send to type from it's provider
-      int sendTo = context.read<SendToOptionProvider>().selectedOption;
-
-      // get the filed texts
-      String subject = _subject.text.trim();
-      String message = _message.text.trim();
-      String group = context.read<GroupChipProvider>().selectedGroupId;
-      String sendOption = sendTo == 1 ? 'group' : 'individual';
-
-      // create the employee obj
-      NotificationData notification = NotificationData(
-        subject: subject,
-        message: message,
-        groupIndividualIds: group,
-        groupIndividual: sendOption,
-      );
-
-      // initialize toast provider
-      final toastProvider = context.read<ToastProvider>();
-      toastProvider.initialize(context);
-
-      // get token through provider
-      final String? token = context.read<AuthKeyProvider>().userToken;
-
-      // call the rest api through provider & send data through it
-      final provider = context.read<NotificationCreateProvider>();
-      await provider.create(notification, token!);
-
-      // check if the submission was successful
-      if (provider.success) {
-        // Display a success toast
-        toastProvider.showSuccessToast('notification successfully sent');
-
-        // TODO: check individual or group
-        String firebaseToken = provider.token?.first ?? '';
-        String notificationId = provider.id.toString();
-
-        // send push notification to FCM
-        if (context.mounted) {
-          final firebaseNotificationSendProvider =
-              context.read<FirebaseNotificationSendProvider>();
-
-          firebaseNotificationSendProvider.sendNotification(
-            token: firebaseToken,
-            title: subject,
-            body: message,
-            notificationId: notificationId,
-            badge: '',
-          );
-        }
-
-        // hide the bottom sheet
-        if (context.mounted) Navigator.pop(context);
-      } else {
-        // Display an error toast
-        toastProvider.showErrorToast(provider.error);
-      }
-
-      // Hide the progress loader
-      if (context.mounted) context.loaderOverlay.hide();
-    }
+    // show bottom sheet to select group or individual
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return SelectEmployeeBottomSheet(
+          count: chipsCount,
+        );
+      },
+    );
   }
 
   /// fetch all groups
-  void instantiate() async {
-    // Display a progress loader
-    context.loaderOverlay.show();
-
+  void instantiateGroup() async {
     // initialize provider
     final provider = context.read<GroupListProvider>();
 
@@ -301,24 +257,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     // clear the selected group list selected before
     final groupChipProvider = context.read<GroupChipProvider>();
     groupChipProvider.clearSelectedGroups();
-
-    // add listener to the provider
-    /* groupChipProvider.addListener(() {
-      // check if the submission was successful
-      if (groupChipProvider.selectedGroupName?.isNotEmpty ?? false) {
-        */ /*String selectedGroupNames = '';
-
-        // loop through the selected groups list and get the group names
-        for (GroupListResponseData group
-            in groupChipProvider.selectedGroupList) {
-          debugPrint(group.name);
-          selectedGroupNames += '${group.name}, ';
-        }*/ /*
-
-        // set the selected group name to the group text field
-        _groupController.text = groupChipProvider.selectedGroupName!;
-      }
-    });*/
 
     // get token through provider
     String token = await Helper.getToken(context);
@@ -341,8 +279,138 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       // Display an error toast
       debugPrint(provider.error);
     }
+  }
 
-    // Hide the progress loader
-    if (context.mounted) context.loaderOverlay.hide();
+  /// fetch all employee
+  void instantiateEmployee() async {
+    // initialize provider
+    final provider = context.read<EmployeeListProvider>();
+
+    // initialize group chip provider
+    // clear the selected group list selected before
+    final employeeChipProvider = context.read<EmployeeChipProvider>();
+    employeeChipProvider.removeSelectedEmployee();
+
+    // get token through provider
+    String token = await Helper.getToken(context);
+
+    //call the rest api to fetch groups
+    await provider.getList(token);
+
+    // check if the submission was successful
+    if (provider.success) {
+      debugPrint('employee fetched successfully');
+
+      // initialize the global groups list with the fetched data
+      List<EmployeeListResponseData>? employees = provider.data;
+
+      if (employees != null && employees.isNotEmpty) {
+        // populate the groups list of group chip provider
+        employeeChipProvider.setEmployeeList(employees);
+      }
+    } else {
+      // Display an error toast
+      debugPrint(provider.error);
+    }
+  }
+
+  Future<void> sendNewNotification() async {
+    // validate form
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (isValid) {
+      // Display a progress loader
+      context.loaderOverlay.show();
+
+      //get send to type from it's provider
+      int sendTo = context.read<SendToOptionProvider>().selectedOption;
+      String group = context.read<GroupChipProvider>().selectedGroupId;
+      String individual =
+          context.read<EmployeeChipProvider>().getSelectedEmployeeId();
+
+      print('group $group');
+      print('ind $individual');
+
+      // get the filed texts
+      String subject = _subject.text.trim();
+      String message = _message.text.trim();
+      String sendId = sendTo == 1 ? individual : group;
+      String sendOption = sendTo == 1 ? 'individual' : 'group';
+
+      print('$sendTo $sendOption $sendId $subject $message');
+
+      // create the employee obj
+      NotificationData notification = NotificationData(
+        subject: subject,
+        message: message,
+        groupIndividualIds: sendId,
+        groupIndividual: sendOption,
+      );
+
+      // initialize toast provider
+      final toastProvider = context.read<ToastProvider>();
+      toastProvider.initialize(context);
+
+      // get token through provider
+      final String? token = context.read<AuthKeyProvider>().userToken;
+
+      // call the rest api through provider & send data through it
+      final provider = context.read<NotificationCreateProvider>();
+      await provider.create(notification, token!);
+
+      // check if the submission was successful
+      if (provider.success) {
+        // Display a success toast
+        toastProvider.showSuccessToast('notification successfully sent');
+
+        List<String>? userToken = provider.token;
+        String notificationId = provider.id.toString();
+
+        print('FCM send 001');
+
+        // send push notification to FCM
+        if (context.mounted) {
+          print('FCM send 002');
+          final firebaseNotificationSendProvider =
+              context.read<FirebaseNotificationSendProvider>();
+
+          print('FCM send 003');
+          if (sendTo == 1) {
+            print('registration token: ${userToken?.first}');
+
+            await firebaseNotificationSendProvider.sendIndividualNotification(
+              token: userToken?.first ?? '',
+              title: subject,
+              body: message,
+              notificationId: notificationId,
+              badge: '',
+            );
+
+            print('FCM send 004');
+          } else {
+            userToken?.forEach((element) => print(element));
+
+            await firebaseNotificationSendProvider.sendGroupNotification(
+              userTokens: userToken,
+              title: subject,
+              body: message,
+              notificationId: notificationId,
+              badge: '',
+            );
+
+            print('FCM send 005');
+          }
+        }
+        print('FCM send 006');
+        // hide the bottom sheet
+        if (context.mounted) Navigator.pop(context);
+      } else {
+        // Display an error toast
+        toastProvider.showErrorToast(provider.error);
+      }
+
+      // Hide the progress loader
+      if (context.mounted) context.loaderOverlay.hide();
+    }
   }
 }

@@ -1,58 +1,47 @@
 import 'package:flutter/foundation.dart';
+import 'package:notificator/model/employee_list_response.dart';
 
-import '../model/group_list_response.dart';
-
-// A list of dummy groups
-//final List<String> dummyGroups = List.generate(50, (index) => 'Group $index');
-
-class GroupChipProvider extends ChangeNotifier {
-  final List<GroupListResponseData> _groupList = [];
-  final List<GroupListResponseData> _selectedGroupList = [];
+class EmployeeChipProvider extends ChangeNotifier {
+  final List<EmployeeListResponseData> _employeeList = [];
+  EmployeeListResponseData? _selectedEmployee;
 
   //bool isSubmitted = false;
 
-  String _selectedGroupName = '';
-  String _selectedGroupId = '';
+  List<EmployeeListResponseData> get employeeList => _employeeList;
 
-  List<GroupListResponseData> get groupList => _groupList;
+  EmployeeListResponseData? get selectedEmployee => _selectedEmployee;
 
-  List<GroupListResponseData> get selectedGroupList => _selectedGroupList;
-
-  String get selectedGroupName => _selectedGroupName;
-
-  String get selectedGroupId => _selectedGroupId;
-
-  void setGroupList(List<GroupListResponseData> groupList) {
-    _groupList.clear();
-    _groupList.addAll(groupList);
+  void setEmployeeList(List<EmployeeListResponseData> employeeList) {
+    _employeeList.clear();
+    _employeeList.addAll(employeeList);
     notifyListeners();
   }
 
-  void addToSelectedGroup(GroupListResponseData value) {
-    _selectedGroupList.add(value);
-    print('groupList::: ${selectedGroupList.length}');
+  void setSelectedEmployee(EmployeeListResponseData value) {
+    _selectedEmployee = value;
+    if (kDebugMode) {
+      print('employeeList::: ${_selectedEmployee?.firstName}');
+    }
     notifyListeners();
   }
 
-  void removeFromSelectedGroup(GroupListResponseData value) {
-    _selectedGroupList.remove(value);
-    notifyListeners();
+  void removeSelectedEmployee() {
+    if (_selectedEmployee != null) {
+      _selectedEmployee = null;
+      //notifyListeners();
+    }
   }
 
-  void setSelectedGroupName(String value) {
-    _selectedGroupName = value;
-    notifyListeners();
+  String getSelectedEmployeeName() {
+    String name =
+        '${_selectedEmployee?.firstName} ${_selectedEmployee?.lastName}';
+    print(name);
+    if (name == 'null null') name = '';
+
+    return name;
   }
 
-  void setSelectedGroupId(String value) {
-    _selectedGroupId = value;
-    notifyListeners();
-  }
-
-  void clearSelectedGroups() {
-    _selectedGroupList.clear();
-    _selectedGroupName = '';
-    _selectedGroupId = '';
-    //notifyListeners();
+  String getSelectedEmployeeId() {
+    return '${_selectedEmployee?.userId}';
   }
 }

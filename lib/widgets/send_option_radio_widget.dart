@@ -18,17 +18,18 @@ class SendOptionRadioWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         RadioButtonWidget(
-          label: 'Group',
+          label: 'individual',
           value: 1,
           selectedOption: selectedOption,
           provider: provider,
         ),
         RadioButtonWidget(
-          label: 'individual',
+          label: 'Group',
           value: 2,
           selectedOption: selectedOption,
           provider: provider,
         ),
+
       ],
     );
   }
@@ -90,6 +91,7 @@ class RadioButtonWidget extends StatelessWidget {
 
   void onChange(value) {
     _provider.setSelectedOption(value!);
+    print('sendTo::: ${_provider.selectedOption}');
     print('value: $value');
     print('provider_value: ${_provider.selectedOption}');
   }
