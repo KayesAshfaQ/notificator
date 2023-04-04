@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
 import '../constants/routes.dart';
+import '../provider/notification_count_provider.dart';
 import '../provider/preference_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
@@ -16,7 +17,6 @@ import '../util/utils.dart';
 import '../widgets/elevated_create_button.dart';
 import '../widgets/outlined_button_widget.dart';
 import '../widgets/popup_button_widget.dart';
-import '../widgets/search_employee_bottom_sheet.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -72,6 +72,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
       await provider.getList(token, employeeType);
     }
 
+    // count the notification
+    initNotificationCount();
+
     // listeners for refresh the ui when item is created & updated
     notificationProvider.addListener(() {
       if (notificationProvider.success) {
@@ -80,11 +83,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
   }
 
+  void initNotificationCount() async {
+    print('initNotificationCount() called');
+    if (employeeType == '2') {
+      final notifCountProvider = context.read<NotificationCountProvider>();
+      await notifCountProvider.getCount(token);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return RefreshIndicator(
       onRefresh: () {
+        // Refresh the notification count when the user pulls down
+        initNotificationCount();
+
         // Refresh the list when the user pulls down
         return provider.getList(token, employeeType);
       },

@@ -31,6 +31,7 @@ import 'package:notificator/provider/login_provider.dart';
 import 'package:notificator/provider/group_chip_provider.dart';
 import 'package:notificator/provider/logo_update_provider_employee.dart';
 import 'package:notificator/provider/logout_provider.dart';
+import 'package:notificator/provider/notification_count_provider.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_get_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
@@ -42,6 +43,7 @@ import 'package:notificator/provider/setting_data_post_provider.dart';
 import 'package:notificator/provider/setting_option_provider.dart';
 import 'package:notificator/provider/toast_provider.dart';
 import 'package:notificator/provider/user_preference_provider.dart';
+import 'package:notificator/screens/about_screen.dart';
 import 'package:notificator/screens/email_config_screen.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/change_password_screen.dart';
@@ -173,6 +175,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => FirebaseTokenProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeChipProvider()),
         ChangeNotifierProvider(create: (_) => FirebaseNotificationSendProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationCountProvider()),
       ],
       child: const MyApp(),
     ),
@@ -237,6 +240,7 @@ class MyApp extends StatelessWidget {
               const SettingChangePasswordScreen(),
           kRouteEmailConfig: (context) => const EmailConfigScreen(),
           kRouteMoreDetails: (context) => const MoreScreen(),
+          kRouteAboutApp: (context) => const AboutScreen(),
         },
         initialRoute: kRouteSplash,
       ),

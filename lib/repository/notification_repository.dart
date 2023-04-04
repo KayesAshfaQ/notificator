@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:notificator/model/notificaiton_count_response.dart';
 import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/model/notification_details_response.dart';
 import 'package:notificator/model/notification_list_response.dart';
@@ -153,46 +154,31 @@ class NotificationRepository {
     }
   }
 
-/*
-  /// This method is for delete the group by id
-  Future<GroupDeleteResponse> delete(int id, token) async {
-    final url = Uri.parse('$kBaseUrl/groups/$id');
-    final response = await http.delete(
+  /// This method is for getting the unread notification count
+  Future<NotificationCountResponse> getNotificationCount(String token) async {
+    Uri url;
+
+    url = Uri.parse('$kBaseUrl/employee/notificationcount');
+    print(url);
+
+    final response = await http.get(
       url,
       headers: {
         'Authorization': 'Bearer $token',
       },
     );
 
-    //print(response.statusCode);
     final data = json.decode(response.body);
+
     print(data);
-    if (response.body.isNotEmpty) {
-      return GroupDeleteResponse.fromJson(data);
-    } else {
-      throw Exception('Failed to login');
-    }
-  }
+    //print('NotificationList::: ${response.statusCode}');
 
-  /// This method is used to update the group name
-  Future<UpdateGroupResponse> update({required String name, required String token, required int id}) async {
-    final url = Uri.parse('$kBaseUrl/groups/$id');
-    final response = await http.put(
-      url,
-      body: {'name': name},
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-
-    //print(response.statusCode);
-    final data = json.decode(response.body);
-    print('update:::$data');
     if (response.body.isNotEmpty) {
-      final responseSuccess = UpdateGroupResponse.fromJson(data);
-      return responseSuccess;
+      final notificationList = NotificationCountResponse.fromJson(data);
+      print(notificationList);
+      return notificationList;
     } else {
       throw Exception('failed!');
     }
-  }*/
+  }
 }

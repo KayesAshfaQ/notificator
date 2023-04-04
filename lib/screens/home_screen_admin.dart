@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
+import 'package:notificator/provider/app_provider.dart';
 import 'package:notificator/provider/home_admin_data_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -203,7 +204,10 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               ),
               SeeAllButtonWidget(
                 onPress: () {
-                  //Navigator.pushNamed(context, kRouteUpdateEmployeeProfile);
+                  // change screen to group screen
+                  final provider = context.read<AppProvider>();
+                  provider.setCurrentIndex(1);
+                  provider.setTitle('Groups');
                 },
               ),
             ],
@@ -238,7 +242,10 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
               ),
               SeeAllButtonWidget(
                 onPress: () {
-                  //Navigator.pushNamed(context, kRouteUpdateEmployeeProfile);
+                  // change screen to group screen
+                  final provider = context.read<AppProvider>();
+                  provider.setCurrentIndex(2);
+                  provider.setTitle('Notifications');
                 },
               ),
             ],

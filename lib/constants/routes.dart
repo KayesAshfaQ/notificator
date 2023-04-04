@@ -34,3 +34,6 @@ const kRouteSetting = '/settings';
 const kRouteMoreDetails = '/moreDetails';
 const kRouteSettingChangePass = '/settingChangePass';
 const kRouteEmailConfig = '/emailConfiguration';
+
+// app drawer
+const kRouteAboutApp = '/aboutApp';

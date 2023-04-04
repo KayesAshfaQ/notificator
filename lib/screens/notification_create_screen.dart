@@ -383,7 +383,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               title: subject,
               body: message,
               notificationId: notificationId,
-              badge: '',
             );
 
             print('FCM send 004');
@@ -395,7 +394,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               title: subject,
               body: message,
               notificationId: notificationId,
-              badge: '',
             );
 
             print('FCM send 005');

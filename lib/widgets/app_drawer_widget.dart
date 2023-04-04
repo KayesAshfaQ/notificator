@@ -104,7 +104,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               Navigator.pop(context);
 
               // navigate to about screen
-              Navigator.pushNamed(context, kRouteMoreDetails);
+              Navigator.pushNamed(context, kRouteAboutApp);
             },
           ),
           ListTile(

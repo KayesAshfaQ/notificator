@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../constants/app_colors.dart';
 import '../model/group_list_response.dart';
 import '../provider/group_chip_provider.dart';
+import '../util/helper.dart';
 import 'separated_labeled_text_field.dart';
 
 class SelectGroupBottomSheet extends StatefulWidget {
@@ -78,7 +79,6 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                         ),
                         const SizedBox(height: 8),
                         const MultiSelectChip(),
-
                       ],
                     ),
                     Padding(
@@ -117,6 +117,11 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
       selectedGroupNames += '${group.name}, ';
       selectedGroupId += '${group.id}, ';
     }
+
+    // remove the last comma
+    selectedGroupNames = Helper.removeLastComma(selectedGroupNames);
+    selectedGroupId = Helper.removeLastComma(selectedGroupId);
+
     debugPrint(selectedGroupNames);
     // set the selected group name to the provider
     provider.setSelectedGroupName(selectedGroupNames);

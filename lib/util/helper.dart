@@ -37,4 +37,10 @@ class Helper {
       return 'Just now';
     }
   }
+
+  /// This method is used to remove last comma from a string
+  static String removeLastComma(String str) {
+    return str.replaceFirst(RegExp(r',\s*$'), '');
+  }
+
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/model/fcm_notification_response.dart';
@@ -13,9 +14,7 @@ class FcmRepository {
     required String body,
     required String title,
     required String notificationId,
-    required String badge,
   }) async {
-    print('FCM firebase notification send repository 01');
 
     final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
     final response = await http.post(
@@ -40,18 +39,15 @@ class FcmRepository {
         'Authorization': 'Bearer $fcmToken',
       },
     );
-    print('FCM firebase notification send repository 02');
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print('FCM firebase notification send repository 03');
-    print("FCM sendIndividual $data");
+    if (kDebugMode) {
+      print("FCM sendIndividual $data");
+    }
     if (response.statusCode == 200 && response.body.isNotEmpty) {
-      print('FCM firebase notification send repository 04');
       final responseSuccess = FcmNotificationResponse.fromJson(data);
-      print(responseSuccess);
       return responseSuccess;
     } else {
-      print('FCM firebase notification send repository 05');
       throw Exception('failed!');
     }
   }
@@ -61,7 +57,6 @@ class FcmRepository {
     required String body,
     required String title,
     required String notificationId,
-    required String badge,
   }) async {
 
     final url = Uri.parse('https://fcm.googleapis.com/fcm/send');
@@ -89,7 +84,9 @@ class FcmRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print("FCM sendGroup $data");
+    if (kDebugMode) {
+      print("FCM sendGroup $data");
+    }
     if (response.statusCode == 200 && response.body.isNotEmpty) {
       final responseSuccess = FcmNotificationResponse.fromJson(data);
       return responseSuccess;

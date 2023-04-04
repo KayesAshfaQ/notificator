@@ -1,6 +1,7 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
+import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/notification_count_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/user_preference_provider.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
@@ -26,6 +27,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? employeeType;
+  String? token;
+  int notificationCount = 0;
 
   // bottom navigation bar titles list for employee
   final List<String> _titlesEmployee = const [
@@ -46,10 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // bottom navigation bar screens list for employee
   final List<Widget> _screensEmployee = const [
     EmployeeProfileScreen(),
-    //AdminProfileScreen(),
-    //GroupScreen(),
     NotificationScreen(),
-    //EmployeeScreen(),
     SettingEmployeeScreen(),
   ];
 
@@ -62,70 +62,26 @@ class _HomeScreenState extends State<HomeScreen> {
     SettingAdminScreen(),
   ];
 
-  final _itemsEmployee = const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Badge(
-        label: Text('12'),
-        child: Icon(Icons.notifications_none),
-      ),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.settings_outlined),
-      label: 'Settings',
-    ),
-  ];
-
-  final _itemsAdmin = const [
-    BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined),
-      label: 'Home',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.people_alt_outlined),
-      label: 'Groups',
-    ),
-    BottomNavigationBarItem(
-      icon: Badge(
-        label: Text('12'),
-        child: Icon(Icons.notifications_none),
-      ),
-      label: 'Notifications',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.work_outline),
-      label: 'Employees',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.settings_outlined),
-      label: 'Settings',
-    ),
-  ];
-
   int i = 0;
 
   @override
   void didChangeDependencies() {
     if (employeeType == null) {
+      //initToken();
       initEmployeeType();
     }
-
-
 
     print(i++);
     super.didChangeDependencies();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    final appProvider = Provider.of<AppProvider>(context);
+    final appProvider = context.watch<AppProvider>();
     final width = MediaQuery.of(context).size.width;
+
+    // notification count
+    initNotificationCount();
 
     debugPrint('home_build');
 
@@ -189,7 +145,50 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.white,
                   fontSize: 8,
                 ),
-                items: employeeType == '1' ? _itemsAdmin : _itemsEmployee,
+                items: employeeType == '1'
+                    ? const [
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home_outlined),
+                          label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.people_alt_outlined),
+                          label: 'Groups',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.notifications_none),
+                          label: 'Notifications',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.work_outline),
+                          label: 'Employees',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.settings_outlined),
+                          label: 'Settings',
+                        ),
+                      ]
+                    : [
+                        const BottomNavigationBarItem(
+                          icon: Icon(Icons.home_outlined),
+                          label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: notificationCount > 0
+                              ? Badge(
+                                  label: Text(
+                                    '${notificationCount}',
+                                  ),
+                                  child: const Icon(Icons.notifications_none),
+                                )
+                              : const Icon(Icons.notifications_none),
+                          label: 'Notifications',
+                        ),
+                        const BottomNavigationBarItem(
+                          icon: Icon(Icons.settings_outlined),
+                          label: 'Settings',
+                        ),
+                      ],
               ),
       ),
     );
@@ -212,5 +211,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     debugPrint('employeeType: $employeeType');
+  }
+
+  void initNotificationCount() async {
+    final notificationCountProvider =
+        context.watch<NotificationCountProvider>();
+
+    if (employeeType == '2') {
+      notificationCount = notificationCountProvider.count;
+    }
   }
 }

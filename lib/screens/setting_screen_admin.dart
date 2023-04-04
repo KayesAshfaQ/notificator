@@ -74,7 +74,9 @@ class _SettingAdminScreenState extends State<SettingAdminScreen> {
             color: Colors.grey.shade400,
             height: 4,
           ),
-          SettingItemWidget(
+
+          // deactive push notification option is not required for admin
+          /* SettingItemWidget(
             title: 'Receive push notifications',
             switchValue: provider.pushNotification,
             onChanged: (value) => sendSettingsData(
@@ -85,7 +87,7 @@ class _SettingAdminScreenState extends State<SettingAdminScreen> {
           Divider(
             color: Colors.grey.shade400,
             height: 4,
-          ),
+          ),*/
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, kRouteSettingChangePass);
@@ -152,7 +154,9 @@ class _SettingAdminScreenState extends State<SettingAdminScreen> {
               ),
             ),
           ),
-          Divider(
+
+          /// deactive account option is not required now
+          /* Divider(
             color: Colors.grey.shade400,
             height: 4,
           ),
@@ -175,7 +179,7 @@ class _SettingAdminScreenState extends State<SettingAdminScreen> {
                 ],
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

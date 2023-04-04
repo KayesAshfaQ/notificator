@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
+import 'package:notificator/provider/notification_count_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
@@ -31,7 +32,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
 
-
     // TODO: Add on notification tap listener
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       // Handle background message
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
       routeName = kRouteHome;
 
       // get the employee type
-      initEmployeeType();
+      initEmployeeTypeNotificationCount();
     } else {
       routeName = kRouteLogin;
     }
@@ -63,7 +63,6 @@ class _SplashScreenState extends State<SplashScreen> {
         routeName,
       );
     });
-
   }
 
   void _handleMessage(BuildContext context, RemoteMessage message) {
@@ -74,13 +73,23 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   /// this method is used to get the employee type from the shared preferences
-  void initEmployeeType() async {
+  void initEmployeeTypeNotificationCount() async {
     // get the employee type form the shared preferences
     final provider = context.read<PreferenceProvider>();
 
     // get the employee type
     await provider.getData(Keys.userType);
+    String? employeeType = provider.data;
     debugPrint('employeeType: ${provider.data}');
+
+    // get the notification count for the employee type
+    if (employeeType != null && employeeType == '2' && context.mounted) {
+      final countProvider = context.read<NotificationCountProvider>();
+
+      // get the user token
+      String token = context.read<AuthKeyProvider>().userToken!;
+      await countProvider.getCount(token);
+    }
   }
 
   @override

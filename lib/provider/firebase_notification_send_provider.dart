@@ -19,7 +19,6 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
     required String title,
     required String body,
     required String notificationId,
-    required String badge,
   }) async {
 
     print('FCM firebase notification send provider');
@@ -30,7 +29,6 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
         body: body,
         title: title,
         notificationId: notificationId,
-        badge: badge,
       );
       _success = (response.success ?? false) as int;
 
@@ -47,7 +45,6 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
     required String title,
     required String body,
     required String notificationId,
-    required String badge,
   }) async {
     try {
       final response = await _notificationRepository.sendGroup(
@@ -55,7 +52,6 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
         body: body,
         title: title,
         notificationId: notificationId,
-        badge: badge,
       );
       _success = (response.success ?? false) as int;
 

@@ -117,7 +117,8 @@ class _SettingEmployeeScreenState extends State<SettingEmployeeScreen> {
             ),
           ),
 
-          Divider(
+         // TODO: Uncomment this code to show deactivate account option
+         /* Divider(
             color: Colors.grey.shade400,
             height: 4,
           ),
@@ -140,7 +141,7 @@ class _SettingEmployeeScreenState extends State<SettingEmployeeScreen> {
                 ],
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
