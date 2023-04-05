@@ -19,14 +19,9 @@ class Assets {
   static const String imgBellImage = 'assets/img/bell-image.png';
   static const String imgDrawerHeadBackground = 'assets/img/drawer-head-background.png';
   static const String imgLogo = 'assets/img/logo.png';
-  static const String imgLogoSmall = 'assets/img/logo-small.png';
-  static const String svgIcAdd = 'assets/svg/ic-add.svg';
   static const String svgIcDelete = 'assets/svg/ic-delete.svg';
   static const String svgIcEdit = 'assets/svg/ic-edit.svg';
-  static const String svgIcNotification = 'assets/svg/ic-notification.svg';
-  static const String svgIcRemove = 'assets/svg/ic-remove.svg';
   static const String svgIcSvgproEdit = 'assets/svg/ic-svgpro-edit.svg';
-  static const String svgIcUpdate = 'assets/svg/ic-update.svg';
   static const String svgIconBellLarge = 'assets/svg/icon-bell-large.svg';
   static const String svgIconBellSmall = 'assets/svg/icon-bell-small.svg';
 

@@ -67,6 +67,7 @@ import 'package:notificator/screens/terms_conditions_screen.dart';
 import 'package:notificator/screens/update_profile_admin_screen.dart';
 import 'package:notificator/screens/employee_update_screen.dart';
 import 'package:notificator/screens/update_profile_employee_screen.dart';
+import 'package:notificator/util/navigation_service.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -176,7 +177,8 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => UserPreferenceProvider()),
         ChangeNotifierProvider(create: (_) => FirebaseTokenProvider()),
         ChangeNotifierProvider(create: (_) => EmployeeChipProvider()),
-        ChangeNotifierProvider(create: (_) => FirebaseNotificationSendProvider()),
+        ChangeNotifierProvider(
+            create: (_) => FirebaseNotificationSendProvider()),
         ChangeNotifierProvider(create: (_) => NotificationCountProvider()),
       ],
       child: const MyApp(),
@@ -205,6 +207,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
       child: MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
+        // set property
         debugShowCheckedModeBanner: false,
         title: kAppTitle,
         theme: ThemeData(

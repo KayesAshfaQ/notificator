@@ -11,6 +11,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
 import '../provider/preference_provider.dart';
 import '../util/keys.dart';
+import '../util/navigation_service.dart';
 import '../util/utils.dart';
 import '../generated/assets.dart';
 
@@ -22,54 +23,71 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  RemoteMessage? initialMessage;
+
   @override
   void initState() {
+    instantiate();
+
+    // handle any interaction on notification when the app is in the background via a Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
     super.initState();
   }
 
-  // this method will be called when the widget is loaded
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
+  // It is assumed that all messages contain a data field with the key 'type'
+  Future<void> setupInteractedMessage() async {}
 
-    // TODO: Add on notification tap listener
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      // Handle background message
-      _handleMessage(context, message);
-    });
-
+  Future<void> instantiate() async {
     final provider = context.read<AuthKeyProvider>();
-    await provider.getUserToken();
 
-    var routeName = kRouteLogin;
+    // Get any messages which caused the application to open from a terminated state.
+    initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 
-    if (kDebugMode) {
-      print('userToken::: ${provider.userToken}');
-    }
-
-    // if user token exists, then navigate to home screen
-    if (provider.userToken != null) {
-      routeName = kRouteHome;
-
-      // get the employee type
-      initEmployeeTypeNotificationCount();
+    // when initial message is not null then navigate to the notification details screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage!);
     } else {
-      routeName = kRouteLogin;
-    }
+      // get the user token
+      await provider.getUserToken();
 
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(
-        context,
-        routeName,
-      );
-    });
+      var routeName = kRouteLogin;
+
+      if (kDebugMode) {
+        print('userToken::: ${provider.userToken}');
+      }
+
+      // if user token exists, then navigate to home screen
+      if (provider.userToken != null) {
+        routeName = kRouteHome;
+
+        // get the employee type
+        initEmployeeTypeNotificationCount();
+      } else {
+        routeName = kRouteLogin;
+      }
+
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushReplacementNamed(
+          context,
+          routeName,
+        );
+      });
+    }
   }
 
-  void _handleMessage(BuildContext context, RemoteMessage message) {
+  void _handleMessage(RemoteMessage message) {
     String screenName = message.data['screen_name'];
     String notificationId = message.data['notification_id'];
-    Navigator.pushNamed(context, screenName, arguments: notificationId);
+
+    print('screenName: $screenName');
+    print('notificationId: $notificationId');
+
     // TODO: retrieve notification id and pass it to the notification details screen
+    final context = NavigationService.navigatorKey.currentContext;
+    if (context != null) {
+      Navigator.pushReplacementNamed(context, screenName, arguments: notificationId);
+    }
   }
 
   /// this method is used to get the employee type from the shared preferences
