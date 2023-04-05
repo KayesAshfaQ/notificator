@@ -60,6 +60,11 @@ dependencies:
   # for stream capabilities
   rxdart: ^0.27.7
 
+  # for share content
+  share_plus: ^6.3.1
+
+  # for in app review
+  in_app_review: ^2.0.6
 
 # dependency's for third party packages for dev environment
 dev_dependencies:
@@ -68,7 +73,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.1
 
-# this section is for flutter plugins
+# this section is for flutter assets
 flutter:
   uses-material-design: true
   assets:

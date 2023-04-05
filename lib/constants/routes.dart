@@ -37,3 +37,5 @@ const kRouteEmailConfig = '/emailConfiguration';
 
 // app drawer
 const kRouteAboutApp = '/aboutApp';
+const kRoutePrivacy = '/privacyPolicy';
+const kRouteTerms = '/termsAndConditions';

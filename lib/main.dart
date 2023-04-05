@@ -45,6 +45,7 @@ import 'package:notificator/provider/toast_provider.dart';
 import 'package:notificator/provider/user_preference_provider.dart';
 import 'package:notificator/screens/about_screen.dart';
 import 'package:notificator/screens/email_config_screen.dart';
+import 'package:notificator/screens/privacy_policy_screen.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/change_password_screen.dart';
 import 'package:notificator/screens/change_password_setting_screen.dart';
@@ -62,6 +63,7 @@ import 'package:notificator/screens/otp_screen.dart';
 import 'package:notificator/screens/home_screen_employee.dart';
 import 'package:notificator/screens/register_screen.dart';
 import 'package:notificator/screens/splash_screen.dart';
+import 'package:notificator/screens/terms_conditions_screen.dart';
 import 'package:notificator/screens/update_profile_admin_screen.dart';
 import 'package:notificator/screens/employee_update_screen.dart';
 import 'package:notificator/screens/update_profile_employee_screen.dart';
@@ -241,6 +243,8 @@ class MyApp extends StatelessWidget {
           kRouteEmailConfig: (context) => const EmailConfigScreen(),
           kRouteMoreDetails: (context) => const MoreScreen(),
           kRouteAboutApp: (context) => const AboutScreen(),
+          kRoutePrivacy: (context) => const PrivacyPolicyScreen(),
+          kRouteTerms: (context) => const TermsConditionsScreen(),
         },
         initialRoute: kRouteSplash,
       ),

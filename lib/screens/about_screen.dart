@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:notificator/constants/app_strings.dart';
 
 import '../constants/app_colors.dart';
-import '../util/my_text.dart';
+import '../util/utils.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -35,37 +35,35 @@ class AboutScreen extends StatelessWidget {
           children: <Widget>[
             const Text(
               "Notificator",
-              style: TextStyle(
-                color: AppColors.deepPurple,
-                fontSize: 32.0,
-                fontWeight: FontWeight.w400,
-              ),
+              style: Utils.myTxtStyleTitleLarge,
             ),
             const SizedBox(height: 5),
-            Container(width: 100, height: 3, color: AppColors.orange),
+            Container(width: 72, height: 3, color: AppColors.orange),
             const SizedBox(height: 15),
             Text("Version",
-                style:
-                    MyText.body1(context)!.copyWith(color: AppColors.grey_40)),
+                style: Utils.myTxtStyleBodySmall
+                    .copyWith(color: AppColors.grey_40)),
             Text("1.0.0",
-                style:
-                    MyText.medium(context).copyWith(color: AppColors.grey_90)),
+                style: Utils.myTxtStyleBodyMedium
+                    .copyWith(color: AppColors.grey_90)),
             const SizedBox(height: 15),
             Text("Last Update",
-                style:
-                    MyText.body1(context)!.copyWith(color: AppColors.grey_40)),
+                style: Utils.myTxtStyleBodySmall
+                    .copyWith(color: AppColors.grey_40)),
             Text("April 2023",
-                style:
-                    MyText.medium(context).copyWith(color: AppColors.grey_90)),
+                style: Utils.myTxtStyleBodyMedium
+                    .copyWith(color: AppColors.grey_90)),
             const SizedBox(height: 25),
             Text("Short Description",
-                style:
-                    MyText.body1(context)!.copyWith(color: AppColors.grey_40)),
+                style: Utils.myTxtStyleBodySmall
+                    .copyWith(color: AppColors.grey_40)),
             const SizedBox(height: 4),
-            Text(AppStrings.appInfoShort,
-                textAlign: TextAlign.justify,
-                style:
-                    MyText.medium(context).copyWith(color: AppColors.grey_90)),
+            Text(
+              AppStrings.appInfoShort,
+              textAlign: TextAlign.justify,
+              style:
+                  Utils.myTxtStyleBodyMedium.copyWith(color: AppColors.grey_90),
+            ),
           ],
         ),
       ),

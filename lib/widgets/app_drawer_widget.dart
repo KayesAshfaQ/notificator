@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/logout_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:random_avatar/random_avatar.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
@@ -107,7 +109,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               Navigator.pushNamed(context, kRouteAboutApp);
             },
           ),
-          ListTile(
+          /* ListTile(
             leading: const Icon(
               Icons.feedback_outlined,
               color: AppColors.orange,
@@ -116,18 +118,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
             onTap: () {
               Fluttertoast.showToast(msg: 'this feature is not available yet');
             },
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.share_outlined,
-              color: AppColors.orange,
-            ),
-            title:
-                const Text('Share this app', style: Utils.myTxtStyleBodySmall),
-            onTap: () {
-              Fluttertoast.showToast(msg: 'this feature is not available yet');
-            },
-          ),
+          ),*/
+
           ListTile(
             leading: const Icon(
               Icons.privacy_tip_outlined,
@@ -136,7 +128,8 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
             title:
                 const Text('Privacy policy', style: Utils.myTxtStyleBodySmall),
             onTap: () {
-              Fluttertoast.showToast(msg: 'this feature is not available yet');
+              Navigator.pushNamed(context, kRoutePrivacy);
+              //Fluttertoast.showToast(msg: 'this feature is not available yet');
             },
           ),
           ListTile(
@@ -147,7 +140,21 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
             title: const Text('Terms & Condition',
                 style: Utils.myTxtStyleBodySmall),
             onTap: () {
-              Fluttertoast.showToast(msg: 'this feature is not available yet');
+              Navigator.pushNamed(context, kRouteTerms);
+              //Fluttertoast.showToast(msg: 'this feature is not available yet');
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.share_outlined,
+              color: AppColors.orange,
+            ),
+            title:
+                const Text('Share this app', style: Utils.myTxtStyleBodySmall),
+            onTap: () {
+              Share.share(
+                'Hey, check out this app: https://play.google.com/store/apps/details?id=com.notificator.app',
+              );
             },
           ),
           ListTile(
@@ -156,8 +163,16 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
               color: AppColors.orange,
             ),
             title: const Text('Rate Us', style: Utils.myTxtStyleBodySmall),
-            onTap: () {
-              Fluttertoast.showToast(msg: 'this feature is not available yet');
+            onTap: () async {
+              final InAppReview inAppReview = InAppReview.instance;
+
+              if (await inAppReview.isAvailable()) {
+                inAppReview.requestReview();
+              } else {
+                Fluttertoast.showToast(
+                  msg: 'this feature is not available yet',
+                );
+              }
             },
           ),
           ListTile(
