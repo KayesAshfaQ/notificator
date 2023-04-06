@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/notification_count_provider.dart';
@@ -57,14 +58,19 @@ class _SplashScreenState extends State<SplashScreen> {
         print('userToken::: ${provider.userToken}');
       }
 
-      // if user token exists, then navigate to home screen
-      if (provider.userToken != null) {
-        routeName = kRouteHome;
+      bool result = await InternetConnectionChecker().hasConnection;
+      if (result) {
+        // if user token exists, then navigate to home screen
+        if (provider.userToken != null) {
+          routeName = kRouteHome;
 
-        // get the employee type
-        initEmployeeTypeNotificationCount();
+          // get the employee type
+          initEmployeeTypeNotificationCount();
+        } else {
+          routeName = kRouteLogin;
+        }
       } else {
-        routeName = kRouteLogin;
+        routeName = kRouteNoInternet;
       }
 
       Future.delayed(const Duration(seconds: 3), () {
@@ -86,7 +92,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: retrieve notification id and pass it to the notification details screen
     final context = NavigationService.navigatorKey.currentContext;
     if (context != null) {
-      Navigator.pushReplacementNamed(context, screenName, arguments: notificationId);
+      Navigator.pushReplacementNamed(context, screenName,
+          arguments: notificationId);
     }
   }
 

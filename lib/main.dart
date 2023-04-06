@@ -14,6 +14,7 @@ import 'package:notificator/provider/employee_chip_provider.dart';
 import 'package:notificator/provider/firebase_notification_send_provider.dart';
 import 'package:notificator/provider/firebase_token_provider.dart';
 import 'package:notificator/provider/forgot_code_provider.dart';
+import 'package:notificator/provider/loader_provider.dart';
 import 'package:notificator/provider/logo_update_provider_company.dart';
 import 'package:notificator/provider/company_update_provider.dart';
 import 'package:notificator/provider/employee_create_provider.dart';
@@ -45,6 +46,7 @@ import 'package:notificator/provider/toast_provider.dart';
 import 'package:notificator/provider/user_preference_provider.dart';
 import 'package:notificator/screens/about_screen.dart';
 import 'package:notificator/screens/email_config_screen.dart';
+import 'package:notificator/screens/no_internet_screen.dart';
 import 'package:notificator/screens/privacy_policy_screen.dart';
 import 'package:notificator/screens/setting_screen_admin.dart';
 import 'package:notificator/screens/change_password_screen.dart';
@@ -180,6 +182,7 @@ Future<void> main() async {
         ChangeNotifierProvider(
             create: (_) => FirebaseNotificationSendProvider()),
         ChangeNotifierProvider(create: (_) => NotificationCountProvider()),
+        ChangeNotifierProvider(create: (_) => LoaderProvider()),
       ],
       child: const MyApp(),
     ),
@@ -249,6 +252,7 @@ class MyApp extends StatelessWidget {
           kRouteAboutApp: (context) => const AboutScreen(),
           kRoutePrivacy: (context) => const PrivacyPolicyScreen(),
           kRouteTerms: (context) => const TermsConditionsScreen(),
+          kRouteNoInternet: (context) => const NoInternetScreen(),
         },
         initialRoute: kRouteSplash,
       ),

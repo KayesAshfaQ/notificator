@@ -39,3 +39,5 @@ const kRouteEmailConfig = '/emailConfiguration';
 const kRouteAboutApp = '/aboutApp';
 const kRoutePrivacy = '/privacyPolicy';
 const kRouteTerms = '/termsAndConditions';
+
+const kRouteNoInternet = '/noInternetConnection';

@@ -66,6 +66,9 @@ dependencies:
   # for in app review
   in_app_review: ^2.0.6
 
+  # for network connectivity check
+  internet_connection_checker: ^1.0.0+1
+
 # dependency's for third party packages for dev environment
 dev_dependencies:
   flutter_test:

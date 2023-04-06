@@ -1,12 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/notification_get_provider.dart';
 import 'package:notificator/util/date_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:notificator/constants/app_colors.dart';
-import 'package:notificator/widgets/my_appbar_widget.dart';
 
 import '../util/helper.dart';
 import '../util/utils.dart';
@@ -44,14 +45,15 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
 
     // Access the arguments property and cast it to the Person class
     final String id = settings?.arguments as String;
-    print('notification id: $id');
+    if (kDebugMode) {
+      print('notification id: $id');
+    }
 
     // get token
     String token = await Helper.getToken(context);
 
     // fetch the notification details data from server
-    if (id != null) {
-
+    if (id.isNotEmpty) {
       // String id = data['id'] ?? '';
       // String userType = data['userType'] ?? '';
 
@@ -61,66 +63,129 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MyAppBarWidget(title: 'Notification Details'),
-      body: Consumer<NotificationDetailsProvider>(
-          builder: (context, provider, child) {
-        if (provider.data == null) {
-          // show the loader overlay when the data is null
-          context.loaderOverlay.show();
+    return WillPopScope(
+      onWillPop: () async {
+        // Get the current route
+        final route = ModalRoute.of(context);
 
-          return const SizedBox();
+        // Check if the current route is the first route in the navigator
+        if (route?.isFirst ?? true) {
+          // The current route is the first route in the navigator,
+          // so the app will exit when the back button is pressed.
+
+          print('is first route in the navigator');
+
+          Navigator.pushReplacementNamed(context, kRouteHome);
+
+          return true;
         } else {
-          // hide the loader overlay
-          context.loaderOverlay.hide();
-
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              Text(
-                DateTimeHelper.convertDatetime(provider.data?.updatedAt),
-                style: Utils.myTxtStyleBodyExtraSmall,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                //'We have meeting with our client today with USA team',
-                provider.data?.subject ?? '',
-                style: Utils.myTxtStyleTitleMedium,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-              ),
-              const SizedBox(height: 8),
-              RichText(
-                text: TextSpan(
-                  text: 'Send To: ',
-                  style: Utils.myTxtStyleTitleExtraSmall,
-                  children: [
-                    TextSpan(
-                      text: provider.data?.groupIndividualName ?? '',
-                      style: Utils.myTxtStyleBodyExtraSmall.copyWith(
-                        color: AppColors.lightOrange,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Linkify(
-                onOpen: onTapLink,
-                text: provider.data?.message ?? '',
-                style: Utils.myTxtStyleBodySmall.copyWith(
-                  fontSize: 14,
-                ),
-                linkStyle: Utils.myTxtStyleBodySmall.copyWith(
-                  fontSize: 14,
-                  color: AppColors.lightOrange,
-                ),
-                textAlign: TextAlign.justify,
-              ),
-            ],
-          );
+          // The current route is not the first route in the navigator,
+          // so the app will navigate back when the back button is pressed.
+          // You can get the name of the previous route using route.settings.name.
+          print('Going back to ${route?.settings.name}');
+          return true;
         }
-      }),
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.deepPurple,
+          title: Text(
+            'Notification Details',
+            style: Utils.myTxtStyleTitleMedium.copyWith(
+              color: AppColors.white,
+            ),
+          ),
+          flexibleSpace: const Image(
+            image: AssetImage('assets/img/appbar-background.png'),
+            fit: BoxFit.cover,
+          ),
+          automaticallyImplyLeading: false,
+          // Use the '?' operator to safely access the ModalRoute
+          // If the ModalRoute is null, the expression will return false
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              // Get the current route
+              final route = ModalRoute.of(context);
+
+              // Check if the current route is the first route in the navigator
+              if (route?.isFirst ?? true) {
+                // The current route is the first route in the navigator,
+                // so the app will exit when the back button is pressed.
+
+                print('is first route in the navigator');
+
+                Navigator.pushReplacementNamed(context, kRouteHome);
+              } else {
+                // The current route is not the first route in the navigator,
+                // so the app will navigate back when the back button is pressed.
+                // You can get the name of the previous route using route.settings.name.
+                print('Going back to ${route?.settings.name}');
+
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ),
+        body: Consumer<NotificationDetailsProvider>(
+            builder: (context, provider, child) {
+          if (provider.data == null) {
+            // show the loader overlay when the data is null
+            context.loaderOverlay.show();
+
+            return const SizedBox();
+          } else {
+            // hide the loader overlay
+            context.loaderOverlay.hide();
+
+            return ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Text(
+                  DateTimeHelper.convertDatetime(provider.data?.updatedAt),
+                  style: Utils.myTxtStyleBodyExtraSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  //'We have meeting with our client today with USA team',
+                  provider.data?.subject ?? '',
+                  style: Utils.myTxtStyleTitleMedium,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+                const SizedBox(height: 8),
+                RichText(
+                  text: TextSpan(
+                    text: 'Send To: ',
+                    style: Utils.myTxtStyleTitleExtraSmall,
+                    children: [
+                      TextSpan(
+                        text: provider.data?.groupIndividualName ?? '',
+                        style: Utils.myTxtStyleBodyExtraSmall.copyWith(
+                          color: AppColors.lightOrange,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Linkify(
+                  onOpen: onTapLink,
+                  text: provider.data?.message ?? '',
+                  style: Utils.myTxtStyleBodySmall.copyWith(
+                    fontSize: 14,
+                  ),
+                  linkStyle: Utils.myTxtStyleBodySmall.copyWith(
+                    fontSize: 14,
+                    color: AppColors.lightOrange,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            );
+          }
+        }),
+      ),
     );
   }
 
