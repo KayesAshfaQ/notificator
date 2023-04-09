@@ -11,7 +11,7 @@ class NotificationData {
     this.updatedAt,
   });
 
-  dynamic id;
+  int? id;
   String? userId;
   String? subject;
   String? message;

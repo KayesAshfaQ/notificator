@@ -14,7 +14,7 @@ class NotificationCountProvider with ChangeNotifier {
 
   final NotificationRepository _groupRepository = NotificationRepository();
 
-  /// This method is for creating new group
+  /// This method is for count unread notifications
   Future<void> getCount(String token) async {
     try {
       final response = await _groupRepository.getNotificationCount(token);

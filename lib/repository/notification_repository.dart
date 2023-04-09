@@ -39,8 +39,16 @@ class NotificationRepository {
   }
 
   /// This method is for getting the notification list from admin
-  Future<NotificationListResponse> getNotifications(String token) async {
-    final url = Uri.parse('$kBaseUrl/notifications');
+  Future<NotificationListResponse> getNotifications(
+      String token, int? limit, int? page) async {
+    Uri url;
+    if (limit != null && page != null) {
+      url = Uri.parse('$kBaseUrl/notifications?per_page=$limit&page=$page');
+    } else {
+      url = Uri.parse('$kBaseUrl/notifications');
+    }
+
+    print(url);
 
     final response = await http.get(
       url,
@@ -50,7 +58,6 @@ class NotificationRepository {
     );
 
     final data = json.decode(response.body);
-
     print(data);
     //print('NotificationList::: ${response.statusCode}');
 

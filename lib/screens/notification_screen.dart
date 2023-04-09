@@ -29,12 +29,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
   late final NotificationListProvider provider;
   late final String token;
   late final String employeeType;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     instantiate();
-
+    _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> initEmployeeType() async {
@@ -64,6 +71,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     debugPrint('token: $token');
 
+    // reset the page number to 1 when fetching data for first time
+    provider.resetData();
+
     // get the employee type
     await initEmployeeType();
 
@@ -73,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
 
     // count the notification
-    initNotificationCount();
+    countUnreadNotification();
 
     // listeners for refresh the ui when item is created & updated
     notificationProvider.addListener(() {
@@ -83,7 +93,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
   }
 
-  void initNotificationCount() async {
+  void countUnreadNotification() async {
     print('initNotificationCount() called');
     if (employeeType == '2') {
       final notifCountProvider = context.read<NotificationCountProvider>();
@@ -97,12 +107,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return RefreshIndicator(
       onRefresh: () {
         // Refresh the notification count when the user pulls down
-        initNotificationCount();
+        countUnreadNotification();
 
         // Refresh the list when the user pulls down
-        return provider.getList(token, employeeType);
+        return provider.resetNotificationList(token, employeeType);
       },
       child: ListView(
+        controller: _scrollController,
         padding: const EdgeInsets.all(20),
         // shrinkWrap: true,
         // physics: const NeverScrollableScrollPhysics(),
@@ -178,31 +189,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 // else show the list of groups
                 return provider.data!.isNotEmpty
                     ? ListView.builder(
-                        itemCount: provider.data?.length,
+                        //controller: _scrollController,
+                        itemCount: (provider.data?.length)! + 1,
+                        //+1 to reserve space for the loading indicator
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
-                          final notification = provider.data![index];
+                          if (index == provider.data?.length) {
+                            return _buildProgressIndicator();
+                          } else {
+                            final notification = provider.data![index];
 
-                          return NotificationListItemWidget(
-                            id: notification.id.toString(),
-                            messageTitle: notification.subject ?? '',
-                            group: notification.groupIndividualName ?? '',
-                            time: Helper.processDate(
-                              (notification.updatedAt),
-                            ),
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                kRouteNotificationDetails,
-                                arguments: '${notification.id}',
-                                /* arguments: {
+                            return NotificationListItemWidget(
+                              id: notification.id.toString(),
+                              messageTitle: notification.subject ?? '',
+                              group: notification.groupIndividualName ?? '',
+                              time: Helper.processDate(
+                                (notification.updatedAt),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  kRouteNotificationDetails,
+                                  arguments: '${notification.id}',
+                                  /* arguments: {
                                   'id': '${notification.id}',
                                   'userType': employeeType,
                                 },*/
-                              );
-                            },
-                          );
+                                );
+                              },
+                            );
+                          }
                         },
                       )
                     : SizedBox(
@@ -218,6 +235,41 @@ class _NotificationScreenState extends State<NotificationScreen> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  void _scrollListener() async {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      //int currentPage = provider.currentPage;
+
+      // Check if there are more items to load
+      if (provider.currentPage < provider.lastPage) {
+        provider.setLoading(true);
+        provider.incrementPage();
+        await provider.getList(token, employeeType);
+
+        //delay the loading state to false
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          provider.setLoading(false);
+        });
+      }
+    }
+  }
+
+  Widget _buildProgressIndicator() {
+    print('_buildProgressIndicator');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Center(
+        child: provider.isLoading
+            ? const CircularProgressIndicator()
+            : !(provider.isLoading) && provider.currentPage >= provider.lastPage
+                ? const Text('No more information to load',
+                    style: Utils.myTxtStyleBodySmall)
+                : const SizedBox(),
       ),
     );
   }
