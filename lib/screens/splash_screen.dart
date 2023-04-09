@@ -154,7 +154,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 'Your personal reminder'.toUpperCase(),
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Colors.white,
+                  color: AppColors.white,
                   fontFamily: 'BaiJamjuree',
                   fontWeight: FontWeight.w600,
                 ),
@@ -164,7 +164,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 2.5,
                 width: width * 0.2,
                 child: const LinearProgressIndicator(
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.white,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     AppColors.lightOrange,
                   ),

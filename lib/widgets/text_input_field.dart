@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../constants/app_colors.dart';
+
 class TextFieldWidget extends StatefulWidget {
   final String? hintText;
   final TextEditingController? controller;
@@ -22,12 +24,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
     return TextFormField(
       controller: widget.controller,
       onChanged: (value) {},
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: AppColors.white),
       decoration: InputDecoration(
         hintText: widget.hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: AppColors.white),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
+        fillColor: AppColors.white.withOpacity(0.2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
           borderSide: BorderSide.none,

@@ -124,7 +124,9 @@ Future<void> main() async {
   try {
     token = await messaging.getToken();
   } catch (e) {
-    print(e);
+    if (kDebugMode) {
+      print(e);
+    }
   }
 
   if (kDebugMode) {
@@ -221,18 +223,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: kAppTitle,
         theme: ThemeData(
+          //brightness: Brightness.light,
           primarySwatch: Colors.deepPurple,
-          primaryColor: AppColors.lightOrange,
           // textFiled customization app wide
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: AppColors.lightOrange,
             selectionColor: Color(0x40FE9027),
             selectionHandleColor: AppColors.lightOrange,
           ),
-         /* appBarTheme: const AppBarTheme(
+          appBarTheme: const AppBarTheme(
             //color: AppColors.lightOrange,
             iconTheme: IconThemeData(color: Colors.white),
-          ),*/
+          ),
+
 
         ),
         routes: {

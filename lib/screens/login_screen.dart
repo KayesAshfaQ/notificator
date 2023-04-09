@@ -2,7 +2,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/constants/routes.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/firebase_token_provider.dart';
@@ -12,6 +11,7 @@ import 'package:notificator/util/utils.dart';
 import 'package:notificator/generated/assets.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/app_colors.dart';
 import '../constants/app_info.dart';
 import '../provider/toast_provider.dart';
 import '../util/keys.dart';
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Your personal reminder'.toUpperCase(),
                       style: const TextStyle(
                         fontSize: 8,
-                        color: Colors.white,
+                        color: AppColors.white,
                         fontFamily: 'BaiJamjuree',
                         fontWeight: FontWeight.w600,
                       ),
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Account Login',
                       style: TextStyle(
                         fontSize: 24,
-                        color: Colors.white,
+                        color: AppColors.white,
                         fontFamily: 'BaiJamjuree',
                         fontWeight: FontWeight.w500,
                       ),
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: AppColors.white,
                               fontFamily: 'BaiJamjuree',
                             ),
                           ),
