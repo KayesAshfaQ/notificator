@@ -102,8 +102,9 @@ class NotificationRepository {
 
   /// This method is to sort/filter notifications
   Future<NotificationListResponse> search(
-      String token, String sort, String searchTxt) async {
-    final url = Uri.parse('$kBaseUrl/notifications/search');
+      String token, String sort, String searchTxt,int page) async {
+    final url = Uri.parse('$kBaseUrl/notifications/search?per_page=50&page=$page');
+    print(url);
 
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $token',

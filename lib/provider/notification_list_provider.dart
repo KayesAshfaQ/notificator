@@ -10,6 +10,12 @@ class NotificationListProvider with ChangeNotifier {
   bool _isLoading = false;
   bool _success = false;
   String _error = '';
+
+  // for sort & filet
+  bool isSearch = false;
+  String sortType = '';
+  String filterTxt = '';
+
   List<NotificationData>? _data;
 
   int get currentPage => _currentPage;
@@ -36,10 +42,19 @@ class NotificationListProvider with ChangeNotifier {
   }
 
   /// reset the page number
-  void resetData() {
+  void resetCurrentPage() {
     if (_data != null) _data!.clear();
     _currentPage = 1;
+
     //notifyListeners();
+  }
+
+  /// reset the search
+  void resetSearch() {
+    isSearch = false;
+    sortType = '';
+    filterTxt = '';
+    notifyListeners();
   }
 
   /// set the limit
@@ -56,7 +71,10 @@ class NotificationListProvider with ChangeNotifier {
 
   /// This method is for fetching the notifications form the repository
   Future<void> getList(String token, String userType) async {
+
     try {
+
+
       NotificationListResponse response;
       if (userType == '1') {
         response = await _notificationRepository.getNotifications(
@@ -126,17 +144,22 @@ class NotificationListProvider with ChangeNotifier {
   }
 
   /// This method is for fetching the notifications form the repository
-  Future<void> notificationSearch(
-      String token, String sort, String searchTxt) async {
+  Future<void> notificationSearch(String token) async {
     try {
       NotificationListResponse response;
 
-      response = await _notificationRepository.search(token, sort, searchTxt);
+      response = await _notificationRepository.search(
+          token, sortType, filterTxt, currentPage);
 
       _success = response.success;
 
       if (success) {
-        _data = response.data;
+        if (_data == null) {
+          _data = response.data;
+        } else {
+          _data!.addAll(response.data!);
+        }
+        _lastPage = response.lastPage ?? 1;
         notifyListeners();
       } else {
         _error = 'Failed to fetch the notifications!';

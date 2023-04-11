@@ -75,7 +75,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     debugPrint('token: $token');
 
     // reset the page number to 1 when fetching data for first time
-    provider.resetData();
+    provider.resetCurrentPage();
 
     // get the employee type
     await initEmployeeType();
@@ -111,6 +111,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
       onRefresh: () {
         // Refresh the notification count when the user pulls down
         countUnreadNotification();
+
+        provider.resetCurrentPage();
+        provider.resetSearch();
 
         // Refresh the list when the user pulls down
         return provider.resetNotificationList(token, employeeType);
@@ -245,13 +248,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
       if (provider.currentPage < provider.lastPage && !provider.isLoading) {
         provider.setLoading(true);
         provider.incrementPage();
-        await provider.getList(token, employeeType);
+
+        if (provider.isSearch) {
+          await provider.notificationSearch(token);
+        } else {
+          await provider.getList(token, employeeType);
+        }
 
         //delay the loading state to false
         Future.delayed(const Duration(milliseconds: 3000), () {
           provider.setLoading(false);
         });
-      }/*else{
+      } /*else{
         Fluttertoast.showToast(
             msg: "Wait a sec",
             toastLength: Toast.LENGTH_SHORT,
@@ -285,6 +293,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void sortNotificationList(String selectedItem) async {
+
+    provider.resetCurrentPage();
     String sortType = '';
 
     switch (selectedItem) {
@@ -296,15 +306,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
         break;
     }
 
+
+    provider.sortType = sortType;
+
     // show the loader overlay
     context.loaderOverlay.show();
 
     //final employeeSearchProvider = context.read<EmployeeSearchProvider>();
-    await provider.notificationSearch(token, sortType, '');
+    await provider.notificationSearch(token);
 
     // if the search is successful
     if (provider.success) {
-      // update the list
+      provider.isSearch = true;
       print('search success');
     }
 
