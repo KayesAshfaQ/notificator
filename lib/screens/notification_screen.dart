@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
 import 'package:notificator/widgets/notification_list_item_widget.dart';
@@ -212,10 +215,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   context,
                                   kRouteNotificationDetails,
                                   arguments: '${notification.id}',
-                                  /* arguments: {
-                                  'id': '${notification.id}',
-                                  'userType': employeeType,
-                                },*/
                                 );
                               },
                             );
@@ -242,19 +241,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void _scrollListener() async {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      //int currentPage = provider.currentPage;
-
       // Check if there are more items to load
-      if (provider.currentPage < provider.lastPage) {
+      if (provider.currentPage < provider.lastPage && !provider.isLoading) {
         provider.setLoading(true);
         provider.incrementPage();
         await provider.getList(token, employeeType);
 
         //delay the loading state to false
-        Future.delayed(const Duration(milliseconds: 1500), () {
+        Future.delayed(const Duration(milliseconds: 3000), () {
           provider.setLoading(false);
         });
-      }
+      }/*else{
+        Fluttertoast.showToast(
+            msg: "Wait a sec",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color(0xF443363F),
+            textColor: Colors.white,
+            fontSize: 12.0
+        );
+      }*/
     }
   }
 
@@ -265,7 +272,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Center(
         child: provider.isLoading
-            ? const CircularProgressIndicator()
+            ? const SpinKitCircle(
+                color: AppColors.lightOrange,
+                size: 32.0,
+              )
             : !(provider.isLoading) && provider.currentPage >= provider.lastPage
                 ? const Text('No more information to load',
                     style: Utils.myTxtStyleBodySmall)

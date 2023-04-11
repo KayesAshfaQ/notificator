@@ -6,7 +6,7 @@ import 'package:notificator/repository/notification_repository.dart';
 class NotificationListProvider with ChangeNotifier {
   int _currentPage = 1;
   int _lastPage = 1;
-  int _limit = 10;
+  int _limit = 50;
   bool _isLoading = false;
   bool _success = false;
   String _error = '';

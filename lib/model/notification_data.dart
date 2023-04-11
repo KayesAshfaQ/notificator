@@ -12,7 +12,7 @@ class NotificationData {
   });
 
   int? id;
-  String? userId;
+  int? userId;
   String? subject;
   String? message;
   String? groupIndividual;

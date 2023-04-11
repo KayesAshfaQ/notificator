@@ -119,7 +119,13 @@ Future<void> main() async {
 
   // TODO: Register with FCM
   // It requests a registration token for sending messages to users from your App server or other trusted server environment.
-  String? token = await messaging.getToken();
+  String? token;
+
+  try {
+    token = await messaging.getToken();
+  } catch (e) {
+    print(e);
+  }
 
   if (kDebugMode) {
     print('Registration Token=$token');
