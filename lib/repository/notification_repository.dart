@@ -74,8 +74,16 @@ class NotificationRepository {
 
   /// This method is for getting the notification list by employee
   Future<NotificationListResponse> getNotificationsEmployee(
-      String token) async {
-    final url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
+      String token, int? limit, int? page) async {
+
+    Uri url;
+    if (limit != null && page != null) {
+      url = Uri.parse('$kBaseUrl/notification/empnotificationlist?per_page=$limit&page=$page');
+    }else{
+      url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
+    }
+
+    print(url);
 
     final response = await http.get(
       url,
@@ -102,8 +110,9 @@ class NotificationRepository {
 
   /// This method is to sort/filter notifications
   Future<NotificationListResponse> search(
-      String token, String sort, String searchTxt,int page) async {
-    final url = Uri.parse('$kBaseUrl/notifications/search?per_page=50&page=$page');
+      String token, String sort, String searchTxt, int page) async {
+    final url =
+        Uri.parse('$kBaseUrl/notifications/search?per_page=50&page=$page');
     print(url);
 
     final response = await http.post(url, headers: {

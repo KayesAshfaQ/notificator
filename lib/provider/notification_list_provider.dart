@@ -74,7 +74,6 @@ class NotificationListProvider with ChangeNotifier {
 
     try {
 
-
       NotificationListResponse response;
       if (userType == '1') {
         response = await _notificationRepository.getNotifications(
@@ -84,7 +83,7 @@ class NotificationListProvider with ChangeNotifier {
         );
       } else {
         response =
-            await _notificationRepository.getNotificationsEmployee(token);
+            await _notificationRepository.getNotificationsEmployee(token, limit, currentPage);
       }
 
       _success = response.success;
@@ -121,7 +120,7 @@ class NotificationListProvider with ChangeNotifier {
         );
       } else {
         response =
-            await _notificationRepository.getNotificationsEmployee(token);
+            await _notificationRepository.getNotificationsEmployee(token, limit, currentPage);
       }
 
       _success = response.success;
