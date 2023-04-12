@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notificator/constants/constants.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
@@ -10,6 +11,7 @@ class NotificationListItemWidget extends StatelessWidget {
   final String? messageTitle;
   final String? time;
   final String? group;
+  final String? readStatus;
   final VoidCallback? onPressed;
 
   const NotificationListItemWidget({
@@ -18,6 +20,7 @@ class NotificationListItemWidget extends StatelessWidget {
     this.onPressed,
     this.messageTitle,
     this.time,
+    this.readStatus,
     this.group,
   });
 
@@ -61,15 +64,46 @@ class NotificationListItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      time ?? '7 days ago',
-                      overflow: TextOverflow.visible,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: AppColors.deepPurple,
-                        fontFamily: 'BaiJamjuree',
-                        fontStyle: FontStyle.normal,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          time ?? 'few time ago',
+                          overflow: TextOverflow.visible,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: AppColors.deepPurple,
+                            fontFamily: 'BaiJamjuree',
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                        SizedBox(width: width - 160),
+                        readStatus == Constants.kStatusUnread
+                            ? Container(
+                                height: 8,
+                                width: 8,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.orange,
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      AppColors.lightOrange.withOpacity(0.1),
+                                      AppColors.orange,
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.orange.withOpacity(0.5),
+                                      blurRadius: 10,
+                                      spreadRadius: 2.5,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
                     ),
                     const SizedBox(height: 4),
                     SizedBox(

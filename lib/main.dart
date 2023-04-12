@@ -222,12 +222,18 @@ class MyApp extends StatelessWidget {
         title: kAppTitle,
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
+          primaryColor: AppColors.lightOrange,
           // textFiled customization app wide
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: AppColors.lightOrange,
             selectionColor: Color(0x40FE9027),
             selectionHandleColor: AppColors.lightOrange,
           ),
+         /* appBarTheme: const AppBarTheme(
+            //color: AppColors.lightOrange,
+            iconTheme: IconThemeData(color: Colors.white),
+          ),*/
+
         ),
         routes: {
           kRouteSplash: (context) => const SplashScreen(),

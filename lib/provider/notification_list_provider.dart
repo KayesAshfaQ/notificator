@@ -69,6 +69,12 @@ class NotificationListProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /// set the mark as read state
+  void markAsRead(int index) {
+    _data![index].readStatus = 'read';
+    notifyListeners();
+  }
+
   /// This method is for fetching the notifications form the repository
   Future<void> getList(String token, String userType) async {
 

@@ -213,12 +213,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               time: Helper.processDate(
                                 (notification.updatedAt),
                               ),
+                              readStatus: notification.readStatus ?? '',
                               onPressed: () {
                                 Navigator.pushNamed(
                                   context,
                                   kRouteNotificationDetails,
                                   arguments: '${notification.id}',
                                 );
+
+                                // mark the notification as read when the user taps on it
+                                if (notification.readStatus ==
+                                    Constants.kStatusUnread) {
+                                  provider.markAsRead(index);
+                                }
                               },
                             );
                           }
@@ -293,7 +300,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void sortNotificationList(String selectedItem) async {
-
     provider.resetCurrentPage();
     String sortType = '';
 
@@ -305,7 +311,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         sortType = 'desc';
         break;
     }
-
 
     provider.sortType = sortType;
 

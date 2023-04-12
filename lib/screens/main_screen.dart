@@ -177,7 +177,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           icon: notificationCount > 0
                               ? Badge(
                                   label: Text(
-                                    '${notificationCount}',
+                                    '$notificationCount',
+                                    style: const TextStyle(
+                                      color: AppColors.white,
+                                      fontSize: 10,
+                                    ),
                                   ),
                                   child: const Icon(Icons.notifications_none),
                                 )
