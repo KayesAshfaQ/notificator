@@ -14,6 +14,7 @@ class NotificationRepository {
   Future<NotificationSendResponse> send(
       NotificationData notification, String token) async {
     final url = Uri.parse('$kBaseUrl/notifications');
+
     final response = await http.post(
       url,
       body: {
@@ -75,11 +76,11 @@ class NotificationRepository {
   /// This method is for getting the notification list by employee
   Future<NotificationListResponse> getNotificationsEmployee(
       String token, int? limit, int? page) async {
-
     Uri url;
     if (limit != null && page != null) {
-      url = Uri.parse('$kBaseUrl/notification/empnotificationlist?per_page=$limit&page=$page');
-    }else{
+      url = Uri.parse(
+          '$kBaseUrl/notification/empnotificationlist?per_page=$limit&page=$page');
+    } else {
       url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
     }
 

@@ -118,6 +118,7 @@ class _SearchNotificationBottomSheetState
       // call the rest api through provider
       final provider = context.read<NotificationListProvider>();
       provider.filterTxt = filter;
+      provider.clearData();
       await provider.notificationSearch(token!);
 
       // check if the submission was successful

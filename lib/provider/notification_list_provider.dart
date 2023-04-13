@@ -49,6 +49,11 @@ class NotificationListProvider with ChangeNotifier {
     //notifyListeners();
   }
 
+  void clearData() {
+    _data = null;
+    //notifyListeners();
+  }
+
   /// reset the search
   void resetSearch() {
     isSearch = false;
@@ -98,7 +103,7 @@ class NotificationListProvider with ChangeNotifier {
         if (_data == null) {
           _data = response.data;
         } else {
-          _data!.clear();
+          //_data!.clear();
           _data!.addAll(response.data!);
         }
         _lastPage = response.lastPage ?? 1;
@@ -167,7 +172,6 @@ class NotificationListProvider with ChangeNotifier {
         if (_data == null) {
           _data = response.data;
         } else {
-          _data!.clear();
           _data!.addAll(response.data!);
         }
         _lastPage = response.lastPage ?? 1;

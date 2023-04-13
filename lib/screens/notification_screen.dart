@@ -323,7 +323,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // show the loader overlay
     context.loaderOverlay.show();
 
-    //final employeeSearchProvider = context.read<EmployeeSearchProvider>();
+    //clear data & then load the
+    provider.clearData();
     await provider.notificationSearch(token);
 
     // if the search is successful
