@@ -67,16 +67,16 @@ class _GroupListItemWidgetState extends State<GroupListItemWidget> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       RoundIconButtonWidget(
-                        icon: Icons.arrow_circle_left,
+                        icon: Icons.edit_rounded,
                         onPressed: updateGroup,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Update',
                         size: 24,
                         color: AppColors.orange,
-                        angle: 90,
+                        isCustomSize: true,
                       ),
                       RoundIconButtonWidget(
-                        icon: Icons.remove_circle,
+                        icon: Icons.remove,
                         onPressed: removeGroup,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Remove',

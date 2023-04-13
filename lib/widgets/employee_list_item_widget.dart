@@ -124,16 +124,16 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       RoundIconButtonWidget(
-                        icon: Icons.arrow_circle_left,
+                        icon: Icons.edit_rounded,
                         onPressed: updateEmployee,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Update',
                         size: 24,
                         color: AppColors.orange,
-                        angle: 90,
+                        isCustomSize: true,
                       ),
                       RoundIconButtonWidget(
-                        icon: Icons.remove_circle,
+                        icon: Icons.remove,
                         onPressed: removeEmployee,
                         padding: const EdgeInsets.all(4),
                         tooltip: 'Remove',

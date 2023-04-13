@@ -8,15 +8,17 @@ class SeparatedLabeledTextField extends StatefulWidget {
   final TextEditingController? controller;
   final FormFieldValidator? validator;
   final bool? isPassword;
+  final FocusNode? focusNode;
 
-  const SeparatedLabeledTextField(
-      {Key? key,
-      required this.labelText,
-      required this.hintText,
-      this.controller,
-      this.validator,
-      this.isPassword})
-      : super(key: key);
+  const SeparatedLabeledTextField({
+    Key? key,
+    required this.labelText,
+    required this.hintText,
+    this.controller,
+    this.validator,
+    this.isPassword,
+    this.focusNode,
+  }) : super(key: key);
 
   @override
   State<SeparatedLabeledTextField> createState() =>
@@ -49,6 +51,7 @@ class _SeparatedLabeledTextFieldState extends State<SeparatedLabeledTextField> {
         ),
         const SizedBox(height: 8.0),
         TextFormField(
+          focusNode: widget.focusNode,
           obscureText: isObscurePassword,
           controller: widget.controller,
           validator: widget.validator,

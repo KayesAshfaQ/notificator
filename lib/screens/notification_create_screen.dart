@@ -38,6 +38,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
   final TextEditingController _groupIndividualController =
       TextEditingController();
 
+  final FocusNode _subjectFocusNode = FocusNode();
+  final FocusNode _messageFocusNode = FocusNode();
+
   @override
   void initState() {
     // Display a progress loader
@@ -65,98 +68,56 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       appBar: const MyAppBarWidget(
         title: 'Create Notification',
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          width: double.infinity,
-          //height: double.infinity,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8.0),
-                SeparatedLabeledTextField(
-                  controller: _subject,
-                  validator: Utils.validate,
-                  labelText: 'Subject',
-                  hintText: 'Notification Subject',
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Message',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _message,
-                  validator: Utils.validate,
-                  //onChanged: (value) {},
-                  maxLines: null,
-                  minLines: 5,
-                  style: const TextStyle(
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Enter your message',
-                    hintStyle: TextStyle(
-                      color: AppColors.deepPurple.withOpacity(0.5),
-                      fontFamily: 'BaiJamjuree',
-                    ),
-                    filled: true,
-                    fillColor: AppColors.deepPurple.withOpacity(0.1),
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  'Send To',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SendOptionRadioWidget(),
-                const SizedBox(height: 4),
-                Text(
-                  sendToProvider.selectedOption == 1 ? 'Individual' : 'Group',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.deepPurple,
-                    fontFamily: 'BaiJamjuree',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                GestureDetector(
-                  onTap: sendToProvider.selectedOption == 1
-                      ? onTapSelectEmployee
-                      : onTapSelectGroup,
-                  child: TextFormField(
-                    controller: _groupIndividualController,
+      body: GestureDetector(
+        onTap: () {
+          print('tapped outside the text field');
+          // When the user taps outside any text field, hide the keyboard
+          _subjectFocusNode.unfocus();
+          _messageFocusNode.unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            width: double.infinity,
+            //height: double.infinity,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8.0),
+                  SeparatedLabeledTextField(
+                    focusNode: _subjectFocusNode,
+                    controller: _subject,
                     validator: Utils.validate,
-                    enabled: false,
+                    labelText: 'Subject',
+                    hintText: 'Notification Subject',
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Message',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.deepPurple,
+                      fontFamily: 'BaiJamjuree',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  TextFormField(
+                    focusNode: _messageFocusNode,
+                    controller: _message,
+                    validator: Utils.validate,
+                    //onChanged: (value) {},
+                    maxLines: null,
+                    minLines: 5,
                     style: const TextStyle(
                       color: AppColors.deepPurple,
                       fontFamily: 'BaiJamjuree',
                     ),
                     decoration: InputDecoration(
-                      hintText: sendToProvider.selectedOption == 1
-                          ? 'Select Employee'
-                          : 'Choose Group',
+                      hintText: 'Enter your message',
                       hintStyle: TextStyle(
                         color: AppColors.deepPurple.withOpacity(0.5),
                         fontFamily: 'BaiJamjuree',
@@ -168,35 +129,87 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
                         borderRadius: BorderRadius.circular(6),
                         borderSide: BorderSide.none,
                       ),
-                      suffixIcon: const Icon(
-                        Icons.arrow_drop_down,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Send To',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.deepPurple,
+                      fontFamily: 'BaiJamjuree',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SendOptionRadioWidget(),
+                  const SizedBox(height: 4),
+                  Text(
+                    sendToProvider.selectedOption == 1 ? 'Individual' : 'Group',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.deepPurple,
+                      fontFamily: 'BaiJamjuree',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8.0),
+                  GestureDetector(
+                    onTap: sendToProvider.selectedOption == 1
+                        ? onTapSelectEmployee
+                        : onTapSelectGroup,
+                    child: TextFormField(
+                      controller: _groupIndividualController,
+                      validator: Utils.validate,
+                      enabled: false,
+                      style: const TextStyle(
                         color: AppColors.deepPurple,
+                        fontFamily: 'BaiJamjuree',
+                      ),
+                      decoration: InputDecoration(
+                        hintText: sendToProvider.selectedOption == 1
+                            ? 'Select Employee'
+                            : 'Choose Group',
+                        hintStyle: TextStyle(
+                          color: AppColors.deepPurple.withOpacity(0.5),
+                          fontFamily: 'BaiJamjuree',
+                        ),
+                        filled: true,
+                        fillColor: AppColors.deepPurple.withOpacity(0.1),
+                        isDense: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: const Icon(
+                          Icons.arrow_drop_down,
+                          color: AppColors.deepPurple,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: sendNewNotification,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.deepPurple,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 16),
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: sendNewNotification,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.deepPurple,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32, vertical: 16),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      minimumSize: const Size(double.infinity, 0),
                     ),
-                    minimumSize: const Size(double.infinity, 0),
-                  ),
-                  child: const Text(
-                    'Send Notification',
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontFamily: 'BaiJamjuree',
+                    child: const Text(
+                      'Send Notification',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontFamily: 'BaiJamjuree',
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -209,16 +222,18 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     _subject.dispose();
     _message.dispose();
     _groupIndividualController.dispose();
+    _subjectFocusNode.dispose();
+    _messageFocusNode.dispose();
     super.dispose();
   }
 
   /// show bottom sheet to select group
-  void onTapSelectGroup() {
+  void onTapSelectGroup() async{
     // get the number of chips
     int chipsCount = context.read<GroupChipProvider>().groupList.length;
 
     // show bottom sheet to select group or individual
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -228,15 +243,20 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
         );
       },
     );
+
+    if (_messageFocusNode.hasFocus) {
+      _messageFocusNode.unfocus();
+    }
+
   }
 
   /// show bottom sheet to select employee
-  void onTapSelectEmployee() {
+  void onTapSelectEmployee() async {
     // get the number of chips
     int chipsCount = context.read<EmployeeChipProvider>().employeeList.length;
 
     // show bottom sheet to select group or individual
-    showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -246,6 +266,10 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
         );
       },
     );
+
+    if (_messageFocusNode.hasFocus) {
+      _messageFocusNode.unfocus();
+    }
   }
 
   /// fetch all groups

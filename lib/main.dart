@@ -231,12 +231,6 @@ class MyApp extends StatelessWidget {
             selectionColor: Color(0x40FE9027),
             selectionHandleColor: AppColors.lightOrange,
           ),
-          appBarTheme: const AppBarTheme(
-            //color: AppColors.lightOrange,
-            iconTheme: IconThemeData(color: Colors.white),
-          ),
-
-
         ),
         routes: {
           kRouteSplash: (context) => const SplashScreen(),

@@ -225,7 +225,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 if (notification.readStatus ==
                                     Constants.kStatusUnread) {
                                   provider.markAsRead(index);
+
+                                  // decrease count by 1
+                                  context.read<NotificationCountProvider>().decrementCount();
+
                                 }
+
+
                               },
                             );
                           }

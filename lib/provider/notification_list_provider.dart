@@ -98,6 +98,7 @@ class NotificationListProvider with ChangeNotifier {
         if (_data == null) {
           _data = response.data;
         } else {
+          _data!.clear();
           _data!.addAll(response.data!);
         }
         _lastPage = response.lastPage ?? 1;
@@ -156,12 +157,17 @@ class NotificationListProvider with ChangeNotifier {
       response = await _notificationRepository.search(
           token, sortType, filterTxt, currentPage);
 
+      print('sortType: $sortType');
+      print('filterTxt: $filterTxt');
+      print('currentPage: $currentPage');
+
       _success = response.success;
 
       if (success) {
         if (_data == null) {
           _data = response.data;
         } else {
+          _data!.clear();
           _data!.addAll(response.data!);
         }
         _lastPage = response.lastPage ?? 1;

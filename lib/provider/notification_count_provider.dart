@@ -14,6 +14,12 @@ class NotificationCountProvider with ChangeNotifier {
 
   final NotificationRepository _groupRepository = NotificationRepository();
 
+  /// This method is for decrement count unread notifications
+  void decrementCount() {
+    _count--;
+    notifyListeners();
+  }
+
   /// This method is for count unread notifications
   Future<void> getCount(String token) async {
     try {
