@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
@@ -104,21 +103,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
+  Future<void> refresh() async {
+    // Refresh the notification count when the user pulls down
+    countUnreadNotification();
+
+    // show loader
+    context.loaderOverlay.show();
+
+    provider.resetCurrentPage();
+    provider.resetSearch();
+
+    // Refresh the list when the user pulls down
+
+    await provider.resetNotificationList(token, employeeType);
+
+    // hide loader
+    if (context.mounted) context.loaderOverlay.hide();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return RefreshIndicator(
-      onRefresh: () {
-        // Refresh the notification count when the user pulls down
-        countUnreadNotification();
-
-        provider.resetCurrentPage();
-        provider.resetSearch();
-
-        // Refresh the list when the user pulls down
-        return provider.resetNotificationList(token, employeeType);
-      },
+      //triggerMode: RefreshIndicatorTriggerMode.anywhere,
+      onRefresh: refresh,
       child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
         padding: const EdgeInsets.all(20),
         // shrinkWrap: true,
@@ -141,26 +151,73 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 },
               ),
               const SizedBox(width: 4),
-              OutlinedButtonWidget(
-                label: 'Filter',
-                icon: Icons.filter_list,
-                onPressed: () {
-                  print('OutlinedButtonWidget');
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (BuildContext context) {
-                      return SingleChildScrollView(
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom,
-                          ),
-                          child: const SearchNotificationBottomSheet(),
+              Consumer<NotificationListProvider>(
+                builder: (context, value, child) => value.filterTxt.isEmpty
+                    ? OutlinedButtonWidget(
+                        label: 'Filter',
+                        icon: Icons.filter_list,
+                        onPressed: () {
+                          print('OutlinedButtonWidget');
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom,
+                                  ),
+                                  child: const SearchNotificationBottomSheet(),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : OutlinedButton(
+                        onPressed: refresh,
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                              color: AppColors.deepPurple, width: 0.7),
+                          foregroundColor: AppColors.orange,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                         ),
-                      );
-                    },
-                  );
-                },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.red,
+                                  width: 1,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.clear,
+                                size: 16,
+                                color: Colors.red,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            SizedBox(
+                              width: 48,
+                              child: Text(
+                                value.filterTxt,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.deepPurple,
+                                  fontFamily: 'BaiJamjuree',
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
               const Spacer(),
               Consumer<PreferenceProvider>(
@@ -227,11 +284,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   provider.markAsRead(index);
 
                                   // decrease count by 1
-                                  context.read<NotificationCountProvider>().decrementCount();
-
+                                  context
+                                      .read<NotificationCountProvider>()
+                                      .decrementCount();
                                 }
-
-
                               },
                             );
                           }
@@ -299,7 +355,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               )
             : !(provider.isLoading) && provider.currentPage >= provider.lastPage
                 ? const Text('No more information to load',
-                    style: Utils.myTxtStyleBodySmall)
+                    style: Utils.myTxtStyleBodyExtraSmall)
                 : const SizedBox(),
       ),
     );

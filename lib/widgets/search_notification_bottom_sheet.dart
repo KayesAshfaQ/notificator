@@ -117,8 +117,14 @@ class _SearchNotificationBottomSheetState
 
       // call the rest api through provider
       final provider = context.read<NotificationListProvider>();
+
+
+      // when new filter is applied, reset the page number to 1, and clear the data
       provider.filterTxt = filter;
       provider.clearData();
+      provider.resetCurrentPage();
+      provider.isSearch = true;
+
       await provider.notificationSearch(token!);
 
       // check if the submission was successful
