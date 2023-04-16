@@ -153,7 +153,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
               const SizedBox(width: 4),
               Consumer<NotificationListProvider>(
                 builder: (context, value, child) => value.filterTxt.isEmpty
-                    ? OutlinedButtonWidget(
+                    ? PopupButtonWidget(
+                        label: 'Filter',
+                        icon: Icons.filter_list,
+                        sortOptions: const ['All', 'Unread', 'Read', 'Search'],
+                        onSelected: (String selectedItem) {
+                          if (kDebugMode) {
+                            print('Selected item: $selectedItem');
+                          }
+
+                          filterNotificationList(selectedItem);
+                        },
+                      )
+
+                    /*OutlinedButtonWidget(
                         label: 'Filter',
                         icon: Icons.filter_list,
                         onPressed: () {
@@ -175,7 +188,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             },
                           );
                         },
-                      )
+                      )*/
+
                     : OutlinedButton(
                         onPressed: refresh,
                         style: OutlinedButton.styleFrom(
@@ -391,5 +405,65 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     // hide the loader overlay
     if (context.mounted) context.loaderOverlay.hide();
+  }
+
+  void filterNotificationList(String selectedItem) async {
+    provider.resetCurrentPage();
+    String? filterType;
+
+    switch (selectedItem) {
+      case Constants.kAll:
+        filterType = null;
+        break;
+      case Constants.kRead:
+        filterType = '1';
+        break;
+      case Constants.kUnread:
+        filterType = '0';
+        break;
+      case Constants.kSearch:
+        filterType = null;
+        onFilterSearch();
+        break;
+    }
+
+    provider.isRead = filterType;
+
+    // show the loader overlay
+    if (selectedItem != Constants.kSearch) {
+      context.loaderOverlay.show();
+    }
+
+    //clear data & then load the
+    provider.clearData();
+    await provider.notificationSearch(token);
+
+    // if the search is successful
+    if (provider.success) {
+      provider.isSearch = true;
+      print('search success');
+    }
+
+    // hide the loader overlay
+    if (context.mounted && context.loaderOverlay.visible)
+      context.loaderOverlay.hide();
+  }
+
+  void onFilterSearch() {
+    print('OutlinedButtonWidget');
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: const SearchNotificationBottomSheet(),
+          ),
+        );
+      },
+    );
   }
 }

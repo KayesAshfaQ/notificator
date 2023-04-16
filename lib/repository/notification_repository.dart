@@ -110,8 +110,8 @@ class NotificationRepository {
   }
 
   /// This method is to sort/filter notifications
-  Future<NotificationListResponse> search(
-      String token, String sort, String searchTxt, int page) async {
+  Future<NotificationListResponse> search(String token, String sort,
+      String searchTxt, String? isRead, int page) async {
     final url =
         Uri.parse('$kBaseUrl/notifications/search?per_page=50&page=$page');
     print(url);
@@ -123,6 +123,7 @@ class NotificationRepository {
       'group_ids': '',
       'sort': sort,
       'search_text': searchTxt,
+      'is_read': isRead ?? '',
     });
 
     final data = json.decode(response.body);

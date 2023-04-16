@@ -15,6 +15,7 @@ class NotificationListProvider with ChangeNotifier {
   bool isSearch = false;
   String sortType = '';
   String filterTxt = '';
+  String? isRead;
 
   List<NotificationData>? _data;
 
@@ -43,7 +44,7 @@ class NotificationListProvider with ChangeNotifier {
 
   /// reset the page number
   void resetCurrentPage() {
-    if (_data != null) _data!.clear();
+    //if (_data != null) _data!.clear();
     _currentPage = 1;
 
     //notifyListeners();
@@ -160,7 +161,7 @@ class NotificationListProvider with ChangeNotifier {
       NotificationListResponse response;
 
       response = await _notificationRepository.search(
-          token, sortType, filterTxt, currentPage);
+          token, sortType, filterTxt, isRead, currentPage);
 
       print('sortType: $sortType');
       print('filterTxt: $filterTxt');
