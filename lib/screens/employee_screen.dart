@@ -157,6 +157,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                             position: employee.position ?? '',
                             photo: employee.photo,
                             email: employee.email,
+                            groupName: employee.groupInfo?.name?.join(', '),
                           );
                         },
                       )

@@ -40,6 +40,7 @@ class EmployeeListResponseData {
     required this.id,
     required this.userId,
     required this.companyId,
+    this.groupInfo,
     this.photo,
     required this.firstName,
     required this.lastName,
@@ -55,6 +56,7 @@ class EmployeeListResponseData {
   int? id;
   int? userId;
   int? companyId;
+  GroupInfo? groupInfo;
   dynamic photo;
   String? firstName;
   String? lastName;
@@ -71,6 +73,9 @@ class EmployeeListResponseData {
         id: json["id"],
         userId: json["user_id"],
         companyId: json["company_id"],
+        groupInfo: json["group_info"] == null
+            ? null
+            : GroupInfo.fromJson(json["group_info"]),
         photo: json["photo"],
         firstName: json["first_name"],
         lastName: json["last_name"],
@@ -79,8 +84,12 @@ class EmployeeListResponseData {
         phone: json["phone"],
         position: json["position"],
         status: json["status"],
-        createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -97,5 +106,27 @@ class EmployeeListResponseData {
         "status": status,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+      };
+}
+
+class GroupInfo {
+  GroupInfo({
+    this.id,
+    this.name,
+  });
+
+  List<int>? id;
+  List<String>? name;
+
+  factory GroupInfo.fromJson(Map<String, dynamic> json) => GroupInfo(
+        id: json["id"] == null ? [] : List<int>.from(json["id"]!.map((x) => x)),
+        name: json["name"] == null
+            ? []
+            : List<String>.from(json["name"]!.map((x) => x)),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id == null ? [] : List<dynamic>.from(id!.map((x) => x)),
+        "name": name == null ? [] : List<dynamic>.from(name!.map((x) => x)),
       };
 }

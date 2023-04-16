@@ -67,7 +67,13 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<GroupChipProvider>();
-    _groupController.text = provider.selectedGroupName;
+
+    if (provider.selectedGroupName.isNotEmpty) {
+      _groupController.text = provider.selectedGroupName;
+    }
+
+    print(
+        'UpdateEmployee_ScreenSelectedGroupName::: ${provider.selectedGroupName}');
 
     return Scaffold(
       appBar: const MyAppBarWidget(title: 'Update Employee'),
@@ -292,6 +298,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
     _lastNameController.text = employee?.lastName ?? '';
     _emailController.text = employee?.email ?? '';
     _positionController.text = employee?.position ?? '';
+    _groupController.text = employee?.groupName ?? '';
+    print('UpdateEmployee_employee_groupName::: ${employee?.groupName}');
   }
 
   /// fetch all groups
@@ -305,24 +313,6 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
     // initialize group chip provider
     final groupChipProvider = context.read<GroupChipProvider>();
     groupChipProvider.clearSelectedGroups();
-
-    // add listener to the provider
-    /* groupChipProvider.addListener(() {
-      // check if the submission was successful
-      if (groupChipProvider.selectedGroupName?.isNotEmpty ?? false) {
-        */ /*String selectedGroupNames = '';
-
-        // loop through the selected groups list and get the group names
-        for (GroupListResponseData group
-            in groupChipProvider.selectedGroupList) {
-          debugPrint(group.name);
-          selectedGroupNames += '${group.name}, ';
-        }*/ /*
-
-        // set the selected group name to the group text field
-        _groupController.text = groupChipProvider.selectedGroupName!;
-      }
-    });*/
 
     // get token through provider
     String token = await Helper.getToken(context);

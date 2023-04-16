@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/provider/employee_chip_provider.dart';
 import 'package:notificator/widgets/multi_select_chip.dart';
-import 'package:notificator/widgets/single_select_chip.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_colors.dart';
-import '../model/group_list_response.dart';
-import '../provider/group_chip_provider.dart';
-import 'separated_labeled_text_field.dart';
+import '../util/helper.dart';
 
 class SelectEmployeeBottomSheet extends StatefulWidget {
   final int count;
@@ -69,7 +66,7 @@ class _SelectEmployeeBottomSheetState extends State<SelectEmployeeBottomSheet> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                             child: Text(
-                              'Select an employee *',
+                              'Select employee *',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.deepPurple,
@@ -80,7 +77,10 @@ class _SelectEmployeeBottomSheetState extends State<SelectEmployeeBottomSheet> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const SingleSelectChip(),
+                        const MultiSelectChip(
+                          isGroup: false,
+                        ),
+                        //const SingleSelectChip(),
                       ],
                     ),
                     Padding(
@@ -107,25 +107,31 @@ class _SelectEmployeeBottomSheetState extends State<SelectEmployeeBottomSheet> {
     final provider = context.read<EmployeeChipProvider>();
 
     //clear the selected group name and id
-    //provider.setSelectedEmployeeName('');
-    //provider.setSelectedEmployeeId('');
+    provider.setSelectedEmplyeeName('');
+    provider.setSelectedEmployeeId('');
 
-    String selectedEmployeeNames = provider.getSelectedEmployeeName();
-    String selectedEmployeeId = provider.getSelectedEmployeeId();
+    String selectedGroupNames = '';
+    String selectedGroupId = '';
 
-/*    // loop through the selected groups list and get the group names
-    for (GroupListResponseData group in provider.selectedGroupList) {
+    // loop through the selected groups list and get the group names
+    for (var employee in provider.selectedEmployee) {
       //debugPrint(group.name);
-      selectedGroupNames += '${group.name}, ';
-      selectedGroupId += '${group.id}, ';
-    }*/
-    debugPrint('employeeName : $selectedEmployeeNames');
-    // set the selected group name to the provider
-    //provider.setSelectedEmployeeName(selectedEmployeeNames);
+      selectedGroupNames += '${employee.firstName} ${employee.lastName}, ';
+      selectedGroupId += '${employee.userId}, ';
+    }
 
-    debugPrint('employeeId : $selectedEmployeeId');
+    // remove the last comma
+    selectedGroupNames = Helper.removeLastComma(selectedGroupNames);
+    selectedGroupId = Helper.removeLastComma(selectedGroupId);
+
+    debugPrint(selectedGroupNames);
+    // set the selected group name to the provider
+    provider.setSelectedEmplyeeName(selectedGroupNames);
+
+    debugPrint(selectedGroupId);
+
     // set the selected group id to the provider
-    //provider.setSelectedEmployeeId(selectedEmployeeId);
+    provider.setSelectedEmployeeId(selectedGroupId);
 
     // hide the bottom sheet
     Navigator.of(context).pop();

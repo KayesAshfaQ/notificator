@@ -61,7 +61,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     final provider = context.watch<GroupChipProvider>();
     final employeeProvider = context.watch<EmployeeChipProvider>();
     _groupIndividualController.text = sendToProvider.selectedOption == 1
-        ? employeeProvider.getSelectedEmployeeName()
+        ? employeeProvider.selectedEmployeeName
         : provider.selectedGroupName;
 
     return Scaffold(
@@ -228,7 +228,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
   }
 
   /// show bottom sheet to select group
-  void onTapSelectGroup() async{
+  void onTapSelectGroup() async {
     // get the number of chips
     int chipsCount = context.read<GroupChipProvider>().groupList.length;
 
@@ -247,7 +247,6 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     if (_messageFocusNode.hasFocus) {
       _messageFocusNode.unfocus();
     }
-
   }
 
   /// show bottom sheet to select employee
@@ -313,7 +312,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
     // initialize group chip provider
     // clear the selected group list selected before
     final employeeChipProvider = context.read<EmployeeChipProvider>();
-    employeeChipProvider.removeSelectedEmployee();
+    employeeChipProvider.clearSelectedEmployees();
 
     // get token through provider
     String token = await Helper.getToken(context);
@@ -350,7 +349,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       int sendTo = context.read<SendToOptionProvider>().selectedOption;
       String group = context.read<GroupChipProvider>().selectedGroupId;
       String individual =
-          context.read<EmployeeChipProvider>().getSelectedEmployeeId();
+          context.read<EmployeeChipProvider>().selectedEmployeeId;
 
       print('group $group');
       print('ind $individual');
@@ -399,7 +398,7 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               context.read<FirebaseNotificationSendProvider>();
 
           print('FCM send 003');
-          if (sendTo == 1) {
+          if (sendTo == 1 && userToken?.length == 1) {
             print('registration token: ${userToken?.first}');
 
             await firebaseNotificationSendProvider.sendIndividualNotification(

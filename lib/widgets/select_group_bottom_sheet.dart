@@ -67,7 +67,7 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
                             child: Text(
-                              'Choose Your Group *',
+                              'Choose Group *',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: AppColors.deepPurple,
@@ -78,7 +78,7 @@ class _SelectGroupBottomSheetState extends State<SelectGroupBottomSheet> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        const MultiSelectChip(),
+                        const MultiSelectChip(isGroup: true),
                       ],
                     ),
                     Padding(

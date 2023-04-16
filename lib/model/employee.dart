@@ -5,6 +5,7 @@ class Employee {
   String? email;
   String? phone;
   String? position;
+  String? groupName;
   String? groupId;
   String? password;
 
@@ -15,6 +16,7 @@ class Employee {
     this.email,
     this.phone,
     this.position,
+    this.groupName,
     this.groupId,
     this.password,
   });

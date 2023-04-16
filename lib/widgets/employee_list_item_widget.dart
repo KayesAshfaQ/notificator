@@ -22,6 +22,7 @@ class EmployeeListItemWidget extends StatefulWidget {
   final String? photo;
   final String? email;
   final String? groupId;
+  final String? groupName;
 
   const EmployeeListItemWidget({
     super.key,
@@ -32,6 +33,7 @@ class EmployeeListItemWidget extends StatefulWidget {
     this.photo,
     this.email,
     this.groupId,
+    this.groupName,
   });
 
   @override
@@ -227,6 +229,7 @@ class _EmployeeListItemWidgetState extends State<EmployeeListItemWidget> {
           lastName: widget.lastName,
           position: widget.position,
           email: widget.email,
+          groupName: widget.groupName
         ));
   }
 }
