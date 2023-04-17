@@ -212,9 +212,9 @@ class MyApp extends StatelessWidget {
       useDefaultLoading: false,
       closeOnBackButton: true,
       overlayWidget: const Center(
-        child: SpinKitDoubleBounce(
+        child: SpinKitWave(
           color: AppColors.lightOrange,
-          size: 50.0,
+          size: 32.0,
         ),
       ),
       child: MaterialApp(

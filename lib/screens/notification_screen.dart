@@ -104,11 +104,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Future<void> refresh() async {
-    // Refresh the notification count when the user pulls down
-    countUnreadNotification();
-
     // show loader
     context.loaderOverlay.show();
+
+    // Refresh the notification count when the user pulls down
+    countUnreadNotification();
 
     provider.resetCurrentPage();
     provider.resetSearch();
@@ -116,9 +116,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // Refresh the list when the user pulls down
 
     await provider.resetNotificationList(token, employeeType);
-
     // hide loader
-    if (context.mounted) context.loaderOverlay.hide();
+    // delay the hiding of the loader to show the refresh indicator
+    await Future.delayed(const Duration(seconds: 2), () {
+      print('delayed called');
+      if (context.mounted && context.loaderOverlay.visible) {
+        context.loaderOverlay.hide();
+      }
+    });
+
+
   }
 
   @override
@@ -445,8 +452,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
 
     // hide the loader overlay
-    if (context.mounted && context.loaderOverlay.visible)
+    if (context.mounted && context.loaderOverlay.visible) {
       context.loaderOverlay.hide();
+    }
   }
 
   void onFilterSearch() {
