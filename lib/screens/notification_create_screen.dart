@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/model/employee_list_response.dart';
@@ -70,7 +71,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       ),
       body: GestureDetector(
         onTap: () {
-          print('tapped outside the text field');
+          if (kDebugMode) {
+            print('tapped outside the text field');
+          }
           // When the user taps outside any text field, hide the keyboard
           _subjectFocusNode.unfocus();
           _messageFocusNode.unfocus();
@@ -351,8 +354,10 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       String individual =
           context.read<EmployeeChipProvider>().selectedEmployeeId;
 
-      print('group $group');
-      print('ind $individual');
+      if (kDebugMode) {
+        print('group $group');
+        print('ind $individual');
+      }
 
       // get the filed texts
       String subject = _subject.text.trim();
@@ -360,7 +365,9 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
       String sendId = sendTo == 1 ? individual : group;
       String sendOption = sendTo == 1 ? 'individual' : 'group';
 
-      print('$sendTo $sendOption $sendId $subject $message');
+      if (kDebugMode) {
+        print('$sendTo $sendOption $sendId $subject $message');
+      }
 
       // create the employee obj
       NotificationData notification = NotificationData(
@@ -389,17 +396,25 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
         List<String>? userToken = provider.token;
         String notificationId = provider.id.toString();
 
-        print('FCM send 001');
+        if (kDebugMode) {
+          print('FCM send 001');
+        }
 
         // send push notification to FCM
         if (context.mounted) {
-          print('FCM send 002');
+          if (kDebugMode) {
+            print('FCM send 002');
+          }
           final firebaseNotificationSendProvider =
               context.read<FirebaseNotificationSendProvider>();
 
-          print('FCM send 003');
+          if (kDebugMode) {
+            print('FCM send 003');
+          }
           if (sendTo == 1 && userToken?.length == 1) {
-            print('registration token: ${userToken?.first}');
+            if (kDebugMode) {
+              print('registration token: ${userToken?.first}');
+            }
 
             await firebaseNotificationSendProvider.sendIndividualNotification(
               token: userToken?.first ?? '',
@@ -408,9 +423,11 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               notificationId: notificationId,
             );
 
-            print('FCM send 004');
+            if (kDebugMode) {
+              print('FCM send 004');
+            }
           } else {
-            userToken?.forEach((element) => print(element));
+            //userToken?.forEach((element) => print(element));
 
             await firebaseNotificationSendProvider.sendGroupNotification(
               userTokens: userToken,
@@ -419,10 +436,8 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
               notificationId: notificationId,
             );
 
-            print('FCM send 005');
           }
         }
-        print('FCM send 006');
         // hide the bottom sheet
         if (context.mounted) Navigator.pop(context);
       } else {

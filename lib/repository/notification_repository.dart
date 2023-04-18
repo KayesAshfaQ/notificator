@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/notificaiton_count_response.dart';
 import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/model/notification_details_response.dart';
@@ -30,7 +31,7 @@ class NotificationRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.statusCode == 200 && response.body.isNotEmpty) {
       final responseSuccess = NotificationSendResponse.fromJson(data);
       return responseSuccess;
@@ -49,7 +50,7 @@ class NotificationRepository {
       url = Uri.parse('$kBaseUrl/notifications');
     }
 
-    print(url);
+    if (kDebugMode) print(url);
 
     final response = await http.get(
       url,
@@ -59,15 +60,15 @@ class NotificationRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     //print('NotificationList::: ${response.statusCode}');
 
     if (response.body.isNotEmpty) {
       final notificationList = NotificationListResponse.fromJson(data);
-      print(notificationList);
+      if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
-      print('NotificationList::: 6');
+      if (kDebugMode) print('NotificationList::: 6');
 
       throw Exception('failed!');
     }
@@ -84,7 +85,7 @@ class NotificationRepository {
       url = Uri.parse('$kBaseUrl/notification/empnotificationlist');
     }
 
-    print(url);
+    if (kDebugMode) print(url);
 
     final response = await http.get(
       url,
@@ -95,15 +96,15 @@ class NotificationRepository {
 
     final data = json.decode(response.body);
 
-    print(data);
+    if (kDebugMode) print(data);
     //print('NotificationList::: ${response.statusCode}');
 
     if (response.body.isNotEmpty) {
       final notificationList = NotificationListResponse.fromJson(data);
-      print(notificationList);
+      if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
-      print('NotificationList::: 6');
+      if (kDebugMode) print('NotificationList::: 6');
 
       throw Exception('failed!');
     }
@@ -114,7 +115,7 @@ class NotificationRepository {
       String searchTxt, String? isRead, int page) async {
     final url =
         Uri.parse('$kBaseUrl/notifications/search?per_page=50&page=$page');
-    print(url);
+    if (kDebugMode) print(url);
 
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $token',
@@ -128,15 +129,15 @@ class NotificationRepository {
 
     final data = json.decode(response.body);
 
-    print(data);
+    if (kDebugMode) print(data);
     //print('NotificationList::: ${response.statusCode}');
 
     if (response.body.isNotEmpty) {
       final notificationList = NotificationListResponse.fromJson(data);
-      print(notificationList);
+      if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
-      print('NotificationList::: 6');
+      if (kDebugMode) print('NotificationList::: 6');
 
       throw Exception('failed!');
     }
@@ -148,7 +149,7 @@ class NotificationRepository {
     Uri url;
 
     url = Uri.parse('$kBaseUrl/notification/details/$id');
-    print(url);
+    if (kDebugMode) print(url);
 
     final response = await http.get(
       url,
@@ -159,15 +160,15 @@ class NotificationRepository {
 
     final data = json.decode(response.body);
 
-    print(data);
+    if (kDebugMode) print(data);
     //print('NotificationList::: ${response.statusCode}');
 
     if (response.body.isNotEmpty) {
       final notificationList = NotificationDetailsResponse.fromJson(data);
-      print(notificationList);
+      if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
-      print('NotificationList::: 6');
+      if (kDebugMode) print('NotificationList::: 6');
 
       throw Exception('failed!');
     }
@@ -178,7 +179,7 @@ class NotificationRepository {
     Uri url;
 
     url = Uri.parse('$kBaseUrl/employee/notificationcount');
-    print(url);
+    if (kDebugMode) print(url);
 
     final response = await http.get(
       url,
@@ -189,12 +190,12 @@ class NotificationRepository {
 
     final data = json.decode(response.body);
 
-    print(data);
+    if (kDebugMode) print(data);
     //print('NotificationList::: ${response.statusCode}');
 
     if (response.body.isNotEmpty) {
       final notificationList = NotificationCountResponse.fromJson(data);
-      print(notificationList);
+      if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
       throw Exception('failed!');

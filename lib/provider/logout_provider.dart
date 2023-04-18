@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../repository/auth_repository.dart';
@@ -29,7 +30,7 @@ class LogoutProvider with ChangeNotifier {
     } catch (e) {
       _success = false;
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }

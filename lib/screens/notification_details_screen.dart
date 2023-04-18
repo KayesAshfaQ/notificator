@@ -73,7 +73,9 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
           // The current route is the first route in the navigator,
           // so the app will exit when the back button is pressed.
 
-          print('is first route in the navigator');
+          if (kDebugMode) {
+            print('is first route in the navigator');
+          }
 
           Navigator.pushReplacementNamed(context, kRouteHome);
 
@@ -82,7 +84,9 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
           // The current route is not the first route in the navigator,
           // so the app will navigate back when the back button is pressed.
           // You can get the name of the previous route using route.settings.name.
-          print('Going back to ${route?.settings.name}');
+          if (kDebugMode) {
+            print('Going back to ${route?.settings.name}');
+          }
           return true;
         }
       },
@@ -113,14 +117,18 @@ class _NotificationDetailsScreenState extends State<NotificationDetailsScreen> {
                 // The current route is the first route in the navigator,
                 // so the app will exit when the back button is pressed.
 
-                print('is first route in the navigator');
+                if (kDebugMode) {
+                  print('is first route in the navigator');
+                }
 
                 Navigator.pushReplacementNamed(context, kRouteHome);
               } else {
                 // The current route is not the first route in the navigator,
                 // so the app will navigate back when the back button is pressed.
                 // You can get the name of the previous route using route.settings.name.
-                print('Going back to ${route?.settings.name}');
+                if (kDebugMode) {
+                  print('Going back to ${route?.settings.name}');
+                }
 
                 Navigator.pop(context);
               }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/model/email_config_response.dart';
 import 'package:notificator/repository/setting_repository.dart';
@@ -28,7 +29,7 @@ class EmailConfigProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeUpdateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeUpdateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -48,7 +49,7 @@ class EmailConfigProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeUpdateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeUpdateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();

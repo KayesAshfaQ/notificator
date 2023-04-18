@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/fogot_code_response.dart';
 
 import '../constants/app_info.dart';
@@ -18,7 +19,9 @@ class ForgotPassRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
     if (response.body.isNotEmpty) {
       final responseSuccess = ForgotPassResponse.fromJson(data);
       return responseSuccess;
@@ -40,10 +43,14 @@ class ForgotPassRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
     if (response.body.isNotEmpty) {
       final responseSuccess = ForgotCodeResponse.fromJson(data);
-      print('repository::: ${responseSuccess.errors?.message}');
+      if (kDebugMode) {
+        print('repository::: ${responseSuccess.errors?.message}');
+      }
       return responseSuccess;
     } else {
       throw Exception('Failed to login');

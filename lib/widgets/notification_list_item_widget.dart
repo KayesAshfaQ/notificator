@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/constants.dart';
-import 'package:random_avatar/random_avatar.dart';
 
 import '../constants/app_colors.dart';
 import '../generated/assets.dart';
-import 'round_icon_button_widget.dart';
 
 class NotificationListItemWidget extends StatelessWidget {
   final String id;

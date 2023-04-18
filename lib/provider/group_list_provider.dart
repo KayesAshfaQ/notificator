@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/group_list_response.dart';
@@ -30,7 +31,7 @@ class GroupListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

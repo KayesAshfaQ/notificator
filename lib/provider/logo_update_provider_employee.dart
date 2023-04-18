@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
 import 'package:notificator/repository/employee_update_repository.dart';
@@ -32,7 +32,7 @@ class EmployeePhotoUpdateProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeePhotoUpdateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeePhotoUpdateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();

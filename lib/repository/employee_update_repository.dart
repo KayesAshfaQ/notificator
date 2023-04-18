@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/employee.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
@@ -17,7 +17,9 @@ class EmployeeUpdateRepository {
     String token,
     String id,
   ) async {
-    print('EmpUpdateResponse::: 1');
+    if (kDebugMode) {
+      print('EmpUpdateResponse::: 1');
+    }
 
     final url = Uri.parse('$kBaseUrl/employee/update/$id');
     final response = await http.put(
@@ -33,20 +35,28 @@ class EmployeeUpdateRepository {
       },
     );
 
-    print('EmpUpdateResponse::: 2');
+    if (kDebugMode) {
+      print('EmpUpdateResponse::: 2');
+    }
 
     //print(response.statusCode);
     final data = json.decode(response.body);
 
-    print('EmpUpdateResponse::: 3');
-    print(data);
+    if (kDebugMode) {
+      print('EmpUpdateResponse::: 3');  print(data);
+    }
+
     if (response.body.isNotEmpty) {
-      print('EmpUpdateResponse::: 4');
+      if (kDebugMode) {
+        print('EmpUpdateResponse::: 4');
+      }
 
       final responseSuccess = EmpUpdateResponse.fromJson(data);
       return responseSuccess;
     } else {
-      print('EmpUpdateResponse::: 5');
+      if (kDebugMode) {
+        print('EmpUpdateResponse::: 5');
+      }
 
       throw Exception('failed!');
     }

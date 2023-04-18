@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/repository/employee_repository.dart';
 
 import '../model/employee_list_response.dart';
@@ -20,7 +20,7 @@ class EmployeeListProvider with ChangeNotifier {
   Future<void> getList(String token) async {
     try {
       final response = await _employeeRepository.getEmployees(token);
-      print('EmployeeListProvider::: $_success');
+      if (kDebugMode) print('EmployeeListProvider::: $_success');
       _success = response.success ?? false;
 
       if (success) {
@@ -31,7 +31,7 @@ class EmployeeListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -43,7 +43,7 @@ class EmployeeListProvider with ChangeNotifier {
     try {
       final response =
       await _employeeRepository.search(token, searchText, sort);
-      print('EmployeeListProvider::: $_success');
+      if (kDebugMode) print('EmployeeListProvider::: $_success');
       _success = response.success ?? false;
 
       if (success) {
@@ -54,7 +54,7 @@ class EmployeeListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

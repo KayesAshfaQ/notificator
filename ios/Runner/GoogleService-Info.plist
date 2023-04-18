@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>625662842114-o72bcflnhaqj81afg7ft5cmkbrkpofl7.apps.googleusercontent.com</string>
+	<string>625662842114-5ed461e75fodhal9qpgkm4gjhbnjbmfl.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.625662842114-o72bcflnhaqj81afg7ft5cmkbrkpofl7</string>
+	<string>com.googleusercontent.apps.625662842114-5ed461e75fodhal9qpgkm4gjhbnjbmfl</string>
 	<key>API_KEY</key>
 	<string>AIzaSyD1q_-7S_oRFVQ7ttgwOoIpzpDKsg53_14</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.coder71.notificator</string>
+	<string>com.notificator.app</string>
 	<key>PROJECT_ID</key>
 	<string>notificator-ad6ee</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:625662842114:ios:06705a5b5317dcdfeb9e1b</string>
+	<string>1:625662842114:ios:858080fa42a1f2b3eb9e1b</string>
 </dict>
 </plist>

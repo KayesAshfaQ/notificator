@@ -29,9 +29,9 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   late final NotificationListProvider provider;
-  late final String token;
-  late final String employeeType;
   final ScrollController _scrollController = ScrollController();
+  String? token;
+  String? employeeType;
 
   @override
   void initState() {
@@ -62,6 +62,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   /// This method is for initializing the provider
   /// and getting the user token
   void instantiate() async {
+    // show loader overlay
+    context.loaderOverlay.show();
+
     final notificationProvider = context.read<NotificationCreateProvider>();
     //final groupDeleteProvider = context.read<GroupDeleteProvider>();
 
@@ -80,33 +83,37 @@ class _NotificationScreenState extends State<NotificationScreen> {
     await initEmployeeType();
 
     // fetch the notification list data
-    if (employeeType.isNotEmpty) {
-      await provider.getList(token, employeeType);
+    if (token != null && employeeType != null) {
+      await provider.getList(token!, employeeType!);
+
+      // listeners for refresh the ui when item is created & updated
+      notificationProvider.addListener(() {
+        if (notificationProvider.success) {
+          provider.getList(token!, employeeType!);
+        }
+      });
     }
 
     // count the notification
     countUnreadNotification();
 
-    // listeners for refresh the ui when item is created & updated
-    notificationProvider.addListener(() {
-      if (notificationProvider.success) {
-        provider.getList(token, employeeType);
-      }
-    });
+    // hide loader overlay
+    if (context.mounted && context.loaderOverlay.visible) {
+      context.loaderOverlay.hide();
+    }
   }
 
   void countUnreadNotification() async {
-    print('initNotificationCount() called');
+    if (kDebugMode) {
+      print('initNotificationCount() called');
+    }
     if (employeeType == '2') {
       final notifCountProvider = context.read<NotificationCountProvider>();
-      await notifCountProvider.getCount(token);
+      await notifCountProvider.getCount(token!);
     }
   }
 
   Future<void> refresh() async {
-    // show loader
-    context.loaderOverlay.show();
-
     // Refresh the notification count when the user pulls down
     countUnreadNotification();
 
@@ -114,18 +121,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     provider.resetSearch();
 
     // Refresh the list when the user pulls down
-
-    await provider.resetNotificationList(token, employeeType);
-    // hide loader
-    // delay the hiding of the loader to show the refresh indicator
-    await Future.delayed(const Duration(seconds: 2), () {
-      print('delayed called');
-      if (context.mounted && context.loaderOverlay.visible) {
-        context.loaderOverlay.hide();
-      }
-    });
-
-
+    await provider.resetNotificationList(token!, employeeType!);
   }
 
   @override
@@ -160,43 +156,50 @@ class _NotificationScreenState extends State<NotificationScreen> {
               const SizedBox(width: 4),
               Consumer<NotificationListProvider>(
                 builder: (context, value, child) => value.filterTxt.isEmpty
-                    ? PopupButtonWidget(
-                        label: 'Filter',
-                        icon: Icons.filter_list,
-                        sortOptions: const ['All', 'Unread', 'Read', 'Search'],
-                        onSelected: (String selectedItem) {
-                          if (kDebugMode) {
-                            print('Selected item: $selectedItem');
-                          }
+                    ? employeeType == '2'
+                        ? PopupButtonWidget(
+                            label: 'Filter',
+                            icon: Icons.filter_list,
+                            sortOptions: const [
+                              'All',
+                              'Unread',
+                              'Read',
+                              'Search'
+                            ],
+                            onSelected: (String selectedItem) {
+                              if (kDebugMode) {
+                                print('Selected item: $selectedItem');
+                              }
 
-                          filterNotificationList(selectedItem);
-                        },
-                      )
-
-                    /*OutlinedButtonWidget(
-                        label: 'Filter',
-                        icon: Icons.filter_list,
-                        onPressed: () {
-                          print('OutlinedButtonWidget');
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return SingleChildScrollView(
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom,
-                                  ),
-                                  child: const SearchNotificationBottomSheet(),
-                                ),
+                              filterNotificationList(selectedItem);
+                            },
+                          )
+                        : OutlinedButtonWidget(
+                            label: 'Filter',
+                            icon: Icons.filter_list,
+                            onPressed: () {
+                              if (kDebugMode) {
+                                print('OutlinedButtonWidget');
+                              }
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return SingleChildScrollView(
+                                    child: Container(
+                                      padding: EdgeInsets.only(
+                                        bottom: MediaQuery.of(context)
+                                            .viewInsets
+                                            .bottom,
+                                      ),
+                                      child:
+                                          const SearchNotificationBottomSheet(),
+                                    ),
+                                  );
+                                },
                               );
                             },
-                          );
-                        },
-                      )*/
-
+                          )
                     : OutlinedButton(
                         onPressed: refresh,
                         style: OutlinedButton.styleFrom(
@@ -340,9 +343,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
         provider.incrementPage();
 
         if (provider.isSearch) {
-          await provider.notificationSearch(token);
+          if (token != null) {
+            await provider.notificationSearch(token!);
+          }
         } else {
-          await provider.getList(token, employeeType);
+          if (token != null && employeeType != null) {
+            await provider.getList(token!, employeeType!);
+          }
         }
 
         //delay the loading state to false
@@ -364,7 +371,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget _buildProgressIndicator() {
-    print('_buildProgressIndicator');
+    if (kDebugMode) {
+      print('_buildProgressIndicator');
+    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -402,12 +411,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     //clear data & then load the
     provider.clearData();
-    await provider.notificationSearch(token);
+    if (token != null) {
+      await provider.notificationSearch(token!);
+    }
 
     // if the search is successful
     if (provider.success) {
       provider.isSearch = true;
-      print('search success');
+      if (kDebugMode) {
+        print('search success');
+      }
     }
 
     // hide the loader overlay
@@ -443,12 +456,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     //clear data & then load the
     provider.clearData();
-    await provider.notificationSearch(token);
+    if (token != null) {
+      await provider.notificationSearch(token!);
+    }
 
     // if the search is successful
     if (provider.success) {
       provider.isSearch = true;
-      print('search success');
+      if (kDebugMode) {
+        print('search success');
+      }
     }
 
     // hide the loader overlay
@@ -458,7 +475,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   void onFilterSearch() {
-    print('OutlinedButtonWidget');
+    if (kDebugMode) {
+      print('OutlinedButtonWidget');
+    }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

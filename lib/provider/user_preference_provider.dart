@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import '../util/share_pref_helper.dart';
 
@@ -14,7 +14,7 @@ class UserPreferenceProvider extends ChangeNotifier {
     _username = await SharedPreferencesHelper.getData(
         username); // Retrieve user token from shared preferences
     _userImg = await SharedPreferencesHelper.getData(userImg);
-    print('get Data: $_username');
+    if (kDebugMode) print('get Data: $_username');
     notifyListeners();
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/company.dart';
 
 import '../model/home_response_admin.dart';
@@ -45,7 +45,7 @@ class HomeAdminDataProvider with ChangeNotifier {
   Future<void> getData(String token) async {
     try {
       final response = await _homeRepository.getAdminData(token);
-      print('EmployeeListProvider::: $_success');
+      if (kDebugMode) print('EmployeeListProvider::: $_success');
       _success = response.success ?? false;
 
       if (success) {
@@ -62,7 +62,7 @@ class HomeAdminDataProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       //_error = e.toString();
       notifyListeners();

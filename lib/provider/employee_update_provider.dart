@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/repository/employee_update_repository.dart';
 
@@ -31,7 +32,7 @@ class EmployeeUpdateProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeUpdateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeUpdateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -59,7 +60,7 @@ class EmployeeUpdateProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeUpdateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeUpdateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();

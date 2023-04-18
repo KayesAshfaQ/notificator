@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:notificator/model/company.dart';
 
 import '../model/login_response.dart';
 import '../repository/auth_repository.dart';

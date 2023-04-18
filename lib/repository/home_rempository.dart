@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/home_response_admin.dart';
 import 'package:notificator/model/home_response_employee.dart';
 
@@ -19,7 +20,7 @@ class HomeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print('HOME_RESPONSE ::: $data');
+    if (kDebugMode) print('HOME_RESPONSE ::: $data');
     if (response.body.isNotEmpty) {
       final responseSuccess = HomeResponse.fromJson(data);
       return responseSuccess;
@@ -40,7 +41,7 @@ class HomeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print('HOME_RESPONSE ::: $data');
+    if (kDebugMode) print('HOME_RESPONSE ::: $data');
     if (response.body.isNotEmpty) {
       final responseSuccess = EmployeeHomeResponse.fromJson(data);
       return responseSuccess;

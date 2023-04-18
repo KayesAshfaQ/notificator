@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/setting_get_response.dart';
 import 'package:notificator/model/setting_post_response.dart';
 
@@ -22,7 +23,7 @@ class SettingRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.body.isNotEmpty && response.statusCode == 200) {
       final responseSuccess = SettingGetResponse.fromJson(data);
       return responseSuccess;
@@ -48,7 +49,7 @@ class SettingRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.body.isNotEmpty && response.statusCode == 200) {
       final responseSuccess = SettingPostResponse.fromJson(data);
       return responseSuccess;
@@ -79,7 +80,7 @@ class SettingRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.body.isNotEmpty) {
       final responseSuccess = EmailConfigResponse.fromJson(data);
       return responseSuccess;
@@ -100,7 +101,7 @@ class SettingRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.body.isNotEmpty && response.statusCode == 200) {
       final responseSuccess = EmailConfigResponse.fromJson(data);
       return responseSuccess;

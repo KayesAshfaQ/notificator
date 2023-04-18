@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/repository/employee_repository.dart';
 
 class EmployeeDeleteProvider with ChangeNotifier {
@@ -21,7 +21,7 @@ class EmployeeDeleteProvider with ChangeNotifier {
 
       if (success) {
         _message = response.message ?? 'employee removed!';
-        print('GroupDeleteProvider:::${message}');
+        if (kDebugMode) print('GroupDeleteProvider:::$message');
       } else {
         _error = response.errors ?? 'failed!';
       }
@@ -29,7 +29,7 @@ class EmployeeDeleteProvider with ChangeNotifier {
     } catch (e) {
       _success = false;
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }

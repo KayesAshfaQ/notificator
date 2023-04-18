@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
@@ -72,8 +73,10 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
       _groupController.text = provider.selectedGroupName;
     }
 
-    print(
+    if (kDebugMode) {
+      print(
         'UpdateEmployee_ScreenSelectedGroupName::: ${provider.selectedGroupName}');
+    }
 
     return Scaffold(
       appBar: const MyAppBarWidget(title: 'Update Employee'),
@@ -299,7 +302,9 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
     _emailController.text = employee?.email ?? '';
     _positionController.text = employee?.position ?? '';
     _groupController.text = employee?.groupName ?? '';
-    print('UpdateEmployee_employee_groupName::: ${employee?.groupName}');
+    if (kDebugMode) {
+      print('UpdateEmployee_employee_groupName::: ${employee?.groupName}');
+    }
   }
 
   /// fetch all groups

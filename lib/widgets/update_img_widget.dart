@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:notificator/constants/app_info.dart';
 import 'package:random_avatar/random_avatar.dart';
 
 import '../generated/assets.dart';

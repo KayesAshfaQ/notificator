@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/repository/notification_repository.dart';
 
@@ -31,7 +31,7 @@ class NotificationDetailsProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

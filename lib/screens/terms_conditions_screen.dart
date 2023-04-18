@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_strings.dart';
-import 'package:notificator/provider/notification_get_provider.dart';
-import 'package:notificator/util/date_helper.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/widgets/my_appbar_widget.dart';
 
-import '../util/helper.dart';
 import '../util/utils.dart';
 
 class TermsConditionsScreen extends StatefulWidget {

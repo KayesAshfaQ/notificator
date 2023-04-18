@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/model/notification_list_response.dart';
 import 'package:notificator/repository/notification_repository.dart';
@@ -114,7 +114,7 @@ class NotificationListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -148,7 +148,7 @@ class NotificationListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -162,10 +162,10 @@ class NotificationListProvider with ChangeNotifier {
 
       response = await _notificationRepository.search(
           token, sortType, filterTxt, isRead, currentPage);
-
-      print('sortType: $sortType');
+      if (kDebugMode){
+        print('sortType: $sortType');
       print('filterTxt: $filterTxt');
-      print('currentPage: $currentPage');
+      print('currentPage: $currentPage');}
 
       _success = response.success;
 
@@ -182,7 +182,7 @@ class NotificationListProvider with ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

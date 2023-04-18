@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../util/share_pref_helper.dart';
@@ -28,7 +29,7 @@ class PreferenceProvider extends ChangeNotifier {
     _data = await SharedPreferencesHelper.getData(
       key,
     ); // Retrieve user token from shared preferences
-    print('get Data: $_data');
+    if (kDebugMode) print('get Data: $_data');
     notifyListeners();
   }
 }

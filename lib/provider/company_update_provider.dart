@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/model/company.dart';
 import 'package:notificator/repository/company_repository.dart';
@@ -28,7 +29,7 @@ class CompanyUpdateProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeCreateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeCreateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();

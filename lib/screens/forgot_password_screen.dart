@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,7 +28,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
-  static const double _widthPadding = 24.0;
+  //static const double _widthPadding = 24.0;
 
   @override
   void initState() {
@@ -44,7 +45,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       body: Container(
@@ -65,7 +66,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   left: 0,
                   child: IconButton(
                     onPressed: () {
-                      print('back clicked');
+                      if (kDebugMode) {
+                        print('back clicked');
+                      }
                       Navigator.pop(context);
                     },
                     icon: const Icon(

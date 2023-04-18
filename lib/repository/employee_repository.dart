@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/employee.dart';
 import 'package:notificator/model/employee_create_response.dart';
 import 'package:notificator/model/employee_delete_response.dart';
@@ -30,7 +31,9 @@ class EmployeeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
     if (response.body.isNotEmpty) {
       final responseSuccess = EmployeeCreateResponse.fromJson(data);
       return responseSuccess;
@@ -49,11 +52,15 @@ class EmployeeRepository {
       },
     );
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final groupList = EmployeeListResponse.fromJson(data);
-      print(groupList);
+      if (kDebugMode) {
+        print(groupList);
+      }
       return groupList;
     } else {
       throw Exception('failed!');
@@ -80,7 +87,9 @@ class EmployeeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
     if (response.body.isNotEmpty) {
       final responseSuccess = EmpUpdateResponse.fromJson(data);
       return responseSuccess;
@@ -99,11 +108,15 @@ class EmployeeRepository {
       },
     );
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final groupList = EmployeeDeleteResponse.fromJson(data);
-      print(groupList);
+      if (kDebugMode) {
+        print(groupList);
+      }
       return groupList;
     } else {
       throw Exception('failed!');
@@ -127,7 +140,9 @@ class EmployeeRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
     if (response.body.isNotEmpty) {
       final responseSuccess = EmployeeListResponse.fromJson(data);
       return responseSuccess;

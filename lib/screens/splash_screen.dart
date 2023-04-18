@@ -86,8 +86,11 @@ class _SplashScreenState extends State<SplashScreen> {
     String screenName = message.data['screen_name'];
     String notificationId = message.data['notification_id'];
 
-    print('screenName: $screenName');
-    print('notificationId: $notificationId');
+    if (kDebugMode) {
+      print('screenName: $screenName');
+      print('notificationId: $notificationId');
+    }
+
 
     // TODO: retrieve notification id and pass it to the notification details screen
     final context = NavigationService.navigatorKey.currentContext;

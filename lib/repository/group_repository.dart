@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/group_delete_response.dart';
 
 import '../constants/app_info.dart';
@@ -23,7 +24,8 @@ class GroupRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
+
     if (response.body.isNotEmpty) {
       final responseSuccess = CreateGroupResponse.fromJson(data);
       return responseSuccess;
@@ -42,11 +44,11 @@ class GroupRepository {
       },
     );
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
 
     if (response.body.isNotEmpty) {
       final groupList = GroupListResponse.fromJson(data);
-      print(groupList);
+      if (kDebugMode) print(groupList);
       return groupList;
     } else {
       throw Exception('failed!');
@@ -65,7 +67,7 @@ class GroupRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) print(data);
     if (response.body.isNotEmpty) {
       return GroupDeleteResponse.fromJson(data);
     } else {
@@ -74,7 +76,8 @@ class GroupRepository {
   }
 
   /// This method is used to update the group name
-  Future<UpdateGroupResponse> update({required String name, required String token, required int id}) async {
+  Future<UpdateGroupResponse> update(
+      {required String name, required String token, required int id}) async {
     final url = Uri.parse('$kBaseUrl/groups/$id');
     final response = await http.put(
       url,
@@ -86,7 +89,7 @@ class GroupRepository {
 
     //print(response.statusCode);
     final data = json.decode(response.body);
-    print('update:::$data');
+    if (kDebugMode) print('update:::$data');
     if (response.body.isNotEmpty) {
       final responseSuccess = UpdateGroupResponse.fromJson(data);
       return responseSuccess;

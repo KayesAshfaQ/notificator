@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/setting_data.dart';
 
 import '../repository/setting_repository.dart';
@@ -18,7 +18,7 @@ class SettingDataSendProvider with ChangeNotifier {
 
   /// This method is for creating new group
   Future<void> send(String token, String key, String switchState) async {
-    print(key);
+    if (kDebugMode) print(key);
 
     try {
       final response = await _settingRepository.postData(
@@ -35,7 +35,7 @@ class SettingDataSendProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

@@ -30,7 +30,7 @@ class GroupChipProvider extends ChangeNotifier {
 
   void addToSelectedGroup(GroupListResponseData value) {
     _selectedGroupList.add(value);
-    print('groupList::: ${selectedGroupList.length}');
+    if (kDebugMode) print('groupList::: ${selectedGroupList.length}');
     notifyListeners();
   }
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/repository/group_repository.dart';
 
 import '../model/group_create_response.dart';
@@ -22,7 +22,7 @@ class GroupProvider with ChangeNotifier {
 
   /// This method is for creating new group
   Future<void> create(String name, String token) async {
-    print(name);
+    if (kDebugMode) print(name);
 
     try {
       final response = await _groupRepository.create(name, token);
@@ -35,7 +35,7 @@ class GroupProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();
@@ -44,7 +44,7 @@ class GroupProvider with ChangeNotifier {
 
   /// This method is for updating the group
   Future<void> update(String token, int id, String name) async {
-    print(name);
+    if (kDebugMode) print(name);
 
     try {
       final response = await _groupRepository.update(
@@ -61,7 +61,7 @@ class GroupProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
       _success = false;
       _error = e.toString();
       notifyListeners();

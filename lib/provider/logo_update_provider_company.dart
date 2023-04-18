@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/logo_update_response.dart';
 
 import 'package:notificator/repository/company_repository.dart';
@@ -31,7 +31,7 @@ class CompanyLogoUpdateProvider with ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('EmployeeCreateProvider:::${e.toString()}');
+      if (kDebugMode) print('EmployeeCreateProvider:::${e.toString()}');
       _success = false;
       _error = e.toString();
       notifyListeners();

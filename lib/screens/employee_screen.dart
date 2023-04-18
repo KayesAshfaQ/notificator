@@ -99,7 +99,9 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                 label: 'Filter',
                 icon: Icons.filter_list,
                 onPressed: () {
-                  print('OutlinedButtonWidget');
+                  if (kDebugMode) {
+                    print('OutlinedButtonWidget');
+                  }
                   showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
@@ -196,7 +198,9 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     // if the search is successful
     if (provider.success) {
       // update the list
-      print('search success');
+      if (kDebugMode) {
+        print('search success');
+      }
     }
   }
 }

@@ -6,7 +6,6 @@ import '../constants/app_colors.dart';
 import '../model/group_list_response.dart';
 import '../provider/group_chip_provider.dart';
 import '../util/helper.dart';
-import 'separated_labeled_text_field.dart';
 
 class SelectGroupBottomSheet extends StatefulWidget {
   final int count;

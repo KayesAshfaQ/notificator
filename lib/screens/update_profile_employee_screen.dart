@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -89,7 +90,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     await prefProvider.getData(Keys.userID);
 
     employeeId = prefProvider.data!;
-    print('employeeId:::$employeeId');
+    if (kDebugMode) {
+      print('employeeId:::$employeeId');
+    }
   }
 
   @override

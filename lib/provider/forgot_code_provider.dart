@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/repository/forgot_pass_repository.dart';
 
 class ForgotCodeProvider with ChangeNotifier {
@@ -19,7 +19,7 @@ class ForgotCodeProvider with ChangeNotifier {
 
   /// This method is for submitting the email to the repository
   Future<void> submit(String email, String code) async {
-    print(email);
+    if (kDebugMode) print(email);
 
     try {
       final response = await _forgotPassRepository.sendCode(email, code);
@@ -39,7 +39,7 @@ class ForgotCodeProvider with ChangeNotifier {
     } catch (e) {
       _success = false;
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }

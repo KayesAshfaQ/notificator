@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/constants/app_colors.dart';
-import 'package:notificator/provider/auth_key_provider.dart';
 import 'package:notificator/provider/notification_count_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/user_preference_provider.dart';
@@ -71,7 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
       initEmployeeType();
     }
 
-    print(i++);
+    if (kDebugMode) {
+      print(i++);
+    }
     super.didChangeDependencies();
   }
 

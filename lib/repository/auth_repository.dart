@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:notificator/model/change_passwrod_response.dart';
 import 'package:notificator/model/login_response.dart';
 import 'package:notificator/model/simple_response.dart';
@@ -19,7 +20,9 @@ class AuthRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final responseSuccess = LoginResponse.fromJson(data);
@@ -40,7 +43,9 @@ class AuthRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final responseSuccess = SimpleResponse.fromJson(data);
@@ -69,7 +74,9 @@ class AuthRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final responseSuccess = ChangePassResponse.fromJson(data);
@@ -96,7 +103,9 @@ class AuthRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final responseSuccess = ChangePassResponse.fromJson(data);
@@ -124,7 +133,9 @@ class AuthRepository {
     );
 
     final data = json.decode(response.body);
-    print(data);
+    if (kDebugMode) {
+      print(data);
+    }
 
     if (response.body.isNotEmpty) {
       final responseSuccess = SimpleResponse.fromJson(data);

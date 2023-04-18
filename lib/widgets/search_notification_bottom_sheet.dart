@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/provider/auth_key_provider.dart';
-import 'package:notificator/provider/employee_list_provider.dart';
-import 'package:notificator/provider/group_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
 import 'package:notificator/widgets/toast_widget.dart';
 import 'package:provider/provider.dart';

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:notificator/repository/group_repository.dart';
 
@@ -21,7 +22,7 @@ class GroupDeleteProvider with ChangeNotifier {
 
       if (success) {
         _message = response.message ?? 'deleted!';
-        print('GroupDeleteProvider:::${message}');
+        if (kDebugMode) print('GroupDeleteProvider:::${message}');
       } else {
         _error = response.errors ?? 'failed!';
       }
@@ -29,7 +30,7 @@ class GroupDeleteProvider with ChangeNotifier {
     } catch (e) {
       _success = false;
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }

@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/model/email_config_response.dart';
-import 'package:notificator/model/employee.dart';
 import 'package:notificator/provider/email_config_provider.dart';
-import 'package:notificator/provider/employee_create_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../model/group_list_response.dart';
 import '../provider/auth_key_provider.dart';
-import '../provider/group_chip_provider.dart';
-import '../provider/group_list_provider.dart';
 import '../provider/toast_provider.dart';
 import '../util/helper.dart';
 import '../util/utils.dart';
 import '../widgets/my_appbar_widget.dart';
-import '../widgets/select_group_bottom_sheet.dart';
 import '../widgets/separated_labeled_text_field.dart';
 
 class EmailConfigScreen extends StatefulWidget {

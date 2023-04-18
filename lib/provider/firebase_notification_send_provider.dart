@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:notificator/model/notification_send_response.dart';
+import 'package:flutter/foundation.dart';
 import 'package:notificator/repository/fcm_repository.dart';
-
-import '../repository/auth_repository.dart';
 
 class FirebaseNotificationSendProvider with ChangeNotifier {
   int _success = 0;
@@ -21,7 +18,7 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
     required String notificationId,
   }) async {
 
-    print('FCM firebase notification send provider');
+    if (kDebugMode) print('FCM firebase notification send provider');
 
     try {
       final response = await _notificationRepository.sendIndividual(
@@ -35,7 +32,7 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }
@@ -58,7 +55,7 @@ class FirebaseNotificationSendProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _error = e.toString();
-      print(_error);
+      if (kDebugMode) print(_error);
       notifyListeners();
     }
   }
