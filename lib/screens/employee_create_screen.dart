@@ -247,7 +247,8 @@ class _CreateEmployeeScreenState extends State<CreateEmployeeScreen> {
         if (context.mounted) Navigator.pop(context);
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint(provider.error);
+        toastProvider.showErrorToast('failed to create new employee');
       }
 
       // Hide the progress loader

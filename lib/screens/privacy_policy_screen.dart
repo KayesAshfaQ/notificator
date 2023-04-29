@@ -65,11 +65,11 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 ),
               );
 
-              return ListTile(
+           /*   return ListTile(
                 leading: const Icon(Icons.circle, size: 16),
                 // Use any bullet icon you like
                 title: Text(AppStrings.privacyList[index]),
-              );
+              );*/
             },
           ),
           const SizedBox(height: 8),

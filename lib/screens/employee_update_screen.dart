@@ -280,7 +280,8 @@ class _UpdateEmployeeScreenState extends State<UpdateEmployeeScreen> {
         if (context.mounted) Navigator.pop(context);
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint('UpdateEmployee_error::: ${provider.error}');
+        toastProvider.showErrorToast('employee update failed');
       }
 
       // Hide the progress loader

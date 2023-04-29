@@ -167,10 +167,11 @@ class _SettingEmployeeScreenState extends State<SettingEmployeeScreen> {
     // show toast message
     if (provider.success) {
       // Display a success toast
-      toastProvider.showSuccessToast('success');
+      toastProvider.showSuccessToast('settings updated successfully');
     } else {
       // Display a success toast
-      toastProvider.showErrorToast('error');
+      debugPrint(provider.error);
+      toastProvider.showErrorToast('update failed');
     }
 
     // hide progress loader

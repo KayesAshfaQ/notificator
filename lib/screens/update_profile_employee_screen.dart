@@ -289,7 +289,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
         if (context.mounted) Navigator.pop(context);
       } else {
         // Display an error toast
-        toastProvider?.showErrorToast(provider.error);
+        debugPrint('ERROR:::${provider.error}');
+        toastProvider?.showErrorToast('employee update failed');
       }
 
       // Hide the progress loader

@@ -28,6 +28,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   late final FToast fToast;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _mailController = TextEditingController();
+
   //static const double _widthPadding = 24.0;
 
   @override
@@ -189,10 +190,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       if (provider.success) {
         // Display a success toast
 
-        // toastProvider.showSuccessToast('submission successful, check your email');
-
         toastProvider
-            .showSuccessToast('submission successful, CODE:  ${provider.code}');
+            .showSuccessToast('submission successful, check your email');
+
+        //toastProvider.showSuccessToast('submission successful, CODE:  ${provider.code}');
 
         // Navigate to the otp screen
         if (context.mounted) {
@@ -204,7 +205,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         }
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint('forgetPassword ::: ${provider.error}');
+        toastProvider.showErrorToast('submission failed, try again');
       }
 
       // Hide the progress loader

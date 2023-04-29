@@ -172,7 +172,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         }
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint(provider.error);
+        toastProvider.showErrorToast('password change failed');
       }
 
       // Hide the progress loader

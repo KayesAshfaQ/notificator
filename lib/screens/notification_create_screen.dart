@@ -442,7 +442,8 @@ class _CreateNotificationScreenState extends State<CreateNotificationScreen> {
         if (context.mounted) Navigator.pop(context);
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint(provider.error);
+        toastProvider.showErrorToast('notification sending failed');
       }
 
       // Hide the progress loader

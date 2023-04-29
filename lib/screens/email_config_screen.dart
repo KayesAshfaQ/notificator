@@ -210,7 +210,8 @@ class _EmailConfigScreenState extends State<EmailConfigScreen> {
 
       } else {
         // Display an error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint(provider.error);
+        toastProvider.showErrorToast('SMTP Configurations Update Failed');
       }
 
       // Hide the progress loader
@@ -234,7 +235,7 @@ class _EmailConfigScreenState extends State<EmailConfigScreen> {
 
     // check if the submission was successful
     if (provider.success) {
-      debugPrint('groups fetched successfully');
+      debugPrint('smtp data fetched successfully');
 
       // initialize the global groups list with the fetched data
       Config? config = provider.data;

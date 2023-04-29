@@ -252,7 +252,9 @@ class _OtpScreenState extends State<OtpScreen> {
         if (context.mounted) context.loaderOverlay.hide();
       } else {
         // Display the error toast
-        toastProvider.showErrorToast(provider.error);
+        debugPrint(provider.error);
+        toastProvider.showErrorToast('code not matched');
+
 
         // Hide the progress loader
         if (context.mounted) context.loaderOverlay.hide();
@@ -276,12 +278,13 @@ class _OtpScreenState extends State<OtpScreen> {
     if (provider.success) {
       // Display a success toast
 
-      // toastProvider.showSuccessToast('submission successful, check your email');
+      toastProvider.showSuccessToast('code successfully sent, check your email');
 
-      toastProvider
-          .showSuccessToast('code resend successful, CODE:  ${provider.code}');
+      //toastProvider.showSuccessToast('code resend successful, CODE:  ${provider.code}');
     } else {
       // Display an error toast
+      debugPrint(provider.error);
+      toastProvider.showErrorToast('code resend failed');
       toastProvider.showErrorToast(provider.error);
     }
 
