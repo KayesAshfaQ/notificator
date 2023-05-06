@@ -51,8 +51,8 @@ class NotificationListProvider with ChangeNotifier {
   }
 
   void clearData() {
-    _data = null;
-    //notifyListeners();
+    if (data != null && _data!.isNotEmpty) _data!.clear();
+    notifyListeners();
   }
 
   /// reset the search
@@ -83,9 +83,7 @@ class NotificationListProvider with ChangeNotifier {
 
   /// This method is for fetching the notifications form the repository
   Future<void> getList(String token, String userType) async {
-
     try {
-
       NotificationListResponse response;
       if (userType == '1') {
         response = await _notificationRepository.getNotifications(
@@ -94,8 +92,8 @@ class NotificationListProvider with ChangeNotifier {
           currentPage,
         );
       } else {
-        response =
-            await _notificationRepository.getNotificationsEmployee(token, limit, currentPage);
+        response = await _notificationRepository.getNotificationsEmployee(
+            token, limit, currentPage);
       }
 
       _success = response.success;
@@ -132,8 +130,8 @@ class NotificationListProvider with ChangeNotifier {
           currentPage,
         );
       } else {
-        response =
-            await _notificationRepository.getNotificationsEmployee(token, limit, currentPage);
+        response = await _notificationRepository.getNotificationsEmployee(
+            token, limit, currentPage);
       }
 
       _success = response.success;
@@ -162,10 +160,11 @@ class NotificationListProvider with ChangeNotifier {
 
       response = await _notificationRepository.search(
           token, sortType, filterTxt, isRead, currentPage);
-      if (kDebugMode){
+      if (kDebugMode) {
         print('sortType: $sortType');
-      print('filterTxt: $filterTxt');
-      print('currentPage: $currentPage');}
+        print('filterTxt: $filterTxt');
+        print('currentPage: $currentPage');
+      }
 
       _success = response.success;
 

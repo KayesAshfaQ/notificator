@@ -76,6 +76,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     debugPrint('token: $token');
 
+    // clear the data
+    //provider.clearData();
+
     // reset the page number to 1 when fetching data for first time
     provider.resetCurrentPage();
 
@@ -84,7 +87,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     // fetch the notification list data
     if (token != null && employeeType != null) {
-      await provider.getList(token!, employeeType!);
+
+      // new data will be fetched only if the data is empty or null
+      if (provider.data == null || provider.data!.isEmpty) {
+        await provider.getList(token!, employeeType!);
+      }
 
       // listeners for refresh the ui when item is created & updated
       notificationProvider.addListener(() {
