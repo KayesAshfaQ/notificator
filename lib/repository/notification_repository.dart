@@ -5,6 +5,7 @@ import 'package:notificator/model/notificaiton_count_response.dart';
 import 'package:notificator/model/notification_data.dart';
 import 'package:notificator/model/notification_details_response.dart';
 import 'package:notificator/model/notification_list_response.dart';
+import 'package:notificator/model/notification_read_all.dart';
 import 'package:notificator/model/notification_send_response.dart';
 
 import '../constants/app_info.dart';
@@ -198,6 +199,37 @@ class NotificationRepository {
       if (kDebugMode) print(notificationList);
       return notificationList;
     } else {
+      throw Exception('failed!');
+    }
+  }
+
+  /// This method is for read all notifications at once
+  Future<ReadAllNotificationResponse> readAllNotifications(String token) async {
+    Uri url;
+
+    url = Uri.parse('$kBaseUrl/employee/markasread');
+    if (kDebugMode) print(url);
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    final data = json.decode(response.body);
+
+    if (kDebugMode) print(data);
+    print('ReadAllNotification::: ${response.statusCode}');
+    print('ReadAllNotification BODY::: ${response.body}');
+
+    if (response.body.isNotEmpty) {
+      final apiResponse = ReadAllNotificationResponse.fromJson(data);
+      if (kDebugMode) print(apiResponse.message);
+      return apiResponse;
+    } else {
+      //if (kDebugMode) print('NotificationList::: 6');
+
       throw Exception('failed!');
     }
   }

@@ -36,6 +36,7 @@ import 'package:notificator/provider/notification_count_provider.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_get_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
+import 'package:notificator/provider/notification_read_all_provider.dart';
 import 'package:notificator/provider/password_change_provider.dart';
 import 'package:notificator/provider/preference_provider.dart';
 import 'package:notificator/provider/send_to_option_provider.dart';
@@ -180,6 +181,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => HomeEmployeeDataProvider()),
         ChangeNotifierProvider(create: (_) => EmployeePhotoUpdateProvider()),
         ChangeNotifierProvider(create: (_) => NotificationDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationReadAllProvider()),
         ChangeNotifierProvider(create: (_) => EmailConfigProvider()),
         ChangeNotifierProvider(create: (_) => SettingDataGetProvider()),
         ChangeNotifierProvider(create: (_) => SettingDataSendProvider()),

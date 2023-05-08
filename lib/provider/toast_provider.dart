@@ -36,4 +36,17 @@ class ToastProvider with ChangeNotifier {
       toastDuration: const Duration(seconds: 2),
     );
   }
+
+  void showWarnToast(String msg) {
+    _fToast.showToast(
+      child: ToastWidget(
+        message: msg,
+        iconData: Icons.warning_amber,
+        backgroundColor: Colors.yellow,
+        color: Colors.grey[700],
+      ),
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: const Duration(seconds: 2),
+    );
+  }
 }

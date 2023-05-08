@@ -13,6 +13,8 @@ class NotificationCountResponse {
         count: json["count"],
       );
 
+  get message => null;
+
   Map<String, dynamic> toJson() => {
         "success": success,
         "count": count,

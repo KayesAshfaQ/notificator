@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
 import 'package:notificator/provider/notification_list_provider.dart';
+import 'package:notificator/provider/notification_read_all_provider.dart';
 import 'package:notificator/widgets/notification_list_item_widget.dart';
 import 'package:notificator/widgets/search_notification_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ import '../constants/constants.dart';
 import '../constants/routes.dart';
 import '../provider/notification_count_provider.dart';
 import '../provider/preference_provider.dart';
+import '../provider/toast_provider.dart';
 import '../util/helper.dart';
 import '../util/keys.dart';
 import '../util/utils.dart';
@@ -87,7 +90,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     // fetch the notification list data
     if (token != null && employeeType != null) {
-
       // new data will be fetched only if the data is empty or null
       if (provider.data == null || provider.data!.isEmpty) {
         await provider.getList(token!, employeeType!);
@@ -262,7 +264,31 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 context, kRouteCreateNotification);
                           },
                         )
-                      : const SizedBox();
+                      : ElevatedCreateButtonWidget(
+                          title: 'Mark all as read',
+                          icon: Icons.mark_chat_read,
+                          onPressed: () {
+                            final provider =
+                                context.read<NotificationReadAllProvider>();
+                            if (token != null) {
+                              provider.getMessage(token!);
+
+                              // initialize toast provider
+                              final toastProvider =
+                                  context.read<ToastProvider>();
+                              toastProvider.initialize(context);
+
+                              if (provider.success) {
+                                toastProvider
+                                    .showSuccessToast(provider.message);
+                              } else {
+                                toastProvider.showWarnToast(provider.error);
+                              }
+                            } else {
+                              debugPrint('token is null');
+                            }
+                          },
+                        );
                 },
               ),
             ],
