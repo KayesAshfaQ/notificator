@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:notificator/constants/app_colors.dart';
 import 'package:notificator/provider/notification_create_provider.dart';
@@ -131,6 +130,44 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     // Refresh the list when the user pulls down
     await provider.resetNotificationList(token!, employeeType!);
+  }
+
+  // read all the notification when the user tap on the read all button
+  void onNotificationReadAll() async {
+    // show loader overlay
+    context.loaderOverlay.show();
+
+    // initialize toast provider
+    final toastProvider = context.read<ToastProvider>();
+    toastProvider.initialize(context);
+
+    final provider = context.read<NotificationReadAllProvider>();
+
+    // initialize the user token
+    token = await Helper.getToken(context);
+
+    if (token != null) {
+      await provider.readAll(token!);
+
+      if (provider.success) {
+        toastProvider.showSuccessToast(provider.message);
+
+        // refresh the notification list
+        await refresh();
+      } else {
+        toastProvider.showWarnToast(provider.error);
+      }
+    } else {
+      debugPrint('token is null');
+    }
+
+    // read all the notification
+    await provider.readAll(token!);
+
+    // hide loader overlay
+    if (context.mounted && context.loaderOverlay.visible) {
+      context.loaderOverlay.hide();
+    }
   }
 
   @override
@@ -267,27 +304,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       : ElevatedCreateButtonWidget(
                           title: 'Mark all as read',
                           icon: Icons.mark_chat_read,
-                          onPressed: () {
-                            final provider =
-                                context.read<NotificationReadAllProvider>();
-                            if (token != null) {
-                              provider.getMessage(token!);
-
-                              // initialize toast provider
-                              final toastProvider =
-                                  context.read<ToastProvider>();
-                              toastProvider.initialize(context);
-
-                              if (provider.success) {
-                                toastProvider
-                                    .showSuccessToast(provider.message);
-                              } else {
-                                toastProvider.showWarnToast(provider.error);
-                              }
-                            } else {
-                              debugPrint('token is null');
-                            }
-                          },
+                          onPressed: onNotificationReadAll,
                         );
                 },
               ),

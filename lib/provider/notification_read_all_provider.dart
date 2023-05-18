@@ -15,7 +15,7 @@ class NotificationReadAllProvider with ChangeNotifier {
   final NotificationRepository _groupRepository = NotificationRepository();
 
   /// This method is for get message after read all notifications
-  Future<void> getMessage(String token) async {
+  Future<void> readAll(String token) async {
     try {
       final response = await _groupRepository.readAllNotifications(token);
       _success = response.success ?? false;
